@@ -65,8 +65,11 @@
             <span id="dash-verified-badge" style="display:none;" title="College Verified Student">🎓</span>
           </div>
 
-          <p id="dash-branch" style="font-size: var(--font-size-xs); color: var(--text-muted); margin-bottom: var(--spacing-4);">
+          <p id="dash-branch" style="font-size: var(--font-size-xs); color: var(--text-muted); margin-bottom: 2px;">
             Branch • Year
+          </p>
+          <p id="dash-email" style="font-size: 11px; color: var(--color-primary); margin-bottom: var(--spacing-4);">
+            student@juet.ac.in
           </p>
 
           <span id="dash-status" class="badge badge-open" style="margin-bottom: var(--spacing-4);">
@@ -182,6 +185,8 @@
       document.getElementById('dash-avatar').src = user.avatar_url;
       document.getElementById('dash-name').textContent = user.full_name;
       document.getElementById('dash-branch').textContent = `${user.branch} • ${user.year}`;
+      const emailEl = document.getElementById('dash-email');
+      if (emailEl) emailEl.textContent = user.email || '';
       document.getElementById('dash-hours').textContent = `${user.availability_hours || 10} hrs`;
 
       const statusBadge = document.getElementById('dash-status');

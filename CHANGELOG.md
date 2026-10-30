@@ -5,6 +5,14 @@
 
 ---
 
+## [v0.9.4] — 2026-10-31
+
+### Added
+- **Email in Contact Details** — College email address now shown wherever contact info is unlocked: `pages/profile-view.html` (contact card with `mailto:` link + ✉️ Email button), `pages/connections.html` (accepted connections tab), `pages/explore.html` (connected student cards), `pages/dashboard.html` (user's own profile card), `pages/profile-edit.html` (read-only email field in Academic Info).
+- **Privacy-respecting email visibility** — Email only shown for self-view or after a connection is mutually accepted (same rule as phone/WhatsApp).
+
+---
+
 ## [v0.9.3] — 2026-10-31
 
 ### Added

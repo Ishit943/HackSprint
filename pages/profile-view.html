@@ -151,6 +151,11 @@
                   </div>
                   <p style="margin-bottom: 0; color: var(--text-secondary); font-size: var(--font-size-sm);">
                     ${student.branch} • ${student.year} • 🏫 ${student.college || 'JUET'}
+                    ${(isSelf || student.canViewContact) && student.email ? `
+                      <span style="display:block; margin-top:3px; color:var(--color-primary); font-size:12px; font-weight:500;">
+                        ✉️ <a href="mailto:${student.email}" style="color:var(--color-primary); text-decoration:none;">${student.email}</a>
+                      </span>
+                    ` : ''}
                   </p>
                 </div>
               </div>
@@ -160,6 +165,9 @@
                   <a href="profile-edit.html" class="btn btn-outline btn-sm">✏️ Edit Profile</a>
                 ` : student.canViewContact ? `
                   <div class="flex items-center gap-2">
+                    <a href="mailto:${student.email}" class="btn btn-outline btn-sm" title="Send email">
+                      ✉️ Email
+                    </a>
                     <a href="${waUrl}" target="_blank" rel="noopener" class="btn btn-whatsapp btn-sm">
                       💬 WhatsApp
                     </a>
@@ -261,6 +269,13 @@
                 ${student.canViewContact ? `
                   <div style="display:flex; flex-direction:column; gap: var(--spacing-3);">
                     <div>
+                      <span style="font-size:var(--font-size-xs); color:var(--text-muted); font-weight:600;">COLLEGE EMAIL</span>
+                      <div style="font-size:var(--font-size-base); font-weight:700; color:var(--text-primary); display:flex; align-items:center; gap:6px;">
+                        <a href="mailto:${student.email}" style="color:var(--color-primary); text-decoration:none;">${student.email || 'Not provided'}</a>
+                        ${student.email_verified ? '<span title="Verified College Email">🎓</span>' : ''}
+                      </div>
+                    </div>
+                    <div>
                       <span style="font-size:var(--font-size-xs); color:var(--text-muted); font-weight:600;">WHATSAPP</span>
                       <div style="font-size:var(--font-size-base); font-weight:700; color:var(--text-primary);">
                         ${student.unlockedWhatsApp || 'Not provided'}
@@ -273,8 +288,11 @@
                       </div>
                     </div>
                     <div class="flex gap-2" style="margin-top:var(--spacing-2);">
+                      <a href="mailto:${student.email}" class="btn btn-outline btn-sm flex-1">
+                        ✉️ Email
+                      </a>
                       <a href="${waUrl}" target="_blank" rel="noopener" class="btn btn-whatsapp btn-sm flex-1">
-                        💬 Open WhatsApp
+                        💬 WhatsApp
                       </a>
                       <a href="${telUrl}" class="btn btn-phone btn-sm flex-1">
                         📞 Call

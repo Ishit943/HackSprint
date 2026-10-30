@@ -168,3 +168,18 @@ The entire UI has been styled with a custom **Halloween Obsidian Black & Jack-o'
 | [`functions/send-whatsapp/index.js`](functions/send-whatsapp/index.js) | Edge function for Meta WhatsApp Business Cloud API |
 | [`README.md`](README.md) | Project overview, setup, and verification guide |
 | [`roadmap.md`](roadmap.md) | Original 10-phase project specification |
+
+---
+
+## ✅ Feature: Email Visibility in Contact Details — 2026-10-31
+
+**Problem:** Accepted connections had no way to email each other directly; college email was absent from all contact surfaces.
+
+**Solution:** Surfaced the user's registered email address across all contact-relevant pages, respecting the same privacy rules as phone/WhatsApp (only visible to self or after mutual acceptance).
+
+**Files Changed:**
+- **`pages/profile-view.html`** — Contact card now shows College Email row with `mailto:` link, verified badge, and ✉️ Email action button
+- **`pages/profile-edit.html`** — Added read-only Email field in Academic Info section (3-column grid)
+- **`pages/connections.html`** — Accepted connections tab shows email + ✉️ Email button
+- **`pages/explore.html`** — When user is connected or viewing self: email shown on student card + ✉️ Email button
+- **`pages/dashboard.html`** — Email shown below branch in dashboard profile header card

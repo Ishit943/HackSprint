@@ -248,6 +248,11 @@
                 <div style="font-size: var(--font-size-xs); color: var(--text-muted); margin-bottom: 4px;">
                   ${other.branch || 'CSE'} • ${other.college || 'JUET'} • Sent ${formatDate(conn.created_at)}
                 </div>
+                ${other.email && currentTab === 'accepted' ? `
+                  <div style="font-size: 12px; color: var(--color-primary); margin-bottom: 4px; font-weight: 500;">
+                    ✉️ <a href="mailto:${other.email}" style="color: var(--color-primary); text-decoration: none;">${other.email}</a>
+                  </div>
+                ` : ''}
                 <p style="font-size: var(--font-size-sm); color: var(--text-secondary); margin-bottom: 0;">
                   "${conn.message}"
                 </p>
@@ -279,6 +284,11 @@
                         🔓 Leave Team
                       </button>
                     `}
+                    ${other.email ? `
+                      <a href="mailto:${other.email}" class="btn btn-outline btn-sm" title="Send email">
+                        ✉️ Email
+                      </a>
+                    ` : ''}
                     <a href="${waUrl}" target="_blank" rel="noopener" class="btn btn-whatsapp btn-sm" title="Open pre-filled chat in WhatsApp">
                       💬 WhatsApp
                     </a>
