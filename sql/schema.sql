@@ -237,6 +237,7 @@ ALTER TABLE public.connection_requests ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.teams ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.team_members ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.messages ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.whatsapp_logs ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.notifications ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.saved_filters ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.reports ENABLE ROW LEVEL SECURITY;
@@ -337,6 +338,12 @@ CREATE POLICY "Users send messages as sender"
     ON public.messages FOR INSERT
     TO authenticated
     WITH CHECK (auth.uid() = sender_id);
+
+-- 7. WhatsApp Logs policies
+CREATE POLICY "Users view their own whatsapp logs"
+    ON public.whatsapp_logs FOR SELECT
+    TO authenticated
+    USING (auth.uid() = sender_id OR auth.uid() = receiver_id);
 
 -- ============================================================================
 -- SEED DATA: POPULAR TECH STACKS & SKILLS

@@ -9,11 +9,9 @@ export const CONFIG = {
   VERSION: '1.0.0',
 
   // Supabase Configuration
-  // Replace these with your live Supabase project URL and anon public key when ready.
-  // If left as placeholders, the app automatically switches to Interactive Demo/Mock Mode
-  // with pre-seeded student monsters, projects, and connection request simulations!
-  SUPABASE_URL: window.ENV_SUPABASE_URL || 'https://xyzcompany.supabase.co',
-  SUPABASE_ANON_KEY: window.ENV_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.dummy_anon_key_for_local_demo',
+  // Connected to live Supabase backend
+  SUPABASE_URL: window.ENV_SUPABASE_URL || 'https://awhvbfsjrjsydrhnimkx.supabase.co',
+  SUPABASE_ANON_KEY: window.ENV_SUPABASE_ANON_KEY || 'sb_publishable_lX_RcdKEXp1t0EfMLtOJ9Q_nKlLZlUW',
 
   // Check if live Supabase is properly configured
   isLiveSupabaseConfigured() {
