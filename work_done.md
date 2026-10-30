@@ -88,6 +88,15 @@ The entire UI has been styled with a custom **Halloween Obsidian Black & Jack-o'
 - [x] Pre-configured payload templates for `connection_request_alert` and `request_accepted`.
 - [x] Secure server-side token isolation preventing API credential exposure.
 
+### ✅ Dynamic Teammate Compatibility & Real-Time Skill Synergy
+- [x] Resolved static match score limitation where scores were previously calculated against a static hardcoded array.
+- [x] Implemented `calculateTeammateCompatibility` in [`js/utils.js`](js/utils.js) featuring:
+  - **Dynamic Search Filter Matching**: When skills are selected in the Explore filter (e.g. `['Figma', 'UI/UX Design']`), candidate scores directly reflect how many searched skills they possess and their proficiency tiers (e.g. 95% match vs 20%).
+  - **Peer Teammate Synergy**: Evaluates complementary skill coverage (filling team gaps like Backend + Design or ML + Frontend), shared tech foundation, hackathon track interests, availability alignment, and proficiency bonus.
+  - **Live Profile Update Reaction**: Updating skills, proficiency, availability, or interests in [`pages/profile-edit.html`](pages/profile-edit.html) immediately recalculates compatibility scores for all candidates across Explore and Dashboard.
+  - **Self Profile Recognition**: The logged-in user no longer sees a match score against themselves; it cleanly displays `👾 You`.
+- [x] Updated [`pages/explore.html`](pages/explore.html), [`pages/dashboard.html`](pages/dashboard.html), and [`pages/profile-view.html`](pages/profile-view.html) with match reason tooltips and dynamic compatibility widgets.
+
 ---
 
 ## 📂 File Deliverables Index

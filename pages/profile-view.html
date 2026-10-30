@@ -97,7 +97,7 @@
   </main>
 
   <script type="module">
-    import { initTheme, showToast, formatWhatsAppUrl, formatTelUrl, calculateProfileCompleteness } from '../js/utils.js';
+    import { initTheme, showToast, formatWhatsAppUrl, formatTelUrl, calculateProfileCompleteness, calculateTeammateCompatibility } from '../js/utils.js';
     import { Auth } from '../js/auth.js';
     import { API, getCurrentUser } from '../js/api.js';
 
@@ -124,6 +124,7 @@
         const currentUser = getCurrentUser();
         const isSelf = currentUser && currentUser.id === student.id;
         const completeness = calculateProfileCompleteness(student);
+        const matchInfo = (!isSelf && currentUser) ? calculateTeammateCompatibility({ student, currentUser }) : null;
 
         const waUrl = student.unlockedWhatsApp 
           ? formatWhatsAppUrl(student.unlockedWhatsApp, `Hi ${student.full_name}, I saw your profile on Monster Match!`)
@@ -221,6 +222,18 @@
 
             <!-- Right Column: Availability, Contact Card, Completeness -->
             <div>
+              ${matchInfo ? `
+                <div class="card" style="margin-bottom: var(--spacing-6); border-top: 4px solid var(--color-primary); background: rgba(255, 115, 0, 0.03);">
+                  <div class="flex justify-between items-center" style="margin-bottom: var(--spacing-2);">
+                    <h4 style="margin-bottom: 0; font-size: var(--font-size-base);">Teammate Compatibility</h4>
+                    <span class="match-score" style="white-space:nowrap; flex-shrink:0;">⚡ ${matchInfo.score}% Match</span>
+                  </div>
+                  <p style="font-size: var(--font-size-xs); color: #ff8c26; margin-bottom: 0; font-weight: 500;">
+                    💡 ${matchInfo.reason}
+                  </p>
+                </div>
+              ` : ''}
+
               <!-- Contact Details & Privacy Box (Phase 4) -->
               <div class="card" style="margin-bottom: var(--spacing-6); border-top: 4px solid ${student.canViewContact ? 'var(--color-whatsapp)' : 'var(--border-color)'};">
                 <h4 style="margin-bottom: var(--spacing-3); display:flex; align-items:center; gap:6px;">

@@ -6,7 +6,7 @@
  */
 
 import { CONFIG } from './config.js';
-import { calculateMatchScore } from './utils.js';
+import { calculateMatchScore, calculateTeammateCompatibility } from './utils.js';
 
 // --- SEED MOCK DATA (High quality profiles & projects for testing) ---
 const INITIAL_STUDENTS = [
@@ -320,17 +320,20 @@ export const API = {
       });
     }
 
-    // Calculate match scores if reference project exists or default
+    // Calculate dynamic teammate compatibility against currentUser & search filters
     const currentUser = getCurrentUser();
     list = list.map(student => {
-      const matchScore = calculateMatchScore({
-        studentSkills: student.skills,
-        requiredSkills: referenceProject ? referenceProject.roles.flatMap(r => r.skills) : ['React', 'Node.js', 'Python'],
-        studentAvailability: student.availability_hours || 10,
-        studentInterests: student.interests || [],
-        projectCategory: referenceProject ? referenceProject.category : 'Hackathon'
+      const matchRes = calculateTeammateCompatibility({
+        student,
+        currentUser,
+        activeFilterSkills: skills,
+        referenceProject
       });
-      return { ...student, matchScore };
+      return {
+        ...student,
+        matchScore: matchRes.score,
+        matchReason: matchRes.reason
+      };
     });
 
     // Sorting

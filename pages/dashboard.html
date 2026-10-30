@@ -250,16 +250,21 @@
                 <span style="font-size: 11px; color: var(--text-muted); display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${s.branch}</span>
               </div>
             </div>
-            <div class="flex flex-wrap gap-1" style="margin-bottom: var(--spacing-3);">
+            <div class="flex flex-wrap gap-1" style="margin-bottom: var(--spacing-2);">
               ${s.skills.slice(0, 3).map(sk => {
                 const name = typeof sk === 'string' ? sk : sk.name;
                 const lvl = typeof sk === 'object' && sk.level ? sk.level : 'intermediate';
                 return `<span class="skill-pill tier-${lvl}" style="padding: 2px 7px; font-size: 11px;"><span class="dot"></span>${name}</span>`;
               }).join('')}
             </div>
+            ${s.matchReason ? `
+              <div style="font-size: 10px; color: #ff8c26; margin-bottom: var(--spacing-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${s.matchReason}">
+                💡 ${s.matchReason}
+              </div>
+            ` : ''}
           </div>
           <div class="flex justify-between items-center" style="border-top:1px solid rgba(255,255,255,0.08); padding-top:var(--spacing-3); margin-top: auto;">
-            <span class="match-score" style="font-size:11px; padding:2px 8px; white-space:nowrap; flex-shrink:0;">⚡ ${s.matchScore || 90}% Match</span>
+            <span class="match-score" style="font-size:11px; padding:2px 8px; white-space:nowrap; flex-shrink:0;" title="${s.matchReason || ''}">⚡ ${s.matchScore || 90}% Match</span>
             <a href="profile-view.html?id=${s.id}" class="btn btn-primary btn-sm" style="font-size:11px; padding:3px 10px;">View Profile</a>
           </div>
         </div>

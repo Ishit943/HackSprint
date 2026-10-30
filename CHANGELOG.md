@@ -5,6 +5,20 @@
 
 ---
 
+## [v0.9.1] — 2026-10-31
+
+### Fixed
+- **Static Compatibility Scores** — Compatibility previously evaluated against a hardcoded `['React', 'Node.js', 'Python']` array regardless of search filters or logged-in user. Replaced with dynamic `calculateTeammateCompatibility` in `js/utils.js`.
+- **Self-Match Bug** — Logged-in user previously saw a random compatibility percentage against themselves; now renders `👾 You` badge.
+
+### Added
+- **Dynamic Search Relevance Scoring** — Filtering by skills on the Explore page dynamically scores candidates based on their match to selected tags and proficiency tiers.
+- **Teammate Synergy Algorithm** — Calculates complementary skill gaps, collaboration stack alignment, shared hackathon track interests, and availability overlap.
+- **Explainable Match Reasons** — Explanatory tooltips and tags on student cards (e.g., *"Matches 2 of 2 filtered skills"*, *"Complementary: adds design uiux"*).
+- **Profile View Compatibility Widget** — Displays personalized compatibility breakdown when inspecting candidate profiles in `pages/profile-view.html`.
+
+---
+
 ## [v0.9.0] — 2026-10-30 *(Current)*
 
 ### Added
