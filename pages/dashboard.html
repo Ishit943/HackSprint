@@ -184,6 +184,23 @@
       document.getElementById('dash-branch').textContent = `${user.branch} • ${user.year}`;
       document.getElementById('dash-hours').textContent = `${user.availability_hours || 10} hrs`;
 
+      const statusBadge = document.getElementById('dash-status');
+      if (statusBadge) {
+        if (user.status === 'teamed') {
+          statusBadge.className = 'badge';
+          statusBadge.style.background = 'rgba(255, 115, 0, 0.15)';
+          statusBadge.style.color = '#ff8c26';
+          statusBadge.style.border = '1px solid rgba(255, 115, 0, 0.4)';
+          statusBadge.textContent = `🏆 Team Formed (${user.team_hackathon || 'HackSprint 2026'})`;
+        } else if (user.status === 'busy') {
+          statusBadge.className = 'badge badge-busy';
+          statusBadge.textContent = '● Busy / Forming Team';
+        } else {
+          statusBadge.className = 'badge badge-open';
+          statusBadge.textContent = '● Open to Teams';
+        }
+      }
+
       if (user.email_verified) {
         document.getElementById('dash-verified-badge').style.display = 'inline-block';
       }

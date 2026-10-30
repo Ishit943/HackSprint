@@ -5,6 +5,17 @@
 
 ---
 
+## [v0.9.3] — 2026-10-31
+
+### Added
+- **Hackathon Teammate Privacy Shield** — Automatically hides students who have already formed a team for a hackathon (`status: 'teamed'`) from public view on `pages/explore.html`, preventing unsolicited contacts and team poaching.
+- **1-Click "Confirm Hackathon Team" Action (`pages/connections.html`)** — Allows connected students to officially confirm their hackathon team for a specific event (e.g., Runtime Terror HackSprint 2026). Both profiles are automatically locked and shielded from public Explore.
+- **Direct Profile Protection Banner (`pages/profile-view.html`)** — Displays a `🔒 Hackathon Team Formed` warning and disables direct connection buttons when visitors view an already-committed student.
+- **Team Management Methods (`js/api.js`)** — Added `API.formTeam()` and `API.leaveTeam()` to handle persistent team formation, notifications, and profile status syncing.
+- **Pre-seeded Teammates** — Configured Sneha Patel (`usr-4`) and Tanvi Saxena (`usr-6`) as a formed team for Runtime Terror HackSprint 2026 to demonstrate privacy protection out-of-the-box.
+
+---
+
 ## [v0.9.2] — 2026-10-31
 
 ### Changed

@@ -78,6 +78,9 @@
 - ✅ **Sent requests tracker** — View all outgoing requests with current status (Pending / Accepted / Rejected)
 - ✅ **Mutual contact unlock** — Phone number and WhatsApp revealed **only** after mutual acceptance
 - ✅ **Privacy protection** — Contact details never exposed in explore/directory queries; zero leakage in DOM
+- ✅ **Hackathon Teammate Privacy Shield** — Students who have formed a team for a hackathon are automatically hidden from the Explore directory to prevent unsolicited contacts and team poaching
+- ✅ **1-Click Hackathon Team Formation** — Accepted connections can officially confirm their hackathon team; both profiles become protected and status is set to 'teamed'
+- ✅ **Direct Profile Locking** — Visiting a teamed student's profile displays a Hackathon Team Formed banner and disables connection requests
 
 ---
 

@@ -113,6 +113,26 @@ The entire UI has been styled with a custom **Halloween Obsidian Black & Jack-o'
   - Collaborator requirements
   - **Find Matches ⚡** button that pre-filters candidates on the Explore page by the project's tech stack.
 
+### ✅ Hackathon Teammate Privacy Shield (Hide Teamed Students from Explore)
+- [x] Implemented automatic privacy exclusion for students who have formed a team for a hackathon:
+  - If two or more students have formed a team for a hackathon (`status: 'teamed'`), their profiles are automatically shielded and hidden from public view in [`pages/explore.html`](pages/explore.html).
+  - Prevents other students from contacting already committed teams or causing confusion.
+  - The student themselves can always view their own profile card with a `🏆 Team Formed` badge.
+  - Added an optional "Show teamed students (locked)" checkbox in the Explore filter panel for transparency.
+  - When viewed, teamed students have their "Connect" button disabled with a `🔒 Team Formed` badge.
+- [x] Built 1-Click "Confirm Hackathon Team" Workflow in [`pages/connections.html`](pages/connections.html):
+  - In Accepted Connections, partners can click **🤝 Confirm Hackathon Team** to commit to a hackathon (e.g., Runtime Terror HackSprint 2026).
+  - Automatically updates both students' status to `teamed`, records their hackathon partnership, and hides them from public Explore.
+  - Added a "Leave Team" action if teammates ever disband and wish to reopen their profiles.
+- [x] Direct Profile Protection in [`pages/profile-view.html`](pages/profile-view.html):
+  - Displays a dedicated `🔒 Hackathon Team Formed` warning banner to outside visitors.
+  - Disables the connection button with a locked indicator.
+  - Replaces the contact request trigger with a clear note explaining the student is already committed to a team.
+- [x] API & Seed Updates in [`js/api.js`](js/api.js):
+  - Added `API.formTeam({ teammateId, hackathonName, teamName })` and `API.leaveTeam(teammateId)`.
+  - Added API-level guard in `API.sendConnectionRequest` rejecting requests to teamed students.
+  - Pre-seeded Sneha Patel (`usr-4`) and Tanvi Saxena (`usr-6`) as confirmed teammates for Runtime Terror HackSprint 2026.
+
 ---
 
 ## 📂 File Deliverables Index

@@ -56,6 +56,7 @@ async function getStudents(filters = {}) => Promise<Student[]>
 | `filters.branch` | `string` \| `null` | `null` | Branch filter (e.g. `"CSE"`) |
 | `filters.minAvailability` | `number` | `0` | Minimum weekly hours |
 | `filters.sortBy` | `'matchScore'` \| `'name'` \| `'newest'` | `'matchScore'` | Sort order |
+| `filters.includeTeamed` | `boolean` | `false` | Whether to include students who already formed a hackathon team (hidden by default to prevent unsolicited contact) |
 
 **Returns:** `Student[]` — array of profile objects with an appended `matchScore` property (0–100).
 
@@ -245,6 +246,28 @@ if (result.success) {
   // Contact fields are now unlocked in the UI
   console.log('Connection accepted! WhatsApp button is now active.');
 }
+```
+
+---
+
+### `formTeam({ teammateId, hackathonName, teamName })`
+
+Officially confirms a hackathon team between two connected students. Both users' statuses are set to `'teamed'`, and their profiles are automatically shielded from public view on `pages/explore.html` so they aren't contacted unnecessarily by other students.
+
+**Signature:**
+```js
+async function formTeam({ teammateId, hackathonName, teamName }) => Promise<Team>
+```
+
+---
+
+### `leaveTeam(teammateId)`
+
+Disbands or leaves an active hackathon team, reverting status back to `'open'` and restoring visibility in the Explore directory.
+
+**Signature:**
+```js
+async function leaveTeam(teammateId?: string) => Promise<boolean>
 ```
 
 ---

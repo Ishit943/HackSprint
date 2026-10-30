@@ -257,16 +257,38 @@
             <!-- Action column -->
             <div>
               ${currentTab === 'accepted' ? `
-                <div class="flex items-center gap-2 flex-wrap">
-                  <a href="${waUrl}" target="_blank" rel="noopener" class="btn btn-whatsapp btn-sm" title="Open pre-filled chat in WhatsApp">
-                    💬 WhatsApp Chat
-                  </a>
-                  <a href="${telUrl}" class="btn btn-phone btn-sm" title="Call directly via phone">
-                    📞 Call
-                  </a>
-                  <a href="profile-view.html?id=${other.id}" class="btn btn-outline btn-sm">
-                    Profile
-                  </a>
+                <div style="text-align: right;">
+                  ${(conn.team_formed || (other.status === 'teamed' && currentUser?.status === 'teamed')) ? `
+                    <div class="flex items-center gap-2 justify-end" style="margin-bottom: 8px;">
+                      <span class="badge" style="background: rgba(255, 115, 0, 0.15); color: #ff8c26; border: 1px solid rgba(255, 115, 0, 0.4); font-size: 11px;">
+                        🏆 Team Formed: ${conn.hackathon_name || other.team_hackathon || 'Runtime Terror HackSprint 2026'}
+                      </span>
+                      <span style="font-size: 11px; color: var(--text-muted);" title="Both of your profiles are hidden from public Explore so nobody contacts you">
+                        🛡️ Hidden from Explore
+                      </span>
+                    </div>
+                  ` : ''}
+
+                  <div class="flex items-center gap-2 flex-wrap justify-end">
+                    ${!(conn.team_formed || (other.status === 'teamed' && currentUser?.status === 'teamed')) ? `
+                      <button class="btn btn-primary btn-sm form-team-btn" data-id="${other.id}" data-name="${otherName}" style="background: linear-gradient(135deg, #ff7300, #ff9436); border: none;" title="Lock in this teammate for a hackathon and shield both profiles from Explore">
+                        🤝 Confirm Hackathon Team
+                      </button>
+                    ` : `
+                      <button class="btn btn-outline btn-sm leave-team-btn" data-id="${other.id}" style="font-size: 11px; padding: 4px 8px; color: var(--text-muted);" title="Leave team and reopen profiles on Explore">
+                        🔓 Leave Team
+                      </button>
+                    `}
+                    <a href="${waUrl}" target="_blank" rel="noopener" class="btn btn-whatsapp btn-sm" title="Open pre-filled chat in WhatsApp">
+                      💬 WhatsApp
+                    </a>
+                    <a href="${telUrl}" class="btn btn-phone btn-sm" title="Call directly via phone">
+                      📞 Call
+                    </a>
+                    <a href="profile-view.html?id=${other.id}" class="btn btn-outline btn-sm">
+                      Profile
+                    </a>
+                  </div>
                 </div>
               ` : currentTab === 'received' ? `
                 <div class="flex items-center gap-2">
@@ -320,6 +342,39 @@
           try {
             await API.respondConnectionRequest(btn.dataset.id, 'withdrawn');
             showToast('Request withdrawn.', 'info');
+            await loadData();
+          } catch (e) {
+            showToast(e.message, 'error');
+          }
+        });
+      });
+
+      // Team formation handlers
+      container.querySelectorAll('.form-team-btn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const hackathon = prompt(`Confirm team with ${btn.dataset.name} for which hackathon?`, 'Runtime Terror HackSprint 2026');
+          if (!hackathon) return;
+
+          try {
+            await API.formTeam({
+              teammateId: btn.dataset.id,
+              hackathonName: hackathon.trim()
+            });
+            showToast(`🎉 Team confirmed for ${hackathon}! Both profiles are now hidden from public Explore so nobody contacts you.`, 'success');
+            await loadData();
+          } catch (e) {
+            showToast(e.message, 'error');
+          }
+        });
+      });
+
+      container.querySelectorAll('.leave-team-btn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          if (!confirm('Leave this hackathon team? Both of your profiles will be reopened and visible on Explore again.')) return;
+
+          try {
+            await API.leaveTeam(btn.dataset.id);
+            showToast('Team disbanded. Profiles reopened to Explore 🔓', 'info');
             await loadData();
           } catch (e) {
             showToast(e.message, 'error');

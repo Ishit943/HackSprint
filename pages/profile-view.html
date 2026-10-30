@@ -147,6 +147,7 @@
                   <div class="flex items-center gap-2">
                     <h2 style="margin-bottom: 2px;">${student.full_name}</h2>
                     ${student.email_verified ? '<span class="badge badge-open" title="College Verified Student">🎓 Verified Student</span>' : ''}
+                    ${student.status === 'teamed' ? `<span class="badge" style="background: rgba(255, 115, 0, 0.15); color: #ff8c26; border: 1px solid rgba(255, 115, 0, 0.4); font-size: 11px;">🏆 Team Formed: ${student.team_hackathon || 'HackSprint 2026'}</span>` : ''}
                   </div>
                   <p style="margin-bottom: 0; color: var(--text-secondary); font-size: var(--font-size-sm);">
                     ${student.branch} • ${student.year} • 🏫 ${student.college || 'JUET'}
@@ -166,6 +167,10 @@
                       📞 Call
                     </a>
                   </div>
+                ` : student.status === 'teamed' ? `
+                  <button class="btn btn-outline btn-sm" disabled style="opacity: 0.6; cursor: not-allowed; border-color: rgba(255, 115, 0, 0.4); color: #ff8c26;" title="This student has already formed a team for a hackathon">
+                    🔒 Team Already Formed
+                  </button>
                 ` : `
                   <button id="profile-connect-btn" class="btn btn-primary btn-sm">
                     Connect to Unlock Contact 👾
@@ -174,6 +179,19 @@
               </div>
             </div>
           </div>
+
+          <!-- Team Formed Alert Banner for Outsiders -->
+          ${(!isSelf && student.status === 'teamed' && !student.canViewContact) ? `
+            <div style="background: rgba(255, 115, 0, 0.08); border: 1px solid rgba(255, 115, 0, 0.3); border-radius: var(--radius-xl); padding: var(--spacing-4) var(--spacing-6); margin-bottom: var(--spacing-6); display: flex; align-items: center; gap: var(--spacing-4);">
+              <span style="font-size: 2rem;">🔒</span>
+              <div>
+                <h4 style="margin-bottom: 2px; color: #ff8c26;">Hackathon Team Formed</h4>
+                <p style="margin-bottom: 0; font-size: var(--font-size-sm); color: var(--text-secondary);">
+                  ${student.full_name} has already formed a team for <strong>${student.team_hackathon || 'Runtime Terror HackSprint 2026'}</strong> and is hidden from public Explore. Direct contact is secured to prevent unsolicited messages.
+                </p>
+              </div>
+            </div>
+          ` : ''}
 
           <!-- Two Column Profile Content -->
           <div class="profile-grid">
@@ -263,6 +281,13 @@
                       </a>
                     </div>
                   </div>
+                ` : student.status === 'teamed' ? `
+                  <p style="font-size:var(--font-size-sm); margin-bottom: var(--spacing-4); color: var(--text-secondary);">
+                    This student has formed a team for <strong>${student.team_hackathon || 'Runtime Terror HackSprint 2026'}</strong> and is not open to new connection requests.
+                  </p>
+                  <button class="btn btn-outline btn-sm" disabled style="width:100%; opacity: 0.6; cursor: not-allowed; border-color: rgba(255, 115, 0, 0.3); color: #ff8c26;">
+                    🔒 Contact Locked (Team Formed)
+                  </button>
                 ` : `
                   <p style="font-size:var(--font-size-sm); margin-bottom: var(--spacing-4);">
                     This student's WhatsApp number and phone line are protected to prevent unsolicited spam.

@@ -122,8 +122,11 @@
           <select id="avail-status" class="select">
             <option value="open">Open to Teams</option>
             <option value="busy">Busy / Forming Team</option>
-            <option value="teamed">Team Formed</option>
+            <option value="teamed">Team Formed (Hidden from Explore)</option>
           </select>
+          <span id="teamed-status-note" style="font-size: 11px; color: #ff8c26; display: none; margin-top: 6px; line-height: 1.4;">
+            🛡️ <strong>Teammate Shield:</strong> Setting "Team Formed" hides your profile from other students in Explore to avoid unsolicited contact.
+          </span>
         </div>
       </div>
 
@@ -191,7 +194,13 @@
     document.getElementById('show-phone').checked = user.show_phone !== false;
     document.getElementById('show-whatsapp').checked = user.show_whatsapp !== false;
     document.getElementById('avail-hours').value = user.availability_hours || 15;
-    document.getElementById('avail-status').value = user.status || 'open';
+    const availStatusEl = document.getElementById('avail-status');
+    const teamedNoteEl = document.getElementById('teamed-status-note');
+    availStatusEl.value = user.status || 'open';
+    if (availStatusEl.value === 'teamed') teamedNoteEl.style.display = 'block';
+    availStatusEl.addEventListener('change', () => {
+      teamedNoteEl.style.display = availStatusEl.value === 'teamed' ? 'block' : 'none';
+    });
     document.getElementById('github-url').value = user.github_url || '';
     document.getElementById('linkedin-url').value = user.linkedin_url || '';
     document.getElementById('portfolio-url').value = user.portfolio_url || '';

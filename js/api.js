@@ -109,7 +109,9 @@ const INITIAL_STUDENTS = [
     show_whatsapp: true,
     availability_hours: 14,
     availability_notes: 'Weekdays after 6pm + Weekends',
-    status: 'open',
+    status: 'teamed',
+    team_hackathon: 'Runtime Terror HackSprint 2026',
+    team_name: 'IoT Cyber Monsters',
     github_url: 'https://github.com',
     linkedin_url: 'https://linkedin.com',
     portfolio_url: '',
@@ -165,7 +167,9 @@ const INITIAL_STUDENTS = [
     show_whatsapp: true,
     availability_hours: 16,
     availability_notes: 'Weekdays after 5pm & Weekends',
-    status: 'open',
+    status: 'teamed',
+    team_hackathon: 'Runtime Terror HackSprint 2026',
+    team_name: 'IoT Cyber Monsters',
     github_url: 'https://github.com',
     linkedin_url: 'https://linkedin.com',
     portfolio_url: '',
@@ -177,6 +181,32 @@ const INITIAL_STUDENTS = [
       { name: 'PostgreSQL', level: 'intermediate' }
     ],
     interests: ['Cloud/DevOps', 'AI & Generative Agents', 'Fintech & Payments']
+  }
+];
+
+const INITIAL_TEAMS = [
+  {
+    id: 'team-demo-1',
+    name: 'IoT Cyber Monsters',
+    hackathon_name: 'Runtime Terror HackSprint 2026',
+    members: ['usr-4', 'usr-6'],
+    created_at: new Date(Date.now() - 86400000).toISOString()
+  }
+];
+
+const INITIAL_CONNECTIONS = [
+  {
+    id: 'conn-demo-1',
+    sender_id: 'usr-4',
+    sender_name: 'Sneha Patel',
+    sender_avatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Sneha&backgroundColor=ffdfbf',
+    receiver_id: 'usr-6',
+    status: 'accepted',
+    team_formed: true,
+    hackathon_name: 'Runtime Terror HackSprint 2026',
+    team_name: 'IoT Cyber Monsters',
+    message: 'Hey Tanvi, let us form our team for Runtime Terror HackSprint 2026!',
+    created_at: new Date(Date.now() - 86400000).toISOString()
   }
 ];
 
@@ -265,12 +295,26 @@ export const API = {
     year = '',
     status = '',
     sortBy = 'match', // 'match', 'name', 'availability'
-    referenceProject = null
+    referenceProject = null,
+    includeTeamed = false
   } = {}) {
     let list = getStorageData('students', null);
     if (!list || list.length < INITIAL_STUDENTS.length) {
       list = INITIAL_STUDENTS;
       setStorageData('students', list);
+    }
+
+    const currentUser = getCurrentUser();
+
+    // AUTO-EXCLUDE: Hide students who have formed a team for a hackathon, so other people
+    // don't contact them and cause trouble.
+    // Self is always included so you can see your own profile card.
+    // If includeTeamed is explicitly true, teamed students are kept (e.g. when checking who already teamed up).
+    if (!includeTeamed) {
+      list = list.filter(u => {
+        if (currentUser && u.id === currentUser.id) return true; // always show yourself
+        return u.status !== 'teamed'; // hide teamed students from everyone else
+      });
     }
 
     // Filter by query (name, bio, branch)
@@ -319,7 +363,6 @@ export const API = {
     }
 
     // Calculate dynamic teammate compatibility against currentUser & search filters
-    const currentUser = getCurrentUser();
     list = list.map(student => {
       const matchRes = calculateTeammateCompatibility({
         student,
@@ -356,12 +399,14 @@ export const API = {
     const isOwner = currentUser && currentUser.id === student.id;
 
     // Check if an accepted connection request exists between currentUser and this student
-    const connections = getStorageData('connections', []);
-    const hasAcceptedConnection = connections.some(c =>
+    const connections = getStorageData('connections', INITIAL_CONNECTIONS);
+    const connection = connections.find(c =>
       c.status === 'accepted' &&
       ((c.sender_id === currentUser?.id && c.receiver_id === student.id) ||
        (c.receiver_id === currentUser?.id && c.sender_id === student.id))
     );
+    const hasAcceptedConnection = !!connection;
+    const isTeammate = connection && connection.team_formed;
 
     // Apply Privacy Rule (Section 4 & 7):
     // Phone and WhatsApp are unlocked ONLY if owner allowed it AND (isOwner OR hasAcceptedConnection)
@@ -371,6 +416,8 @@ export const API = {
       ...student,
       canViewContact,
       contactUnlocked: canViewContact,
+      isTeammate: !!isTeammate,
+      connection,
       unlockedPhone: (canViewContact && student.show_phone) ? student.phone : null,
       unlockedWhatsApp: (canViewContact && student.show_whatsapp) ? (student.whatsapp_number || student.phone) : null
     };
@@ -454,7 +501,14 @@ export const API = {
     if (!currentUser) throw new Error('You must be logged in to send a connection request.');
     if (currentUser.id === receiverId) throw new Error('You cannot connect with yourself.');
 
-    const connections = getStorageData('connections', []);
+    // GUARD: Do not allow contacting students who already formed a team for a hackathon
+    const students = getStorageData('students', INITIAL_STUDENTS);
+    const targetStudent = students.find(s => s.id === receiverId);
+    if (targetStudent && targetStudent.status === 'teamed') {
+      throw new Error(`${targetStudent.full_name} has already formed a team for ${targetStudent.team_hackathon || 'a hackathon'} and is not accepting connection requests.`);
+    }
+
+    const connections = getStorageData('connections', INITIAL_CONNECTIONS);
     
     // Check for existing pending/accepted request
     const existing = connections.find(c =>
@@ -496,7 +550,7 @@ export const API = {
     const currentUser = getCurrentUser();
     if (!currentUser) return [];
 
-    const connections = getStorageData('connections', []);
+    const connections = getStorageData('connections', INITIAL_CONNECTIONS);
     const students = getStorageData('students', INITIAL_STUDENTS);
 
     // Enrich connections with counterparty profile details
@@ -514,7 +568,7 @@ export const API = {
   },
 
   async respondConnectionRequest(requestId, newStatus) { // 'accepted', 'declined', 'withdrawn'
-    const connections = getStorageData('connections', []);
+    const connections = getStorageData('connections', INITIAL_CONNECTIONS);
     const index = connections.findIndex(c => c.id === requestId);
     if (index === -1) throw new Error('Request not found.');
 
@@ -537,7 +591,106 @@ export const API = {
     return connections[index];
   },
 
-  // 6. Notifications
+  // 6. Hackathon Team Formation (Shields teamed students from Explore)
+  async formTeam({ teammateId, hackathonName = 'Runtime Terror HackSprint 2026', teamName = '' }) {
+    const currentUser = getCurrentUser();
+    if (!currentUser) throw new Error('You must be logged in to form a team.');
+    if (currentUser.id === teammateId) throw new Error('You cannot form a team with yourself.');
+
+    const students = getStorageData('students', INITIAL_STUDENTS);
+    const teammate = students.find(s => s.id === teammateId);
+    if (!teammate) throw new Error('Teammate not found.');
+
+    const assignedTeamName = teamName || `${currentUser.full_name.split(' ')[0]} & ${teammate.full_name.split(' ')[0]}'s Team`;
+
+    // 1. Mark both users status = 'teamed' and record hackathon
+    students.forEach(s => {
+      if (s.id === currentUser.id || s.id === teammateId) {
+        s.status = 'teamed';
+        s.team_hackathon = hackathonName;
+        s.team_name = assignedTeamName;
+      }
+    });
+    setStorageData('students', students);
+
+    // 2. Update currentUser session in localStorage
+    const updatedSelf = { ...currentUser, status: 'teamed', team_hackathon: hackathonName, team_name: assignedTeamName };
+    setCurrentUser(updatedSelf);
+
+    // 3. Update the connection record to show confirmed team
+    const connections = getStorageData('connections', INITIAL_CONNECTIONS);
+    const conn = connections.find(c =>
+      (c.sender_id === currentUser.id && c.receiver_id === teammateId) ||
+      (c.receiver_id === currentUser.id && c.sender_id === teammateId)
+    );
+    if (conn) {
+      conn.status = 'accepted';
+      conn.team_formed = true;
+      conn.hackathon_name = hackathonName;
+      conn.team_name = assignedTeamName;
+      conn.team_formed_at = new Date().toISOString();
+      setStorageData('connections', connections);
+    }
+
+    // 4. Save to teams list
+    const teams = getStorageData('teams', INITIAL_TEAMS);
+    const newTeam = {
+      id: `team-${Date.now()}`,
+      name: assignedTeamName,
+      hackathon_name: hackathonName,
+      members: [currentUser.id, teammateId],
+      created_at: new Date().toISOString()
+    };
+    teams.unshift(newTeam);
+    setStorageData('teams', teams);
+
+    // 5. Notify the teammate
+    this.addNotification({
+      user_id: teammateId,
+      type: 'team_formed',
+      title: '🏆 Hackathon Team Formed!',
+      message: `You and ${currentUser.full_name} have formed a team for ${hackathonName}! Both profiles are now hidden from public Explore so you won't be contacted by other students.`,
+      sender_id: currentUser.id
+    });
+
+    return newTeam;
+  },
+
+  async leaveTeam(teammateId = null) {
+    const currentUser = getCurrentUser();
+    if (!currentUser) throw new Error('You must be logged in.');
+
+    const students = getStorageData('students', INITIAL_STUDENTS);
+
+    // Revert status to open
+    students.forEach(s => {
+      if (s.id === currentUser.id || (teammateId && s.id === teammateId)) {
+        s.status = 'open';
+        delete s.team_hackathon;
+        delete s.team_name;
+      }
+    });
+    setStorageData('students', students);
+
+    const updatedSelf = { ...currentUser, status: 'open' };
+    delete updatedSelf.team_hackathon;
+    delete updatedSelf.team_name;
+    setCurrentUser(updatedSelf);
+
+    // Update connection record
+    const connections = getStorageData('connections', INITIAL_CONNECTIONS);
+    connections.forEach(c => {
+      if ((c.sender_id === currentUser.id && c.receiver_id === teammateId) ||
+          (c.receiver_id === currentUser.id && c.sender_id === teammateId)) {
+        c.team_formed = false;
+      }
+    });
+    setStorageData('connections', connections);
+
+    return true;
+  },
+
+  // 7. Notifications
   async getNotifications() {
     const currentUser = getCurrentUser();
     if (!currentUser) return [];

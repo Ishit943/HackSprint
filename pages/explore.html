@@ -233,6 +233,15 @@
             <option value="Electronics">Electronics & Comm</option>
           </select>
         </div>
+
+        <!-- Teammate Shield Notice & Toggle -->
+        <div style="font-size: 11px; color: var(--text-muted); background: rgba(255, 115, 0, 0.05); border: 1px solid rgba(255, 115, 0, 0.2); border-radius: 8px; padding: 10px 12px; margin-top: 14px; line-height: 1.5;">
+          🛡️ <strong style="color: #ff8c26;">Teammate Privacy Shield:</strong> Students who have formed a team for a hackathon are hidden automatically so they aren't bothered.
+          <label style="display: flex; align-items: center; gap: 6px; margin-top: 8px; cursor: pointer; color: var(--text-secondary); font-size: 11px;">
+            <input type="checkbox" id="toggle-include-teamed" style="cursor: pointer;">
+            <span>Show teamed students (locked)</span>
+          </label>
+        </div>
       </aside>
 
       <!-- Students Grid & Search Top Bar -->
@@ -341,6 +350,7 @@
       status: '',
       branch: '',
       sortBy: 'match',
+      includeTeamed: false,
       activeTargetStudent: null
     };
 
@@ -411,6 +421,14 @@
       applyFilters();
     });
 
+    const toggleIncludeTeamed = document.getElementById('toggle-include-teamed');
+    if (toggleIncludeTeamed) {
+      toggleIncludeTeamed.addEventListener('change', (e) => {
+        state.includeTeamed = e.target.checked;
+        applyFilters();
+      });
+    }
+
     document.getElementById('reset-filters-btn').addEventListener('click', () => {
       state.query = '';
       state.selectedSkills = [];
@@ -419,12 +437,14 @@
       state.status = '';
       state.branch = '';
       state.sortBy = 'match';
+      state.includeTeamed = false;
 
       searchInput.value = '';
       document.getElementById('filter-year').value = '';
       document.getElementById('filter-status').value = '';
       document.getElementById('filter-branch').value = '';
       document.getElementById('sort-select').value = 'match';
+      if (toggleIncludeTeamed) toggleIncludeTeamed.checked = false;
       document.querySelectorAll('.selectable-tag').forEach(t => t.classList.remove('selected'));
       btnOr.classList.add('active');
       btnAnd.classList.remove('active');
@@ -465,7 +485,8 @@
           branch: state.branch,
           year: state.year,
           status: state.status,
-          sortBy: state.sortBy
+          sortBy: state.sortBy,
+          includeTeamed: state.includeTeamed
         });
 
         countEl.textContent = `Showing ${students.length} student monster${students.length === 1 ? '' : 's'}`;
@@ -522,6 +543,10 @@
                     <span class="badge" style="background: rgba(255, 115, 0, 0.15); color: #ff8c26; border: 1px solid rgba(255, 115, 0, 0.3); font-size: 11px; white-space: nowrap; flex-shrink: 0;">
                       👾 You
                     </span>
+                  ` : student.status === 'teamed' ? `
+                    <div class="badge" style="background: rgba(255, 115, 0, 0.1); color: #ff8c26; border: 1px solid rgba(255, 115, 0, 0.3); font-size: 11px; white-space: nowrap; flex-shrink: 0;">
+                      🔒 Teammate Shield
+                    </div>
                   ` : `
                     <div class="match-score" style="white-space: nowrap; flex-shrink: 0;" title="${student.matchReason || 'Match compatibility score based on skills & availability'}">
                       ⚡ ${student.matchScore}% Match
@@ -567,9 +592,16 @@
                 ${isMe ? `
                   <div class="flex items-center justify-between">
                     <span class="badge" style="background: rgba(255, 115, 0, 0.15); color: #ff8c26; border: 1px solid rgba(255, 115, 0, 0.3);">
-                      👾 Your Profile
+                      ${student.status === 'teamed' ? `🏆 Team Formed (${student.team_hackathon || 'HackSprint'})` : '👾 Your Profile'}
                     </span>
                     <a href="profile-edit.html" class="btn btn-outline btn-sm">Edit Profile ✏️</a>
+                  </div>
+                ` : student.status === 'teamed' ? `
+                  <div class="flex items-center justify-between">
+                    <span class="badge" style="background: rgba(255, 115, 0, 0.1); color: #ff8c26; border: 1px solid rgba(255, 115, 0, 0.3); font-size: 11px;">
+                      🔒 Team Formed (${student.team_hackathon || 'HackSprint 2026'})
+                    </span>
+                    <a href="profile-view.html?id=${student.id}" class="btn btn-outline btn-sm">View Profile</a>
                   </div>
                 ` : isAccepted ? `
                   <div class="flex items-center justify-between flex-wrap gap-2">
