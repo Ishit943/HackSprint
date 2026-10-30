@@ -117,10 +117,66 @@ const INITIAL_STUDENTS = [
     skills: [
       { name: 'Flutter', level: 'advanced' },
       { name: 'Kotlin / Android', level: 'intermediate' },
-      ('Node.js'),
+      { name: 'Node.js', level: 'intermediate' },
       { name: 'Firebase', level: 'intermediate' }
     ],
     interests: ['IoT & Hardware Hack', 'Fintech & Payments']
+  },
+  {
+    id: 'usr-5',
+    full_name: 'Kabir Joshi',
+    email: 'kabir.j@juet.ac.in',
+    avatar_url: 'https://api.dicebear.com/7.x/bottts/svg?seed=Kabir&backgroundColor=c0aede',
+    college: 'Jaypee University of Engg & Tech',
+    branch: 'Computer Science & Engineering',
+    year: '4th Year',
+    bio: 'Web3 protocol engineer & security auditor. Built DeFi vaults, Solidity smart contracts, and Go microservices.',
+    phone: '+919833445566',
+    whatsapp_number: '+919833445566',
+    show_phone: true,
+    show_whatsapp: true,
+    availability_hours: 18,
+    availability_notes: 'Evenings & Hackathon weekends',
+    status: 'open',
+    github_url: 'https://github.com',
+    linkedin_url: 'https://linkedin.com',
+    portfolio_url: 'https://kabir.eth',
+    email_verified: true,
+    skills: [
+      { name: 'Solidity / Web3', level: 'advanced' },
+      { name: 'Go (Golang)', level: 'intermediate' },
+      { name: 'TypeScript', level: 'advanced' },
+      { name: 'Docker', level: 'intermediate' }
+    ],
+    interests: ['Web3 & DeFi', 'Cybersecurity & Privacy', 'Fintech & Payments']
+  },
+  {
+    id: 'usr-6',
+    full_name: 'Tanvi Saxena',
+    email: 'tanvi.s@juet.ac.in',
+    avatar_url: 'https://api.dicebear.com/7.x/bottts/svg?seed=Tanvi&backgroundColor=ffd5dc',
+    college: 'Jaypee University of Engg & Tech',
+    branch: 'Information Technology',
+    year: '3rd Year',
+    bio: 'Cloud architect & DevOps enthusiast. Automating CI/CD pipelines, container orchestration with Kubernetes, and AWS infrastructure.',
+    phone: '+919822334455',
+    whatsapp_number: '+919822334455',
+    show_phone: true,
+    show_whatsapp: true,
+    availability_hours: 16,
+    availability_notes: 'Weekdays after 5pm & Weekends',
+    status: 'open',
+    github_url: 'https://github.com',
+    linkedin_url: 'https://linkedin.com',
+    portfolio_url: '',
+    email_verified: true,
+    skills: [
+      { name: 'Docker', level: 'advanced' },
+      { name: 'AWS', level: 'advanced' },
+      { name: 'Python', level: 'intermediate' },
+      { name: 'PostgreSQL', level: 'intermediate' }
+    ],
+    interests: ['Cloud/DevOps', 'AI & Generative Agents', 'Fintech & Payments']
   }
 ];
 
@@ -185,18 +241,17 @@ function setStorageData(key, data) {
 
 // Current logged in user helper (mock or auth)
 export function getCurrentUser() {
-  const user = getStorageData('current_user', null);
-  if (!user) {
-    // Default demo session as user-1
-    const defaultUser = INITIAL_STUDENTS[0];
-    setStorageData('current_user', defaultUser);
-    return defaultUser;
-  }
-  return user;
+  return getStorageData('current_user', null);
 }
 
 export function setCurrentUser(user) {
-  setStorageData('current_user', user);
+  if (user) {
+    setStorageData('current_user', user);
+  } else {
+    try {
+      localStorage.removeItem('mm_current_user');
+    } catch (e) {}
+  }
 }
 
 // --- API METHODS ---
@@ -214,7 +269,11 @@ export const API = {
     sortBy = 'match', // 'match', 'name', 'availability'
     referenceProject = null
   } = {}) {
-    let list = getStorageData('students', INITIAL_STUDENTS);
+    let list = getStorageData('students', null);
+    if (!list || list.length < INITIAL_STUDENTS.length) {
+      list = INITIAL_STUDENTS;
+      setStorageData('students', list);
+    }
 
     // Filter by query (name, bio, branch)
     if (query && query.trim()) {
@@ -432,6 +491,8 @@ export const API = {
 
   async getConnections() {
     const currentUser = getCurrentUser();
+    if (!currentUser) return [];
+
     const connections = getStorageData('connections', []);
     const students = getStorageData('students', INITIAL_STUDENTS);
 
@@ -476,6 +537,8 @@ export const API = {
   // 6. Notifications
   async getNotifications() {
     const currentUser = getCurrentUser();
+    if (!currentUser) return [];
+
     const list = getStorageData('notifications', [
       {
         id: 'notif-1',

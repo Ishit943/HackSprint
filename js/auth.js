@@ -113,11 +113,11 @@ export const Auth = {
 
   // Log out
   logout() {
-    localStorage.removeItem('mm_current_user');
+    setCurrentUser(null);
     showToast('Logged out successfully.', 'info');
     setTimeout(() => {
-      window.location.href = window.location.pathname.includes('/pages/') ? '../index.html' : 'index.html';
-    }, 500);
+      window.location.href = window.location.pathname.includes('/pages/') ? 'login.html' : 'pages/login.html';
+    }, 400);
   },
 
   // Update navigation bar with user state

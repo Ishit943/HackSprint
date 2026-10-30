@@ -602,6 +602,13 @@
     // Modal Handlers
     const modal = document.getElementById('connect-modal');
     function openConnectModal(student) {
+      const currentUser = getCurrentUser();
+      if (!currentUser) {
+        showToast('Please log in to send a connection request! 👾', 'info');
+        setTimeout(() => { window.location.href = 'login.html'; }, 800);
+        return;
+      }
+
       state.activeTargetStudent = student;
       document.getElementById('modal-target-avatar').src = student.avatar;
       document.getElementById('modal-target-name').textContent = student.name;

@@ -173,7 +173,10 @@
 
     async function initDashboard() {
       const user = getCurrentUser();
-      if (!user) return;
+      if (!user) {
+        window.location.href = 'login.html';
+        return;
+      }
 
       // Populate Profile Card
       document.getElementById('dash-avatar').src = user.avatar_url;
