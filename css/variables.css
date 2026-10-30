@@ -1,46 +1,50 @@
 /* ============================================================================
-   MONSTER MATCH DESIGN SYSTEM - CSS VARIABLES & DESIGN TOKENS
+   MONSTER MATCH - HALLOWEEN SPOOKY BLACK & ORANGE THEME
    ============================================================================ */
 
 :root {
-  /* Brand Monster Palette */
-  --color-primary: #7c3aed;
-  --color-primary-hover: #6d28d9;
-  --color-primary-light: #ede9fe;
-  --color-primary-glow: rgba(124, 58, 237, 0.25);
+  /* Halloween Jack-o'-Lantern Orange Palette */
+  --color-primary: #ff7300;           /* Vibrant Pumpkin Orange */
+  --color-primary-hover: #ff8c26;     /* Bright Fire Glow */
+  --color-primary-dark: #cc5200;      /* Dark Roasted Pumpkin */
+  --color-primary-light: rgba(255, 115, 0, 0.15);
+  --color-primary-glow: rgba(255, 115, 0, 0.4);
 
-  --color-secondary: #00f59b;
-  --color-secondary-hover: #05d483;
-  --color-secondary-light: #d1fae5;
-  --color-secondary-glow: rgba(0, 245, 155, 0.2);
+  --color-secondary: #ff3b00;         /* Hellfire Blood Orange */
+  --color-secondary-hover: #e03400;
+  --color-secondary-light: rgba(255, 59, 0, 0.15);
+  --color-secondary-glow: rgba(255, 59, 0, 0.35);
 
-  --color-accent: #f97316;
-  --color-accent-hover: #ea580c;
-  --color-accent-light: #ffedd5;
+  --color-slime: #10b981;             /* Ghostly Monster Slime Green */
+  --color-slime-glow: rgba(16, 185, 129, 0.3);
 
-  --color-info: #0284c7;
-  --color-success: #10b981;
+  --color-accent: #ffa600;            /* Warm Candle Flame */
+  --color-accent-hover: #ffb833;
+  --color-accent-light: rgba(255, 166, 0, 0.15);
+
+  --color-info: #38bdf8;
+  --color-success: #22c55e;
   --color-warning: #f59e0b;
   --color-danger: #ef4444;
 
   /* WhatsApp & Call specific brand colors */
   --color-whatsapp: #25D366;
   --color-whatsapp-hover: #1eb956;
-  --color-phone: #3b82f6;
-  --color-phone-hover: #2563eb;
+  --color-phone: #ff7300;
+  --color-phone-hover: #ff8c26;
 
   /* Typography */
-  --font-family-base: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-family-base: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-family-mono: 'JetBrains Mono', 'Fira Code', monospace;
-  --font-size-xs: 0.75rem;     /* 12px */
-  --font-size-sm: 0.875rem;    /* 14px */
-  --font-size-base: 1rem;      /* 16px */
-  --font-size-lg: 1.125rem;    /* 18px */
-  --font-size-xl: 1.25rem;     /* 20px */
-  --font-size-2xl: 1.5rem;     /* 24px */
-  --font-size-3xl: 1.875rem;   /* 30px */
-  --font-size-4xl: 2.25rem;    /* 36px */
-  --font-size-5xl: 3rem;       /* 48px */
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+  --font-size-4xl: 2.25rem;
+  --font-size-5xl: 3rem;
 
   /* Spacing */
   --spacing-1: 0.25rem;
@@ -67,51 +71,75 @@
   --transition-normal: 0.25s ease;
   --transition-slow: 0.4s ease;
 
-  /* Light Theme (Default) */
-  --bg-page: #f8fafc;
-  --bg-surface: #ffffff;
-  --bg-surface-elevated: #ffffff;
-  --bg-surface-subtle: #f1f5f9;
-  --bg-input: #ffffff;
-  --border-color: #e2e8f0;
-  --border-color-hover: #cbd5e1;
-  --border-color-focus: #7c3aed;
+  /* Default Theme: Spooky Obsidian Black & Pumpkin Orange */
+  --bg-page: #0a0a0c;                 /* Void Black */
+  --bg-surface: #121216;              /* Charcoal Obsidian */
+  --bg-surface-elevated: #1a1a20;     /* Crypt Surface */
+  --bg-surface-subtle: #16161b;       /* Subtle Dark */
+  --bg-input: #101014;
+  --border-color: #27272e;
+  --border-color-hover: #ff7300;
+  --border-color-focus: #ff8c26;
 
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --text-muted: #94a3b8;
-  --text-inverse: #ffffff;
+  --text-primary: #fdfdfd;
+  --text-secondary: #d4d4d8;
+  --text-muted: #71717a;
+  --text-inverse: #0a0a0c;
 
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  --shadow-glow: 0 0 25px rgba(124, 58, 237, 0.2);
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.7);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.8);
+  --shadow-glow: 0 0 25px rgba(255, 115, 0, 0.35);
 }
 
-/* Dark Theme */
+/* Dark Theme explicit (Matching the Spooky Halloween Palette) */
 [data-theme="dark"] {
-  --bg-page: #0b0f19;
-  --bg-surface: #111827;
-  --bg-surface-elevated: #1f2937;
-  --bg-surface-subtle: #1e293b;
-  --bg-input: #1a2234;
-  --border-color: #2e384d;
-  --border-color-hover: #475569;
-  --border-color-focus: #a78bfa;
+  --bg-page: #08080a;
+  --bg-surface: #111115;
+  --bg-surface-elevated: #18181f;
+  --bg-surface-subtle: #15151a;
+  --bg-input: #0e0e12;
+  --border-color: #26262e;
+  --border-color-hover: #ff7300;
+  --border-color-focus: #ff8c26;
 
-  --text-primary: #f8fafc;
-  --text-secondary: #cbd5e1;
-  --text-muted: #64748b;
-  --text-inverse: #0f172a;
+  --text-primary: #ffffff;
+  --text-secondary: #d4d4d8;
+  --text-muted: #71717a;
+  --text-inverse: #08080a;
 
-  --color-primary-light: rgba(124, 58, 237, 0.2);
-  --color-secondary-light: rgba(0, 245, 155, 0.15);
-  --color-accent-light: rgba(249, 115, 22, 0.15);
+  --color-primary-light: rgba(255, 115, 0, 0.18);
+  --color-secondary-light: rgba(255, 59, 0, 0.18);
+  --color-accent-light: rgba(255, 166, 0, 0.18);
 
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6);
-  --shadow-glow: 0 0 30px rgba(124, 58, 237, 0.35);
+  --shadow-glow: 0 0 30px rgba(255, 115, 0, 0.4);
+}
+
+/* Light Mode (Halloween Autumn Sunset variant) */
+[data-theme="light"] {
+  --bg-page: #fbf9f5;
+  --bg-surface: #ffffff;
+  --bg-surface-elevated: #ffffff;
+  --bg-surface-subtle: #f4ede4;
+  --bg-input: #ffffff;
+  --border-color: #e5ded3;
+  --border-color-hover: #ff7300;
+  --border-color-focus: #ff7300;
+
+  --text-primary: #121214;
+  --text-secondary: #4a4a52;
+  --text-muted: #888892;
+  --text-inverse: #ffffff;
+
+  --color-primary: #ea580c;
+  --color-primary-hover: #c2410c;
+  --color-primary-light: #ffedd5;
+  --color-primary-glow: rgba(234, 88, 12, 0.25);
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.12);
+  --shadow-glow: 0 0 25px rgba(234, 88, 12, 0.25);
 }

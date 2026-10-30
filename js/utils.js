@@ -4,11 +4,9 @@
  * URL builders, match score calculations, and sanitization.
  */
 
-// --- 1. Theme Management (Dark / Light Mode) ---
+// --- 1. Theme Management (Halloween Spooky Dark / Light Mode) ---
 export function initTheme() {
-  const savedTheme = localStorage.getItem('mm_theme') || (
-    window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-  );
+  const savedTheme = localStorage.getItem('mm_theme') || 'dark';
   document.documentElement.setAttribute('data-theme', savedTheme);
   updateThemeIcon(savedTheme);
   return savedTheme;
