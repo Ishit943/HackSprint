@@ -241,22 +241,23 @@
         <div class="card card-hover flex flex-col justify-between">
           <div>
             <div class="flex items-center gap-3" style="margin-bottom: var(--spacing-3);">
-              <img src="${s.avatar_url}" alt="${s.full_name}" style="width: 44px; height: 44px; border-radius:50%; border:2px solid var(--color-primary);" />
-              <div>
-                <h4 style="margin-bottom: 2px; font-size: var(--font-size-sm);">${s.full_name}</h4>
-                <span style="font-size: 11px; color: var(--text-muted);">${s.branch}</span>
+              <img src="${s.avatar_url}" alt="${s.full_name}" style="width: 44px; height: 44px; border-radius:50%; border:2px solid var(--color-primary); flex-shrink:0;" />
+              <div style="min-width:0; flex:1;">
+                <h4 style="margin-bottom: 2px; font-size: var(--font-size-sm); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${s.full_name}</h4>
+                <span style="font-size: 11px; color: var(--text-muted); display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${s.branch}</span>
               </div>
             </div>
             <div class="flex flex-wrap gap-1" style="margin-bottom: var(--spacing-3);">
               ${s.skills.slice(0, 3).map(sk => {
                 const name = typeof sk === 'string' ? sk : sk.name;
-                return `<span class="chip chip-intermediate" style="padding:1px 6px; font-size:10px;">${name}</span>`;
+                const lvl = typeof sk === 'object' && sk.level ? sk.level : 'intermediate';
+                return `<span class="skill-pill tier-${lvl}" style="padding: 2px 7px; font-size: 11px;"><span class="dot"></span>${name}</span>`;
               }).join('')}
             </div>
           </div>
-          <div class="flex justify-between items-center" style="border-top:1px solid var(--border-color); padding-top:var(--spacing-3);">
-            <span class="match-score" style="font-size:11px;">⚡ ${s.matchScore || 90}% Match</span>
-            <a href="profile-view.html?id=${s.id}" class="btn btn-primary btn-sm" style="font-size:11px; padding:2px 8px;">View Profile</a>
+          <div class="flex justify-between items-center" style="border-top:1px solid rgba(255,255,255,0.08); padding-top:var(--spacing-3); margin-top: auto;">
+            <span class="match-score" style="font-size:11px; padding:2px 8px; white-space:nowrap; flex-shrink:0;">⚡ ${s.matchScore || 90}% Match</span>
+            <a href="profile-view.html?id=${s.id}" class="btn btn-primary btn-sm" style="font-size:11px; padding:3px 10px;">View Profile</a>
           </div>
         </div>
       `).join('');
