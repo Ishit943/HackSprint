@@ -1,0 +1,21 @@
+{
+  "name": "Monster Match - Find Your Project Teammate",
+  "short_name": "MonsterMatch",
+  "description": "Smart teammate matching platform for hackathons with privacy-first WhatsApp unlock.",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#0a0a0c",
+  "theme_color": "#ff7300",
+  "icons": [
+    {
+      "src": "https://api.dicebear.com/7.x/bottts/svg?seed=MonsterMatch",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "https://api.dicebear.com/7.x/bottts/svg?seed=MonsterMatch",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}

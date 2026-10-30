@@ -1,6 +1,6 @@
 # 🤖 Monster Match: Agentic AI Ecosystem & Agent Architecture
 
-> Documentation of the autonomous and intelligent agents that power matching, profile optimization, notification routing, and trust/safety across the Monster Match platform.
+> Documentation of the autonomous and intelligent agents that power matching, profile optimization, notification routing, and trust/safety across the Monster Match platform, along with mandatory instructions for AI coding agents.
 
 ---
 
@@ -130,8 +130,17 @@ sequenceDiagram
 
 ---
 
-## 4. Future Agent Extensions
+## 4. Mandatory Instructions for AI Coding Agents (Auto-Documentation Rule)
 
-1. **AI Resume Parser Agent:** Auto-extracts technical skills, hackathon wins, and GitHub repositories directly from uploaded PDF resumes.
-2. **Hackathon Schedule Bot:** Integrates Google Calendar / Devpost deadlines to notify teammates about upcoming sprint submissions.
-3. **Voice Pitch Agent:** Allows students to record a 30-second audio pitch summarizing their skills, which is transcribed and analyzed for soft-skill matching.
+Whenever any developer or AI coding agent performs modifications on the Monster Match codebase:
+
+1. **Keep Tracking Files Synchronized:**
+   - **`work_done.md`**: Append every newly completed feature, bug fix, or UX improvement with date and technical details.
+   - **`TASKS.md`**: Update item status markers (`✅ Done`, `🔄 In Progress`, `📋 Planned`).
+   - **`CHANGELOG.md`**: Record changes under the active version release section.
+   - **`docs/`**: If an API signature, database schema, or environment setting is changed, immediately update `docs/API_DOCUMENTATION.md`, `docs/DATABASE_SCHEMA.md`, or `.env.example`.
+
+2. **Commit Policy:**
+   - Author: `Ishit943 <goyalishit1@gmail.com>`
+   - Format: Conventional Commits (`feat:`, `fix:`, `docs:`, `style:`, `refactor:`)
+   - Run `python scripts/update_docs.py` before committing to verify sync integrity.

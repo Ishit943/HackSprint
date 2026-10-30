@@ -1,0 +1,194 @@
+# 📜 Monster Match — Changelog
+
+> All notable changes to the Monster Match project are documented here.  
+> Format inspired by [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
+
+---
+
+## [v0.9.0] — 2026-10-30 *(Current)*
+
+### Added
+- `HACKATHON.md` — Event details, judging criteria, team info, and timeline
+- `FEATURES.md` — Complete implemented and planned feature documentation
+- `INNOVATION.md` — USPs, innovation rationale, and competitive differentiation
+- `DEMO_GUIDE.md` — Step-by-step 8-step judge demo walkthrough with fallback tips
+- `KNOWN_ISSUES.md` — Transparent issue tracker with severity ratings and workarounds
+- `CHANGELOG.md` — This version history document
+- `AGENTS.md` — Full multi-agent architecture specification (Matchmaker, Profile Optimizer, WhatsApp Dispatcher, Safety & Trust)
+
+### Changed
+- Professional documentation structure established across all project files
+- README updated to reflect v0.9.0 status and documentation index
+
+---
+
+## [v0.8.0] — 2026-10-29
+
+### Fixed
+- **Logout auth loop** — Clicking logout redirected back to dashboard instead of landing page due to a stale `sessionStorage` check order; corrected guard logic in `auth.js`
+- **Skill pill UX** — Duplicate skill tags could be added; added deduplication check before appending pill to DOM and data array
+- **Match score badge overflow** — Scores > 99 rendered outside the badge boundary on narrow cards; clamped display to max 2 digits with a `99+` overflow label
+- **Mobile nav menu** — Hamburger toggle didn't close on outside click; added `document.addEventListener('click')` blur handler
+
+### Added
+- **2 new seed personas:**
+  - **Karan Mehta** — Mobile Developer (Flutter, Dart, Firebase, Android)
+  - **Sneha Patel** — Data Scientist (Python, Pandas, NumPy, Tableau, SQL)
+- Total demo personas increased from 4 to **6**
+- Avatar fallback initials bubble with colour derived from user ID hash
+
+### Changed
+- Match score badge colour now transitions: green (≥ 75), amber (50–74), red (< 50)
+- Skill proficiency tooltip updated to show points contribution breakdown
+
+---
+
+## [v0.7.0] — 2026-10-28
+
+### Added
+- **Supabase database schema** (`database/schema.sql`):
+  - 17 tables: `profiles`, `skills`, `student_skills`, `projects`, `project_roles`, `role_skills`, `connection_requests`, `connections`, `interest_tags`, `student_interests`, `project_interests`, `availability_slots`, `notifications`, `audit_log`, `domains_whitelist`, `whatsapp_queue`, `session_tokens`
+  - Row-Level Security (RLS) policies on all user-facing tables
+  - PostgreSQL triggers: `on_connection_accepted` → unlocks contact data; `on_profile_updated` → recalculates completeness score
+- **Supabase seed data** (`database/seed.sql`):
+  - 6 student profiles with full skill vectors, availability, and bios
+  - 2 sample projects (MedBot AI, EcoTrack)
+  - Pre-seeded connection states for demo reproducibility
+- **WhatsApp Cloud API Edge Function** (`functions/send-whatsapp/index.ts`):
+  - Triggered on `connection_requests.status = 'accepted'` webhook
+  - Calls Meta Graph API `POST /v18.0/{phone-number-id}/messages`
+  - Sends `connection_request_alert` and `request_accepted` templates
+  - Environment secrets: `WHATSAPP_TOKEN`, `PHONE_NUMBER_ID`
+- **Database adapter layer** (`js/db.js`):
+  - Routes all data operations to Supabase or localStorage mock based on config availability
+  - Zero code-change switching between modes
+
+### Changed
+- `config.js` updated to auto-detect missing Supabase credentials and set `MOCK_MODE = true`
+- All data-fetching calls migrated from direct `localStorage` access to `db.js` adapter
+
+---
+
+## [v0.6.0] — 2026-10-27
+
+### Added
+- **Profile Completeness Meter** (`js/completeness.js`):
+  - 8 weighted fields (Full Name 15%, Avatar 10%, College 10%, Branch/Year 10%, Bio 15%, Contact 15%, Skills×3 15%, Portfolio 10%)
+  - Animated progress bar with Halloween gradient
+  - Inline prompt badges for next improvement action
+- **Monster Avatar System** (`js/avatar.js`):
+  - DiceBear Bottts integration with deterministic user-ID seed
+  - `<img>` `onerror` fallback to initials bubble
+  - Avatar visible on: nav bar, profile page, student cards, connection cards
+- **4 initial seed personas** (Aarav Sharma, Ananya Verma, Rohan Gupta, Priya Singh)
+- **One-click demo persona login** on login page — persona cards replace traditional form by default
+
+### Changed
+- Login page redesigned: persona cards grid as primary login method, traditional email/password form collapsed under "Sign in with email" toggle
+
+---
+
+## [v0.5.0] — 2026-10-26
+
+### Added
+- **Projects Directory** (`pages/projects.html`, `js/projects.js`):
+  - Project card grid with domain tags, team size, and timeline
+  - Project detail modal with full description
+- **Project Creation Form** (`pages/create-project.html`):
+  - Dynamic role builder: add/remove role slots with title, slot count, and required skills
+  - Form validation with Halloween-styled error states
+- **Role Slot Management**:
+  - Slot vacancy counter per role
+  - Visual "filled" state when all slots are taken
+  - "Request to Join" button maps to a connection request to the team lead
+
+### Changed
+- Navigation updated with Projects link
+- Dashboard "Your Projects" widget now pulls from projects data
+
+---
+
+## [v0.4.0] — 2026-10-25
+
+### Added
+- **Connection Request System** (`js/connections.js`):
+  - "Connect 🎃" button on every student card
+  - Modal with optional personalised note input
+  - Request states: `pending` → `accepted` | `declined`
+  - Connections inbox with Pending / Connected / Declined tabs
+- **Privacy-Gated Contact Unlock**:
+  - WhatsApp and phone fields excluded from all public query responses
+  - Contact data rendered only when a connection record with `status = 'accepted'` exists for both parties
+  - Enforced in `db.js` query filters
+- **WhatsApp Click-to-Chat (`wa.me`)** (`js/whatsapp.js`):
+  - Phone number sanitiser (strips non-digits, validates length)
+  - Context-aware pre-filled message URL builder
+  - "Chat on WhatsApp 💬" button with pumpkin orange glow style
+  - Opens in new tab on desktop, WhatsApp app on mobile
+
+### Changed
+- Student cards no longer show phone or WhatsApp fields in any state
+- "Send Message" placeholder button replaced by full connection request flow
+
+---
+
+## [v0.3.0] — 2026-10-24
+
+### Added
+- **Smart Match Algorithm** (`js/match.js`):
+  - 100-point scoring: Skill Overlap (70), Availability (15), Interest (10), Proficiency Bonus (5)
+  - Score computed per student pair on Explore page load
+  - Complementary skill-gap analysis: detects what the current team is missing and weights scores accordingly
+- **Skill Filters** (`js/filters.js`):
+  - Tag-pill UI for adding skill filter terms
+  - AND/OR toggle with reactive card filtering
+  - Availability range slider (hours per week)
+  - Interest domain checkbox group
+- **Match Score Badge** on student cards:
+  - Colour-coded: green / amber / red thresholds
+  - Tooltip showing score breakdown on hover
+
+### Changed
+- Explore page (`pages/explore.html`) rebuilt around card grid with filter sidebar
+- Student cards redesigned with skill pill row and match badge
+
+---
+
+## [v0.2.0] — 2026-10-23
+
+### Added
+- **Core Application Pages:**
+  - `pages/explore.html` — Student discovery
+  - `pages/connections.html` — Inbox and connected contacts
+  - `pages/projects.html` — Project directory (stub)
+  - `pages/dashboard.html` — Personal overview
+  - `pages/profile.html` — Public profile view
+  - `pages/profile-edit.html` — Profile edit form
+- **Navigation bar** with active-state highlighting
+- **CSS component library** (`css/components.css`):
+  - Card, badge, button, modal, form, progress bar, pill components
+  - All styled in Halloween dark theme
+- **Auth guard** (`js/auth.js`): Redirects unauthenticated users to login
+
+### Changed
+- `index.html` hero section completed with student card preview strip
+
+---
+
+## [v0.1.0] — 2026-10-22 *(Initial Commit)*
+
+### Added
+- Project repository initialised
+- **HTML scaffold:** `index.html` (landing), `pages/login.html`, `pages/signup.html`
+- **CSS Halloween theme** (`css/theme.css`):
+  - CSS custom properties: `--color-bg: #0a0a0c`, `--color-accent: #ff7300`
+  - Base typography, reset, and dark-mode body styles
+  - Pumpkin orange gradient buttons with hover glow
+- **JavaScript modules bootstrap** (`js/app.js`, `js/config.js`)
+- **`README.md`** with project overview and setup instructions
+- **`.gitignore`** for Node.js, Python, and editor artifacts
+
+---
+
+> [!NOTE]
+> Version numbers follow semantic versioning informally — `v0.x.0` denotes sprint-level milestone releases during the 24-hour hackathon. A `v1.0.0` release will mark the first post-hackathon production-ready deployment.

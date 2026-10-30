@@ -1,0 +1,201 @@
+name: Monster Match CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  # ─────────────────────────────────────────────
+  # Job 1: Validate HTML files in pages/
+  # ─────────────────────────────────────────────
+  validate-html:
+    name: Validate HTML Files
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Check HTML files exist and are non-empty
+        run: |
+          python3 - <<'EOF'
+          import os
+          import sys
+
+          pages_dir = 'pages'
+          errors = []
+
+          if not os.path.isdir(pages_dir):
+            print(f"ERROR: '{pages_dir}/' directory not found!")
+            sys.exit(1)
+
+          html_files = [f for f in os.listdir(pages_dir) if f.endswith('.html')]
+
+          if not html_files:
+            print(f"WARNING: No .html files found in '{pages_dir}/'")
+            sys.exit(1)
+
+          print(f"Found {len(html_files)} HTML file(s) in '{pages_dir}/':")
+
+          for filename in sorted(html_files):
+            filepath = os.path.join(pages_dir, filename)
+            size = os.path.getsize(filepath)
+            if size == 0:
+              errors.append(f"  ❌ {filepath} — file is EMPTY (0 bytes)")
+            else:
+              # Also do a basic sanity check: must contain <!DOCTYPE html>
+              with open(filepath, 'r', encoding='utf-8', errors='replace') as f:
+                content = f.read()
+              if '<!DOCTYPE html>' not in content and '<!doctype html>' not in content.lower():
+                errors.append(f"  ⚠️  {filepath} — missing <!DOCTYPE html> declaration")
+              else:
+                print(f"  ✅ {filepath} ({size} bytes)")
+
+          if errors:
+            print("\nValidation Errors:")
+            for err in errors:
+              print(err)
+            sys.exit(1)
+          else:
+            print(f"\n✅ All {len(html_files)} HTML file(s) passed validation.")
+          EOF
+
+  # ─────────────────────────────────────────────
+  # Job 2: Lint — ensure no secrets are committed
+  # ─────────────────────────────────────────────
+  lint-check:
+    name: Secrets Lint Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check for accidentally committed secrets
+        run: |
+          echo "🔍 Scanning tracked files for committed secrets..."
+
+          # Fail if SUPABASE_SERVICE_ROLE_KEY appears in any tracked file
+          if git grep -r --fixed-strings "SUPABASE_SERVICE_ROLE_KEY" -- ':!*.yml' ':!*.yaml' ':!SECURITY.md' ':!CONTRIBUTING.md'; then
+            echo ""
+            echo "❌ SECURITY VIOLATION: 'SUPABASE_SERVICE_ROLE_KEY' was found in tracked source files!"
+            echo "   Never commit the Supabase service role key. Use environment secrets instead."
+            exit 1
+          else
+            echo "✅ No SUPABASE_SERVICE_ROLE_KEY found in tracked files."
+          fi
+
+          # Fail if any .env files with content are committed
+          if git ls-files | grep -E '^\.env(\.|$)'; then
+            echo ""
+            echo "❌ SECURITY VIOLATION: .env file(s) are tracked by git!"
+            echo "   Add .env to .gitignore and remove it from tracking with: git rm --cached .env"
+            exit 1
+          else
+            echo "✅ No .env files are tracked by git."
+          fi
+
+          # Warn if any WhatsApp API bearer tokens appear to be hardcoded
+          if git grep -rE "(Bearer eyJ|whatsapp.*token.*=.*['\"][A-Za-z0-9_\-]{20,})" \
+              -- ':!*.yml' ':!*.yaml' ':!SECURITY.md' ':!CONTRIBUTING.md' ':!*.md'; then
+            echo ""
+            echo "❌ Possible hardcoded WhatsApp/Bearer token detected in source files!"
+            echo "   Store tokens in Supabase Edge Function secrets, not in source code."
+            exit 1
+          else
+            echo "✅ No hardcoded bearer tokens detected."
+          fi
+
+          echo ""
+          echo "✅ All secrets checks passed."
+
+  # ─────────────────────────────────────────────
+  # Job 3: Verify critical file structure
+  # ─────────────────────────────────────────────
+  file-structure:
+    name: Verify File Structure
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Check critical files exist
+        run: |
+          python3 - <<'EOF'
+          import os
+          import sys
+
+          # Files that MUST exist for the project to function
+          REQUIRED_FILES = [
+            'index.html',
+            'js/auth.js',
+            'js/api.js',
+            'js/utils.js',
+            'js/config.js',
+            'css/variables.css',
+            'css/global.css',
+            'css/components.css',
+          ]
+
+          # Directories that MUST exist
+          REQUIRED_DIRS = [
+            'css',
+            'js',
+            'pages',
+            'sql',
+          ]
+
+          errors = []
+          warnings = []
+
+          print("📁 Checking required directories...")
+          for d in REQUIRED_DIRS:
+            if os.path.isdir(d):
+              print(f"  ✅ {d}/")
+            else:
+              errors.append(f"  ❌ Missing required directory: {d}/")
+
+          print("\n📄 Checking required files...")
+          for filepath in REQUIRED_FILES:
+            if os.path.isfile(filepath):
+              size = os.path.getsize(filepath)
+              if size == 0:
+                errors.append(f"  ❌ {filepath} exists but is EMPTY")
+              else:
+                print(f"  ✅ {filepath} ({size} bytes)")
+            else:
+              errors.append(f"  ❌ Missing required file: {filepath}")
+
+          # Soft check: warn if sql/schema.sql is missing (not critical for CI but important)
+          if not os.path.isfile('sql/schema.sql'):
+            warnings.append("  ⚠️  sql/schema.sql not found — Supabase schema may not be version-controlled")
+
+          if warnings:
+            print("\n⚠️  Warnings:")
+            for w in warnings:
+              print(w)
+
+          if errors:
+            print("\n❌ File Structure Errors:")
+            for err in errors:
+              print(err)
+            print(f"\n{len(errors)} error(s) found. Please fix the file structure before merging.")
+            sys.exit(1)
+          else:
+            print(f"\n✅ All critical files and directories are present.")
+          EOF
