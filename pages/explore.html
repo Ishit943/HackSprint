@@ -552,15 +552,19 @@
                     <div class="badge" style="background: rgba(255, 115, 0, 0.1); color: #ff8c26; border: 1px solid rgba(255, 115, 0, 0.3); font-size: 11px; white-space: nowrap; flex-shrink: 0;">
                       🔒 Teammate Shield
                     </div>
-                  ` : `
+                  ` : student.matchScore !== null && student.matchScore !== undefined ? `
                     <div class="match-score" style="white-space: nowrap; flex-shrink: 0;" title="${student.matchReason || 'Match compatibility score based on skills & availability'}">
                       ⚡ ${student.matchScore}% Match
                     </div>
+                  ` : `
+                    <span class="badge" style="font-size: 11px; background: rgba(255, 255, 255, 0.05); color: var(--text-muted); border: 1px solid rgba(255, 255, 255, 0.1); white-space: nowrap; flex-shrink: 0;" title="Select skills on the left or log in to calculate match">
+                      ⚡ Select skills to match
+                    </span>
                   `}
                 </div>
 
                 <!-- Match Reason Tag (Teammate Synergy / Filter Match) -->
-                ${!isMe && student.matchReason ? `
+                ${!isMe && student.matchScore !== null && student.matchReason ? `
                   <div style="font-size: 11px; color: #ff8c26; background: rgba(255, 115, 0, 0.08); border: 1px solid rgba(255, 115, 0, 0.2); border-radius: 6px; padding: 3px 8px; margin-bottom: var(--spacing-3); display: flex; align-items: center; gap: 6px;">
                     <span style="font-size: 12px;">💡</span>
                     <span style="font-weight: 500;">${student.matchReason}</span>

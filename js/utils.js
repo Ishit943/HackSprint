@@ -275,7 +275,12 @@ export function calculateTeammateCompatibility({
     return { score: total, reason };
   }
 
-  // Fallback if no user is logged in
+  // Fallback if no user is logged in and no filter is selected:
+  // We should not fabricate a match percentage against 'nobody'.
+  if (!currentUser && (!activeFilterSkills || activeFilterSkills.length === 0) && !referenceProject) {
+    return { score: null, reason: 'Select skills or log in to calculate match' };
+  }
+
   const baseScore = Math.round(Math.min(90, Math.max(30, 45 + (student.skills?.length || 0) * 8)));
   return { score: baseScore, reason: 'General compatibility' };
 }
