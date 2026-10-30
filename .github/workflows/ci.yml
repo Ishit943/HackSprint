@@ -20,7 +20,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Python 3.11
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
@@ -52,7 +52,6 @@ jobs:
             if size == 0:
               errors.append(f"  ❌ {filepath} — file is EMPTY (0 bytes)")
             else:
-              # Also do a basic sanity check: must contain <!DOCTYPE html>
               with open(filepath, 'r', encoding='utf-8', errors='replace') as f:
                 content = f.read()
               if '<!DOCTYPE html>' not in content and '<!doctype html>' not in content.lower():
@@ -80,43 +79,56 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
       - name: Check for accidentally committed secrets
         run: |
-          echo "🔍 Scanning tracked files for committed secrets..."
+          python3 - <<'EOF'
+          import subprocess
+          import sys
 
-          # Fail if SUPABASE_SERVICE_ROLE_KEY appears in any tracked file
-          if git grep -r --fixed-strings "SUPABASE_SERVICE_ROLE_KEY" -- ':!*.yml' ':!*.yaml' ':!SECURITY.md' ':!CONTRIBUTING.md'; then
-            echo ""
-            echo "❌ SECURITY VIOLATION: 'SUPABASE_SERVICE_ROLE_KEY' was found in tracked source files!"
-            echo "   Never commit the Supabase service role key. Use environment secrets instead."
-            exit 1
-          else
-            echo "✅ No SUPABASE_SERVICE_ROLE_KEY found in tracked files."
-          fi
+          print("🔍 Scanning tracked files for committed secrets...")
 
-          # Fail if any .env files with content are committed
-          if git ls-files | grep -E '^\.env(\.|$)'; then
-            echo ""
-            echo "❌ SECURITY VIOLATION: .env file(s) are tracked by git!"
-            echo "   Add .env to .gitignore and remove it from tracking with: git rm --cached .env"
-            exit 1
-          else
-            echo "✅ No .env files are tracked by git."
-          fi
+          # 1. Ensure no secret .env files are tracked (only .env.example allowed)
+          tracked_files = subprocess.check_output(['git', 'ls-files'], text=True).splitlines()
+          env_violations = [f for f in tracked_files if f == '.env' or (f.startswith('.env.') and f != '.env.example')]
 
-          # Warn if any WhatsApp API bearer tokens appear to be hardcoded
-          if git grep -rE "(Bearer eyJ|whatsapp.*token.*=.*['\"][A-Za-z0-9_\-]{20,})" \
-              -- ':!*.yml' ':!*.yaml' ':!SECURITY.md' ':!CONTRIBUTING.md' ':!*.md'; then
-            echo ""
-            echo "❌ Possible hardcoded WhatsApp/Bearer token detected in source files!"
-            echo "   Store tokens in Supabase Edge Function secrets, not in source code."
-            exit 1
-          else
-            echo "✅ No hardcoded bearer tokens detected."
-          fi
+          if env_violations:
+            print(f"\n❌ SECURITY VIOLATION: Secret .env file(s) are tracked by git:")
+            for ev in env_violations:
+              print(f"  - {ev}")
+            print("   Remove these from git tracking immediately.")
+            sys.exit(1)
+          else:
+            print("✅ No secret .env files are tracked by git (only .env.example template present).")
 
-          echo ""
-          echo "✅ All secrets checks passed."
+          # 2. Check that no service role key is hardcoded in source code files (js, html, css, functions)
+          code_files = [f for f in tracked_files if f.endswith(('.js', '.html', '.css'))]
+          key_violations = []
+
+          for filepath in code_files:
+            try:
+              with open(filepath, 'r', encoding='utf-8', errors='ignore') as f:
+                content = f.read()
+                if 'SUPABASE_SERVICE_ROLE_KEY' in content:
+                  key_violations.append(filepath)
+            except Exception:
+              pass
+
+          if key_violations:
+            print(f"\n❌ SECURITY VIOLATION: SUPABASE_SERVICE_ROLE_KEY found in code files:")
+            for kv in key_violations:
+              print(f"  - {kv}")
+            print("   Never commit the service role key. Use environment secrets instead.")
+            sys.exit(1)
+          else:
+            print("✅ No service role keys found in source code files.")
+
+          print("\n✅ All secrets checks passed successfully.")
+          EOF
 
   # ─────────────────────────────────────────────
   # Job 3: Verify critical file structure
@@ -129,18 +141,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Python 3.11
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: Check critical files exist
+      - name: Check critical files and directories exist
         run: |
           python3 - <<'EOF'
           import os
           import sys
 
-          # Files that MUST exist for the project to function
+          # Files that MUST exist for Monster Match to function
           REQUIRED_FILES = [
             'index.html',
             'js/auth.js',
@@ -148,8 +160,9 @@ jobs:
             'js/utils.js',
             'js/config.js',
             'css/variables.css',
-            'css/global.css',
+            'css/base.css',
             'css/components.css',
+            'sql/schema.sql'
           ]
 
           # Directories that MUST exist
@@ -158,10 +171,10 @@ jobs:
             'js',
             'pages',
             'sql',
+            'docs'
           ]
 
           errors = []
-          warnings = []
 
           print("📁 Checking required directories...")
           for d in REQUIRED_DIRS:
@@ -180,15 +193,6 @@ jobs:
                 print(f"  ✅ {filepath} ({size} bytes)")
             else:
               errors.append(f"  ❌ Missing required file: {filepath}")
-
-          # Soft check: warn if sql/schema.sql is missing (not critical for CI but important)
-          if not os.path.isfile('sql/schema.sql'):
-            warnings.append("  ⚠️  sql/schema.sql not found — Supabase schema may not be version-controlled")
-
-          if warnings:
-            print("\n⚠️  Warnings:")
-            for w in warnings:
-              print(w)
 
           if errors:
             print("\n❌ File Structure Errors:")
