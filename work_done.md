@@ -97,6 +97,22 @@ The entire UI has been styled with a custom **Halloween Obsidian Black & Jack-o'
   - **Self Profile Recognition**: The logged-in user no longer sees a match score against themselves; it cleanly displays `👾 You`.
 - [x] Updated [`pages/explore.html`](pages/explore.html), [`pages/dashboard.html`](pages/dashboard.html), and [`pages/profile-view.html`](pages/profile-view.html) with match reason tooltips and dynamic compatibility widgets.
 
+### ✅ Simplified & Intuitive Project Creation (Title, Description, GitHub, Tech Stack)
+- [x] Completely redesigned [`pages/project-new.html`](pages/project-new.html) to eliminate confusing legacy fields (submission deadlines, mode dropdowns, total team size, and complex nested role creators).
+- [x] Streamlined the form to essential, developer-focused fields:
+  - **Project Title**
+  - **Category / Domain**
+  - **Project Description**
+  - **GitHub Repository URL**
+  - **Tech Stack / Skills Used** (comma-separated tags)
+  - **Live Demo Link** (optional)
+  - **Looking for Collaborators Note** (optional)
+- [x] Redesigned [`pages/projects.html`](pages/projects.html) cards to prominently display:
+  - Direct **GitHub Repository ↗** links and live demo links
+  - Tech stack skill pills
+  - Collaborator requirements
+  - **Find Matches ⚡** button that pre-filters candidates on the Explore page by the project's tech stack.
+
 ---
 
 ## 📂 File Deliverables Index

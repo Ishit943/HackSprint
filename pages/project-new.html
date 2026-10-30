@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Post a New Project - Monster Match</title>
+  <title>Post a Project - Monster Match</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,7 +26,7 @@
       <nav>
         <ul class="nav-links">
           <li><a href="explore.html" class="nav-link">🔍 Explore Students</a></li>
-          <li><a href="projects.html" class="nav-link">📋 Projects</a></li>
+          <li><a href="projects.html" class="nav-link active">📋 Projects</a></li>
           <li><a href="connections.html" class="nav-link">💬 Connections</a></li>
           <li><a href="dashboard.html" class="nav-link">⚡ Dashboard</a></li>
         </ul>
@@ -41,99 +41,73 @@
   <main class="container container-narrow" style="padding-top: var(--spacing-8); padding-bottom: var(--spacing-16);">
     <div style="margin-bottom: var(--spacing-8);">
       <a href="projects.html" style="font-size: var(--font-size-sm); display:inline-block; margin-bottom: var(--spacing-3);">← Back to Projects</a>
-      <h2>Post a Hackathon Project</h2>
-      <p>Specify the roles, skills, and mode so our algorithm can match you with the right teammates.</p>
+      <h2>Post a Project</h2>
+      <p style="color: var(--text-secondary);">Share what you're building, showcase your tech stack, and connect with teammates who complement your skills.</p>
     </div>
 
-    <form id="project-form" class="card">
-      <!-- Project Title -->
+    <form id="project-form" class="card" style="box-shadow: var(--shadow-lg);">
+      <!-- 1. Project Title -->
       <div class="form-group">
         <label class="form-label" for="proj-title">Project Title *</label>
-        <input type="text" id="proj-title" class="input" placeholder="e.g. AI MedAssist: Automated Clinical Note Generator" required>
+        <input type="text" id="proj-title" class="input" placeholder="e.g. MedBot: AI Clinical Assistant" required>
       </div>
 
-      <!-- Hackathon Name & Category -->
-      <div class="grid grid-cols-2 gap-4">
-        <div class="form-group">
-          <label class="form-label" for="proj-hackathon">Hackathon Name</label>
-          <input type="text" id="proj-hackathon" class="input" placeholder="e.g. Runtime Terror HackSprint 2026">
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="proj-category">Category *</label>
-          <select id="proj-category" class="select" required>
-            <option value="AI & Generative Agents">AI & Generative Agents</option>
-            <option value="HealthTech & Bio">HealthTech & Bio</option>
-            <option value="Fintech & Payments">Fintech & Payments</option>
-            <option value="Web3 & DeFi">Web3 & DeFi</option>
-            <option value="EdTech & Learning">EdTech & Learning</option>
-            <option value="Gaming & AR/VR">Gaming & AR/VR</option>
-            <option value="Hackathon">General Hackathon</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- Description -->
+      <!-- 2. Category / Track -->
       <div class="form-group">
-        <label class="form-label" for="proj-desc">Description & Problem Statement *</label>
-        <textarea id="proj-desc" class="textarea" rows="4" placeholder="Briefly describe what you are building, the problem it solves, and current progress..." required></textarea>
+        <label class="form-label" for="proj-category">Category / Domain *</label>
+        <select id="proj-category" class="select" required>
+          <option value="AI & Generative Agents">AI & Generative Agents</option>
+          <option value="HealthTech & Bio">HealthTech & Bio</option>
+          <option value="Fintech & Payments">Fintech & Payments</option>
+          <option value="Web3 & DeFi">Web3 & DeFi</option>
+          <option value="EdTech & Learning">EdTech & Learning</option>
+          <option value="Gaming & AR/VR">Gaming & AR/VR</option>
+          <option value="Hackathon">General Hackathon / Web Project</option>
+        </select>
       </div>
 
-      <!-- Mode, Deadline, Team Size -->
-      <div class="grid grid-cols-3 gap-4">
-        <div class="form-group">
-          <label class="form-label" for="proj-mode">Mode</label>
-          <select id="proj-mode" class="select">
-            <option value="online">Online</option>
-            <option value="hybrid">Hybrid</option>
-            <option value="offline">In-person / Offline</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" for="proj-deadline">Submission Deadline</label>
-          <input type="date" id="proj-deadline" class="input">
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" for="proj-size">Total Team Size</label>
-          <input type="number" id="proj-size" class="input" value="4" min="2" max="6">
-        </div>
+      <!-- 3. Description -->
+      <div class="form-group">
+        <label class="form-label" for="proj-desc">Project Description *</label>
+        <textarea id="proj-desc" class="textarea" rows="4" placeholder="Describe what the project does, the problem it solves, and what you've built so far..." required></textarea>
       </div>
 
-      <!-- Roles Needed Section -->
-      <div style="margin-top: var(--spacing-6); margin-bottom: var(--spacing-6); border-top: 1px solid var(--border-color); padding-top: var(--spacing-6);">
-        <div class="flex items-center justify-between" style="margin-bottom: var(--spacing-4);">
-          <div>
-            <h4 style="margin-bottom: 2px;">Required Roles & Tech Stacks</h4>
-            <span style="font-size: var(--font-size-xs); color: var(--text-muted);">Define the open positions you need to fill.</span>
-          </div>
-          <button type="button" id="add-role-btn" class="btn btn-outline btn-sm">+ Add Role</button>
-        </div>
-
-        <div id="roles-container" style="display: flex; flex-direction: column; gap: var(--spacing-4);">
-          <!-- Initial Role Item -->
-          <div class="role-item card" style="background: var(--bg-surface-subtle); padding: var(--spacing-4);">
-            <div class="grid grid-cols-2 gap-3" style="margin-bottom: var(--spacing-3);">
-              <div>
-                <label class="form-label" style="font-size: 12px;">Role Title</label>
-                <input type="text" class="input role-title-input" placeholder="e.g. Frontend Developer" value="Frontend Developer" required>
-              </div>
-              <div>
-                <label class="form-label" style="font-size: 12px;">Open Slots</label>
-                <input type="number" class="input role-slots-input" value="1" min="1" max="3">
-              </div>
-            </div>
-            <div>
-              <label class="form-label" style="font-size: 12px;">Required Skills (Comma-separated)</label>
-              <input type="text" class="input role-skills-input" placeholder="e.g. React, Tailwind CSS, TypeScript" value="React, Tailwind CSS">
-            </div>
-          </div>
-        </div>
+      <!-- 4. GitHub Repo Link -->
+      <div class="form-group">
+        <label class="form-label" for="proj-github">GitHub Repository Link *</label>
+        <input type="url" id="proj-github" class="input" placeholder="https://github.com/your-username/your-project" required>
+        <span style="font-size: 11px; color: var(--text-muted); display:block; margin-top: 4px;">
+          Direct link to your GitHub repo where code and progress can be viewed.
+        </span>
       </div>
 
-      <div class="flex justify-end gap-3" style="border-top: 1px solid var(--border-color); padding-top: var(--spacing-6);">
+      <!-- 5. Tech Stack -->
+      <div class="form-group">
+        <label class="form-label" for="proj-stack">Tech Stack / Skills Used *</label>
+        <input type="text" id="proj-stack" class="input" placeholder="e.g. React, Python, PyTorch, Node.js, Tailwind CSS" required>
+        <span style="font-size: 11px; color: var(--text-muted); display:block; margin-top: 4px;">
+          Comma-separated list of technologies, frameworks, and libraries.
+        </span>
+      </div>
+
+      <!-- 6. Optional: Live Demo Link -->
+      <div class="form-group">
+        <label class="form-label" for="proj-demo">Live Demo / Preview Link (Optional)</label>
+        <input type="url" id="proj-demo" class="input" placeholder="https://your-project.vercel.app">
+      </div>
+
+      <!-- 7. Optional: Looking For Teammates Note -->
+      <div class="form-group">
+        <label class="form-label" for="proj-looking-for">Looking for Collaborators? (Optional)</label>
+        <input type="text" id="proj-looking-for" class="input" placeholder="e.g. Looking for a UI/UX Designer or Frontend Dev to join">
+        <span style="font-size: 11px; color: var(--text-muted); display:block; margin-top: 4px;">
+          Let others know what teammate roles or skills would help you complete this project.
+        </span>
+      </div>
+
+      <div class="flex justify-end gap-3" style="border-top: 1px solid var(--border-color); padding-top: var(--spacing-6); margin-top: var(--spacing-6);">
         <a href="projects.html" class="btn btn-outline">Cancel</a>
-        <button type="submit" class="btn btn-primary">Publish Project Post 🚀</button>
+        <button type="submit" class="btn btn-primary">Publish Project 🚀</button>
       </div>
     </form>
   </main>
@@ -146,60 +120,21 @@
     initTheme();
     Auth.renderNavAuth();
 
-    // Add dynamic role row
-    const addRoleBtn = document.getElementById('add-role-btn');
-    const rolesContainer = document.getElementById('roles-container');
-
-    addRoleBtn.addEventListener('click', () => {
-      const roleDiv = document.createElement('div');
-      roleDiv.className = 'role-item card';
-      roleDiv.style.cssText = 'background: var(--bg-surface-subtle); padding: var(--spacing-4); position: relative;';
-      roleDiv.innerHTML = `
-        <button type="button" class="remove-role-btn" style="position:absolute; right:12px; top:12px; background:none; border:none; color:var(--color-danger); cursor:pointer; font-weight:bold;">✕</button>
-        <div class="grid grid-cols-2 gap-3" style="margin-bottom: var(--spacing-3);">
-          <div>
-            <label class="form-label" style="font-size: 12px;">Role Title</label>
-            <input type="text" class="input role-title-input" placeholder="e.g. Machine Learning Engineer" required>
-          </div>
-          <div>
-            <label class="form-label" style="font-size: 12px;">Open Slots</label>
-            <input type="number" class="input role-slots-input" value="1" min="1" max="3">
-          </div>
-        </div>
-        <div>
-          <label class="form-label" style="font-size: 12px;">Required Skills (Comma-separated)</label>
-          <input type="text" class="input role-skills-input" placeholder="e.g. Python, PyTorch, FastAPI">
-        </div>
-      `;
-
-      roleDiv.querySelector('.remove-role-btn').addEventListener('click', () => roleDiv.remove());
-      rolesContainer.appendChild(roleDiv);
-    });
-
-    // Form submission
     const form = document.getElementById('project-form');
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
-      // Collect roles
-      const roleElements = rolesContainer.querySelectorAll('.role-item');
-      const roles = Array.from(roleElements).map(el => {
-        const title = el.querySelector('.role-title-input').value.trim();
-        const slots = parseInt(el.querySelector('.role-slots-input').value) || 1;
-        const skillsRaw = el.querySelector('.role-skills-input').value;
-        const skills = skillsRaw.split(',').map(s => s.trim()).filter(Boolean);
-        return { title, slots, skills };
-      });
+      const stackRaw = document.getElementById('proj-stack').value;
+      const tech_stack = stackRaw.split(',').map(s => s.trim()).filter(Boolean);
 
       const projectData = {
         title: document.getElementById('proj-title').value.trim(),
-        hackathon_name: document.getElementById('proj-hackathon').value.trim(),
         category: document.getElementById('proj-category').value,
         description: document.getElementById('proj-desc').value.trim(),
-        mode: document.getElementById('proj-mode').value,
-        deadline: document.getElementById('proj-deadline').value,
-        team_size: parseInt(document.getElementById('proj-size').value) || 4,
-        roles
+        github_url: document.getElementById('proj-github').value.trim(),
+        demo_url: document.getElementById('proj-demo').value.trim(),
+        tech_stack: tech_stack,
+        looking_for: document.getElementById('proj-looking-for').value.trim()
       };
 
       try {

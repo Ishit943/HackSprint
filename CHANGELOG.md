@@ -5,6 +5,14 @@
 
 ---
 
+## [v0.9.2] — 2026-10-31
+
+### Changed
+- **Redesigned Project Creation Form (`pages/project-new.html`)** — Removed confusing legacy fields (submission deadlines, mode dropdowns, team size counters, dynamic role slot builders). Streamlined to standard developer showcase fields: **Project Title**, **Description**, **GitHub Repo Link**, **Tech Stack**, and optional Live Demo URL.
+- **Enhanced Project Cards (`pages/projects.html`)** — Direct `📂 View Code ↗` GitHub buttons, Live Demo links, tech stack pills, and `Find Matches ⚡` button that immediately pre-selects skills on the Explore page.
+
+---
+
 ## [v0.9.1] — 2026-10-31
 
 ### Fixed

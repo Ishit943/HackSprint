@@ -204,7 +204,7 @@
       const projectsGrid = document.getElementById('dash-projects-grid');
 
       projectsGrid.innerHTML = projects.slice(0, 2).map(p => {
-        const requiredSkills = p.roles.flatMap(r => r.skills);
+        const requiredSkills = p.tech_stack || (p.roles ? p.roles.flatMap(r => r.skills) : ['Web', 'JavaScript']);
         const matchScore = calculateMatchScore({
           studentSkills: user.skills || [],
           requiredSkills,
@@ -213,12 +213,14 @@
           projectCategory: p.category
         });
 
+        const stackParam = encodeURIComponent(requiredSkills.slice(0, 3).join(','));
+
         return `
           <div class="card card-hover flex flex-col justify-between">
             <div>
               <div class="flex justify-between items-center" style="margin-bottom: var(--spacing-2);">
                 <span class="badge" style="background:var(--color-primary-light); color:var(--color-primary); font-size:10px;">
-                  ${p.category}
+                  ${p.category || 'Project'}
                 </span>
                 <span class="match-score">⚡ ${matchScore}% Match</span>
               </div>
@@ -226,10 +228,17 @@
               <p style="font-size: var(--font-size-xs); color: var(--text-secondary); margin-bottom: var(--spacing-3); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">
                 ${p.description}
               </p>
+              ${p.github_url ? `
+                <div style="margin-bottom: var(--spacing-3);">
+                  <a href="${p.github_url}" target="_blank" rel="noopener" style="font-size:11px; color:var(--color-accent); text-decoration:none; display:inline-flex; align-items:center; gap:4px;">
+                    📂 GitHub Repository ↗
+                  </a>
+                </div>
+              ` : ''}
             </div>
-            <div class="flex justify-between items-center" style="border-top:1px solid var(--border-color); padding-top:var(--spacing-3);">
-              <span style="font-size:11px; color:var(--text-muted);">🏆 ${p.hackathon_name}</span>
-              <a href="explore.html?project=${p.id}" class="btn btn-outline btn-sm" style="font-size:11px; padding:2px 8px;">Explore</a>
+            <div class="flex justify-between items-center" style="border-top:1px solid rgba(255,255,255,0.08); padding-top:var(--spacing-3);">
+              <span style="font-size:11px; color:var(--text-muted);">👤 ${p.owner_name}</span>
+              <a href="explore.html?skills=${stackParam}" class="btn btn-outline btn-sm" style="font-size:11px; padding:2px 8px;">Find Teammates ⚡</a>
             </div>
           </div>
         `;

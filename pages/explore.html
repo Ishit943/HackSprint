@@ -327,10 +327,15 @@
       'Flutter', 'UI/UX Design', 'Figma', 'Solidity / Web3', 'Docker', 'PostgreSQL'
     ];
 
+    // Check URL parameters (e.g. ?skills=React,Python or ?project=proj-1)
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialSkills = urlParams.get('skills');
+    const initialSkillsList = initialSkills ? initialSkills.split(',').map(s => s.trim()).filter(Boolean) : [];
+
     // Filter State
     const state = {
-      query: '',
-      selectedSkills: [],
+      query: urlParams.get('q') || '',
+      selectedSkills: initialSkillsList,
       skillMode: 'OR', // 'AND' or 'OR'
       year: '',
       status: '',
@@ -341,9 +346,10 @@
 
     // Render Skill Selector Chips
     const skillContainer = document.getElementById('skills-selector-container');
-    skillContainer.innerHTML = AVAILABLE_SKILLS.map(skill => `
-      <div class="selectable-tag" data-skill="${skill}">${skill}</div>
-    `).join('');
+    skillContainer.innerHTML = AVAILABLE_SKILLS.map(skill => {
+      const isSelected = state.selectedSkills.some(s => s.toLowerCase() === skill.toLowerCase());
+      return `<div class="selectable-tag ${isSelected ? 'selected' : ''}" data-skill="${skill}">${skill}</div>`;
+    }).join('');
 
     // Attach Tag Click Event
     skillContainer.addEventListener('click', (e) => {

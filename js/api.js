@@ -189,11 +189,10 @@ const INITIAL_PROJECTS = [
     title: 'MedBot: AI Medical Imaging & Assistant',
     description: 'An AI-driven diagnostic companion that analyzes X-ray scans with PyTorch and assists junior doctors with automated clinical notes.',
     category: 'HealthTech & Bio',
-    hackathon_name: 'Runtime Terror HackSprint 2026',
-    deadline: '2026-11-15',
-    mode: 'online',
-    team_size: 4,
-    current_members: 2,
+    github_url: 'https://github.com/ananya-v/medbot-ai',
+    demo_url: 'https://medbot-preview.vercel.app',
+    tech_stack: ['Python', 'PyTorch', 'FastAPI', 'React', 'Tailwind CSS'],
+    looking_for: 'Frontend Developer to build interactive dashboard & UI/UX Designer',
     status: 'open',
     roles: [
       { title: 'Frontend Developer', slots: 1, skills: ['React', 'Tailwind CSS'] },
@@ -208,11 +207,10 @@ const INITIAL_PROJECTS = [
     title: 'DeFi Micro-Lending Pool for Campus Students',
     description: 'A peer-to-peer micro-lending protocol on Polygon with smart contracts and credit scoring based on academic credentials.',
     category: 'Fintech & Payments',
-    hackathon_name: 'ETHIndia Sprint',
-    deadline: '2026-11-20',
-    mode: 'hybrid',
-    team_size: 3,
-    current_members: 1,
+    github_url: 'https://github.com/aarav-dev/campus-lending-defi',
+    demo_url: '',
+    tech_stack: ['Solidity / Web3', 'Polygon', 'Node.js', 'React', 'TypeScript'],
+    looking_for: 'Smart Contract Auditor & Web3 Frontend Specialist',
     status: 'open',
     roles: [
       { title: 'Smart Contract Dev', slots: 1, skills: ['Solidity / Web3'] },
@@ -409,14 +407,16 @@ export const API = {
       list = list.filter(p =>
         p.title.toLowerCase().includes(q) ||
         p.description.toLowerCase().includes(q) ||
-        p.hackathon_name.toLowerCase().includes(q)
+        (p.tech_stack && p.tech_stack.some(s => s.toLowerCase().includes(q))) ||
+        (p.hackathon_name && p.hackathon_name.toLowerCase().includes(q))
       );
     }
 
     if (skill) {
       const targetSkill = skill.toLowerCase();
       list = list.filter(p =>
-        p.roles.some(r => r.skills.some(s => s.toLowerCase().includes(targetSkill)))
+        (p.tech_stack && p.tech_stack.some(s => s.toLowerCase().includes(targetSkill))) ||
+        (p.roles && p.roles.some(r => r.skills && r.skills.some(s => s.toLowerCase().includes(targetSkill))))
       );
     }
 
