@@ -46,6 +46,49 @@
     </div>
 
     <form id="profile-form" class="card">
+      <!-- Profile Picture & Mascot Customizer -->
+      <div id="avatar-section" style="margin-bottom: var(--spacing-6); background: rgba(255, 115, 0, 0.04); border: 1px solid rgba(255, 115, 0, 0.25); border-radius: var(--radius-xl); padding: var(--spacing-5);">
+        <div class="flex items-center gap-5 flex-wrap">
+          <!-- Current Avatar Live Preview -->
+          <div style="position: relative; flex-shrink: 0;">
+            <img id="avatar-preview" src="" alt="Avatar Preview" style="width: 96px; height: 96px; border-radius: 50%; border: 3px solid var(--color-primary); background: var(--bg-surface-subtle); object-fit: cover; box-shadow: 0 4px 20px rgba(255, 115, 0, 0.35); display: block;" />
+            <span style="position: absolute; bottom: 0; right: 0; background: var(--color-primary); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: 13px; box-shadow: 0 2px 8px rgba(0,0,0,0.4);" title="Profile Mascot">🎨</span>
+          </div>
+
+          <!-- Controls: Presets, Random Generator, URL, File Upload -->
+          <div style="flex: 1; min-width: 280px;">
+            <div class="flex items-center justify-between gap-2 flex-wrap" style="margin-bottom: 4px;">
+              <h4 style="margin-bottom: 0;">Profile Picture & Monster Mascot</h4>
+              <button type="button" id="random-monster-btn" class="btn btn-outline btn-sm" style="font-size: 11px; padding: 3px 10px; color: #ff8c26; border-color: rgba(255, 115, 0, 0.4);" title="Generate a fresh random DiceBear monster">
+                🎲 Roll Random Monster
+              </button>
+            </div>
+            <p style="font-size: var(--font-size-xs); color: var(--text-muted); margin-bottom: var(--spacing-3);">
+              Pick a monster preset, upload your own photo, or enter any public image link.
+            </p>
+
+            <!-- Preset Monster Avatars -->
+            <div style="margin-bottom: var(--spacing-3);">
+              <span style="font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 6px;">
+                Mascot Presets:
+              </span>
+              <div id="avatar-presets" class="flex items-center gap-2 flex-wrap">
+                <!-- Preset buttons injected via JS -->
+              </div>
+            </div>
+
+            <!-- Custom URL or File Upload -->
+            <div class="flex items-center gap-2 flex-wrap">
+              <input type="url" id="avatar-url-input" class="input flex-1" style="font-size: 12px; padding: 7px 12px;" placeholder="Or paste custom image URL (https://...)" />
+              <label class="btn btn-outline btn-sm" style="cursor: pointer; font-size: 12px; padding: 7px 12px; margin-bottom: 0; white-space: nowrap;">
+                📁 Upload Photo
+                <input type="file" id="avatar-file-input" accept="image/*" style="display: none;" />
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Basic Details -->
       <h4 style="margin-bottom: var(--spacing-4); border-bottom: 1px solid var(--border-color); padding-bottom: var(--spacing-2);">
         1. Academic & Personal Info
@@ -177,7 +220,7 @@
   </main>
 
   <script type="module">
-    import { initTheme, showToast } from '../js/utils.js';
+    import { initTheme, showToast, getMonsterAvatar } from '../js/utils.js';
     import { Auth } from '../js/auth.js';
     import { API, getCurrentUser } from '../js/api.js';
 
@@ -186,6 +229,101 @@
 
     const user = getCurrentUser() || {};
     const skillsContainer = document.getElementById('skills-list-container');
+
+    // Avatar Customizer Logic
+    const avatarPreview = document.getElementById('avatar-preview');
+    const avatarUrlInput = document.getElementById('avatar-url-input');
+    const avatarPresetsContainer = document.getElementById('avatar-presets');
+    const fileInput = document.getElementById('avatar-file-input');
+    const randomBtn = document.getElementById('random-monster-btn');
+
+    let currentAvatarUrl = user.avatar_url || getMonsterAvatar(user.full_name || 'Monster');
+
+    function setAvatar(url, updateInput = true) {
+      if (!url) return;
+      currentAvatarUrl = url;
+      avatarPreview.src = url;
+      if (updateInput && !url.startsWith('data:')) {
+        avatarUrlInput.value = url;
+      }
+      // Update active state on preset chips
+      avatarPresetsContainer.querySelectorAll('.preset-btn').forEach(btn => {
+        if (btn.dataset.url === url) {
+          btn.style.borderColor = 'var(--color-primary)';
+          btn.style.boxShadow = '0 0 10px rgba(255, 115, 0, 0.6)';
+        } else {
+          btn.style.borderColor = 'rgba(255, 255, 255, 0.15)';
+          btn.style.boxShadow = 'none';
+        }
+      });
+    }
+
+    const AVATAR_PRESETS = [
+      { name: 'Yellow Love Bot', url: 'https://api.dicebear.com/7.x/bottts/svg?seed=Ananya&backgroundColor=ffd5dc' },
+      { name: 'Sparky Purple', url: 'https://api.dicebear.com/7.x/bottts/svg?seed=Aarav&backgroundColor=c0aede' },
+      { name: 'Goggles Blue', url: 'https://api.dicebear.com/7.x/bottts/svg?seed=Rahul&backgroundColor=d1d4f9' },
+      { name: 'Orange Hopper', url: 'https://api.dicebear.com/7.x/bottts/svg?seed=Sneha&backgroundColor=ffdfbf' },
+      { name: 'Cyan Antenna', url: 'https://api.dicebear.com/7.x/bottts/svg?seed=Vikram&backgroundColor=b6e3f4' },
+      { name: 'Cyber Mech', url: 'https://api.dicebear.com/7.x/bottts/svg?seed=CyberMech&backgroundColor=c0aede' },
+      { name: 'Spooky Monster', url: 'https://api.dicebear.com/7.x/bottts/svg?seed=Halloween&backgroundColor=ffdfbf' }
+    ];
+
+    AVATAR_PRESETS.forEach(p => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'preset-btn';
+      btn.dataset.url = p.url;
+      btn.title = p.name;
+      btn.style.cssText = `
+        width: 38px; height: 38px; border-radius: 50%; padding: 0;
+        border: 2px solid rgba(255, 255, 255, 0.15);
+        background: var(--bg-surface-subtle); cursor: pointer;
+        overflow: hidden; transition: all 0.2s; display: inline-flex;
+        align-items: center; justify-content: center; flex-shrink: 0;
+      `;
+      btn.innerHTML = `<img src="${p.url}" alt="${p.name}" style="width: 100%; height: 100%; object-fit: cover;" />`;
+      btn.onclick = () => setAvatar(p.url);
+      avatarPresetsContainer.appendChild(btn);
+    });
+
+    // Roll random monster
+    randomBtn.onclick = () => {
+      const randomSeed = 'Monster_' + Math.random().toString(36).substring(2, 8);
+      const bgColors = ['ffd5dc', 'd1d4f9', 'c0aede', 'ffdfbf', 'b6e3f4'];
+      const randomBg = bgColors[Math.floor(Math.random() * bgColors.length)];
+      const url = `https://api.dicebear.com/7.x/bottts/svg?seed=${randomSeed}&backgroundColor=${randomBg}`;
+      setAvatar(url);
+    };
+
+    // Custom image URL input
+    avatarUrlInput.addEventListener('input', () => {
+      const val = avatarUrlInput.value.trim();
+      if (val) setAvatar(val, false);
+    });
+
+    // Custom photo file upload (converts to base64 data URL)
+    fileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      if (!file.type.startsWith('image/')) {
+        showToast('Please select a valid image file', 'error');
+        return;
+      }
+      if (file.size > 2 * 1024 * 1024) {
+        showToast('Image size should be under 2MB', 'error');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = (loadEvt) => {
+        setAvatar(loadEvt.target.result);
+        avatarUrlInput.value = '';
+        showToast('Custom photo loaded! Click Save to apply.', 'info');
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // Initialize current avatar
+    setAvatar(currentAvatarUrl);
 
     // Populate existing fields
     document.getElementById('full-name').value = user.full_name || '';
@@ -248,6 +386,7 @@
       })).filter(s => s.name.length > 0);
 
       const updates = {
+        avatar_url: currentAvatarUrl,
         full_name: document.getElementById('full-name').value.trim(),
         college: document.getElementById('college').value.trim(),
         branch: document.getElementById('branch').value.trim(),

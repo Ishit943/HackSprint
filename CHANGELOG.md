@@ -8,6 +8,9 @@
 ## [v0.9.4] — 2026-10-31
 
 ### Added
+- **Profile Picture & Mascot Customizer (`pages/profile-edit.html`)** — Added full avatar personalization suite: interactive live preview, 7 one-click Bottts monster mascot presets (Yellow Love Bot, Sparky Purple, Goggles Blue, Orange Hopper, Cyan Antenna, Cyber Mech, Spooky Monster), a "Roll Random Monster" button, custom image URL input, and native photo file upload with base64 data conversion.
+- **Direct Avatar Change Shortcuts** — Added camera button shortcuts on `pages/dashboard.html` and `pages/profile-view.html` linking directly to the avatar customizer.
+- **Smart Match Threshold Safeguard (`js/utils.js`, `pages/explore.html`)** — Requires user login or active filter skills before displaying a match percentage, avoiding misleading arbitrary scores for unauthenticated visitors.
 - **Email in Contact Details** — College email address now shown wherever contact info is unlocked: `pages/profile-view.html` (contact card with `mailto:` link + ✉️ Email button), `pages/connections.html` (accepted connections tab), `pages/explore.html` (connected student cards), `pages/dashboard.html` (user's own profile card), `pages/profile-edit.html` (read-only email field in Academic Info).
 - **Privacy-respecting email visibility** — Email only shown for self-view or after a connection is mutually accepted (same rule as phone/WhatsApp).
 

@@ -167,7 +167,18 @@ The entire UI has been styled with a custom **Halloween Obsidian Black & Jack-o'
 | [`sql/schema.sql`](sql/schema.sql) | Full PostgreSQL database schema with RLS and triggers |
 | [`functions/send-whatsapp/index.js`](functions/send-whatsapp/index.js) | Edge function for Meta WhatsApp Business Cloud API |
 | [`README.md`](README.md) | Project overview, setup, and verification guide |
-| [`roadmap.md`](roadmap.md) | Original 10-phase project specification |
+---
+
+## ✅ Feature: Profile Picture & Mascot Customizer — 2026-10-31
+
+**Problem:** Users could not update or customize their profile picture/mascot in the profile editor.
+
+**Solution:** Built a complete Profile Picture & Mascot Customizer into `pages/profile-edit.html` with real-time live preview, 7 one-click Bottts monster mascot presets, a random generator button, custom public image URL support, and native photo upload with FileReader conversion. Added direct camera action shortcuts on dashboard and profile view.
+
+**Files Changed:**
+- **`pages/profile-edit.html`** — Added Avatar customizer section, live preview, presets, random roll, URL input, file upload handler, and form payload update
+- **`pages/dashboard.html`** — Added camera shortcut overlay on profile avatar leading directly to avatar customizer
+- **`pages/profile-view.html`** — Added camera shortcut button for profile owners to change their photo instantly
 
 ---
 

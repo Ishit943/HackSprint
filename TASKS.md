@@ -142,7 +142,8 @@
 - ✅ **Portfolio link validator** — Validates GitHub URL format before save
 - ✅ **Live completeness meter** — Progress bar updates in real-time as fields are filled
 - ✅ **Completeness prompt badges** — Inline suggestions: *"Add 2 more skills to reach 100% profile strength!"*
-- ✅ **Monster mascot display** — DiceBear Bottts SVG rendered from user ID seed; shown on edit page
+- ✅ **Monster mascot display & customizer** — DiceBear Bottts SVG suite with 7 presets, random generator, custom URL input, and native photo upload
+- ✅ **Profile picture update flow** — Interactive live preview in profile-edit with camera shortcut on dashboard and profile views
 
 ---
 
