@@ -13,6 +13,7 @@
 - **Direct Profile Protection Banner (`pages/profile-view.html`)** — Displays a `🔒 Hackathon Team Formed` warning and disables direct connection buttons when visitors view an already-committed student.
 - **Team Management Methods (`js/api.js`)** — Added `API.formTeam()` and `API.leaveTeam()` to handle persistent team formation, notifications, and profile status syncing.
 - **Pre-seeded Teammates** — Configured Sneha Patel (`usr-4`) and Tanvi Saxena (`usr-6`) as a formed team for Runtime Terror HackSprint 2026 to demonstrate privacy protection out-of-the-box.
+- **Project Delete Button & Ownership Management (`pages/projects.html`)** — Added dedicated `🗑️ Delete` button on project cards for owners, with confirmation safeguard and instant reactive list removal. Added `API.deleteProject(projectId)` with ownership authorization checks and `👤 My Projects Only` filter category.
 
 ---
 

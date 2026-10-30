@@ -441,12 +441,21 @@ export const API = {
     return updated;
   },
 
-  // 4. Projects: List, Get, Create
-  async getProjects({ category = '', query = '', skill = '' } = {}) {
+  // 4. Projects: List, Get, Create, Delete
+  async getProjects({ category = '', query = '', skill = '', ownerId = '' } = {}) {
     let list = getStorageData('projects', INITIAL_PROJECTS);
+    const currentUser = getCurrentUser();
 
-    if (category) {
+    if (category === 'my_projects') {
+      if (currentUser) {
+        list = list.filter(p => p.owner_id === currentUser.id);
+      }
+    } else if (category) {
       list = list.filter(p => p.category.toLowerCase() === category.toLowerCase());
+    }
+
+    if (ownerId) {
+      list = list.filter(p => p.owner_id === ownerId);
     }
 
     if (query && query.trim()) {
@@ -477,6 +486,7 @@ export const API = {
 
   async createProject(projectData) {
     const currentUser = getCurrentUser();
+    if (!currentUser) throw new Error('You must be logged in to post a project.');
     const list = getStorageData('projects', INITIAL_PROJECTS);
 
     const newProject = {
@@ -493,6 +503,25 @@ export const API = {
     list.unshift(newProject);
     setStorageData('projects', list);
     return newProject;
+  },
+
+  async deleteProject(projectId) {
+    const currentUser = getCurrentUser();
+    if (!currentUser) throw new Error('You must be logged in to delete a project.');
+
+    let list = getStorageData('projects', INITIAL_PROJECTS);
+    const index = list.findIndex(p => p.id === projectId);
+    if (index === -1) throw new Error('Project not found.');
+
+    const project = list[index];
+    // Security check: only the project owner can delete their project
+    if (project.owner_id && project.owner_id !== currentUser.id) {
+      throw new Error('You do not have permission to delete this project.');
+    }
+
+    list.splice(index, 1);
+    setStorageData('projects', list);
+    return true;
   },
 
   // 5. Connection Requests (Phase 4)

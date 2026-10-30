@@ -63,6 +63,7 @@
       <div class="flex items-center gap-3">
         <select id="project-category" class="select" style="width: auto;">
           <option value="">All Categories</option>
+          <option value="my_projects">👤 My Projects Only</option>
           <option value="HealthTech & Bio">HealthTech & Bio</option>
           <option value="Fintech & Payments">Fintech & Payments</option>
           <option value="AI & Generative Agents">AI & Generative Agents</option>
@@ -113,6 +114,7 @@
         grid.innerHTML = projects.map(p => {
           const stack = p.tech_stack || (p.roles ? p.roles.flatMap(r => r.skills) : ['JavaScript', 'Web']);
           const stackParam = encodeURIComponent(stack.slice(0, 3).join(','));
+          const isOwner = currentUser && (currentUser.id === p.owner_id);
 
           return `
             <div class="card card-hover flex flex-col justify-between">
@@ -122,12 +124,19 @@
                   <span class="badge" style="background:var(--color-primary-light); color:var(--color-primary); font-size: 11px;">
                     ${p.category || 'Web Project'}
                   </span>
-                  ${p.github_url ? `
-                    <a href="${p.github_url}" target="_blank" rel="noopener" style="font-size: 11px; color: var(--text-muted); display:inline-flex; align-items:center; gap:4px; text-decoration:none;">
-                      <span>📂 GitHub</span>
-                      <span>↗</span>
-                    </a>
-                  ` : ''}
+                  <div class="flex items-center gap-2">
+                    ${p.github_url ? `
+                      <a href="${p.github_url}" target="_blank" rel="noopener" style="font-size: 11px; color: var(--text-muted); display:inline-flex; align-items:center; gap:4px; text-decoration:none;">
+                        <span>📂 GitHub</span>
+                        <span>↗</span>
+                      </a>
+                    ` : ''}
+                    ${isOwner ? `
+                      <button class="btn btn-outline btn-sm delete-project-btn" data-id="${p.id}" data-title="${p.title}" style="font-size: 11px; padding: 2px 8px; color: #f87171; border-color: rgba(239, 68, 68, 0.3); background: rgba(239, 68, 68, 0.06);" title="Delete this project">
+                        🗑️ Delete
+                      </button>
+                    ` : ''}
+                  </div>
                 </div>
 
                 <!-- Title -->
@@ -180,21 +189,52 @@
               <div class="flex items-center justify-between" style="border-top: 1px solid rgba(255,255,255,0.08); padding-top: var(--spacing-4); margin-top: auto;">
                 <div class="flex items-center gap-2" style="min-width: 0;">
                   <img src="${p.owner_avatar}" alt="${p.owner_name}" style="width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--color-primary); flex-shrink: 0;" />
-                  <span style="font-size: var(--font-size-xs); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${p.owner_name}</span>
+                  <div>
+                    <span style="font-size: var(--font-size-xs); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block;">${p.owner_name}</span>
+                    ${isOwner ? '<span style="font-size: 10px; color: #ff8c26; font-weight: 700;">★ Your Project</span>' : ''}
+                  </div>
                 </div>
 
                 <div class="flex items-center gap-2 flex-shrink-0">
                   <a href="explore.html?skills=${stackParam}" class="btn btn-outline btn-sm" style="font-size: 11px; padding: 3px 8px;">
-                    Find Matches ⚡
+                    ${isOwner ? 'Find Teammates ⚡' : 'Find Matches ⚡'}
                   </a>
-                  <a href="profile-view.html?id=${p.owner_id}" class="btn btn-primary btn-sm" style="font-size: 11px; padding: 3px 10px;">
-                    Connect 🎃
-                  </a>
+                  ${isOwner ? `
+                    <button class="btn btn-outline btn-sm delete-project-btn" data-id="${p.id}" data-title="${p.title}" style="font-size: 11px; padding: 3px 8px; color: #f87171; border-color: rgba(239, 68, 68, 0.3); background: rgba(239, 68, 68, 0.06);" title="Delete this project">
+                      🗑️ Delete
+                    </button>
+                  ` : `
+                    <a href="profile-view.html?id=${p.owner_id}" class="btn btn-primary btn-sm" style="font-size: 11px; padding: 3px 10px;">
+                      Connect 🎃
+                    </a>
+                  `}
                 </div>
               </div>
             </div>
           `;
         }).join('');
+
+        // Attach Delete Project Handlers
+        grid.querySelectorAll('.delete-project-btn').forEach(btn => {
+          btn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const projId = btn.dataset.id;
+            const projTitle = btn.dataset.title;
+
+            if (!confirm(`Are you sure you want to delete "${projTitle}"?\nThis action cannot be undone.`)) {
+              return;
+            }
+
+            try {
+              await API.deleteProject(projId);
+              showToast(`Project "${projTitle}" deleted successfully! 🗑️`, 'success');
+              await loadProjects();
+            } catch (err) {
+              showToast(err.message, 'error');
+            }
+          });
+        });
 
       } catch (err) {
         console.error(err);

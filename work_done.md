@@ -113,6 +113,14 @@ The entire UI has been styled with a custom **Halloween Obsidian Black & Jack-o'
   - Collaborator requirements
   - **Find Matches ⚡** button that pre-filters candidates on the Explore page by the project's tech stack.
 
+### ✅ Project Deletion & Ownership Controls
+- [x] Implemented dedicated **🗑️ Delete Project** capabilities in [`pages/projects.html`](pages/projects.html):
+  - Project cards automatically detect if the viewing student is the project owner (`owner_id === currentUser.id`).
+  - Project owners see a distinct `🗑️ Delete` button in both the card header and footer actions, with a confirmation prompt to prevent accidental deletions.
+  - When confirmed, [`API.deleteProject(projectId)`](js/api.js) validates ownership authorization and deletes the project from persistent storage.
+  - The project grid re-renders immediately with an informative toast notification.
+  - Added a `👤 My Projects Only` filter option in the category dropdown so creators can instantly inspect and manage their own submissions.
+
 ### ✅ Hackathon Teammate Privacy Shield (Hide Teamed Students from Explore)
 - [x] Implemented automatic privacy exclusion for students who have formed a team for a hackathon:
   - If two or more students have formed a team for a hackathon (`status: 'teamed'`), their profiles are automatically shielded and hidden from public view in [`pages/explore.html`](pages/explore.html).

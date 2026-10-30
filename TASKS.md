@@ -103,6 +103,8 @@
 - ✅ **Filter projects by domain** — AI/ML, Web Dev, Blockchain, Fintech, etc.
 - ✅ **Filter projects by technology** — React, Node.js, Python, TensorFlow, Solidity, etc.
 - ✅ **Filter projects by open roles** — Shows only projects that still have unfilled slots
+- ✅ **Project Delete Button** — Owners can delete projects directly from the projects card grid with confirmation safeguards
+- ✅ **My Projects Filter** — Filter projects to show only projects created by the logged-in user
 
 ---
 

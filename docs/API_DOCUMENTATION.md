@@ -366,6 +366,24 @@ if (newProject) {
 
 ---
 
+### `deleteProject(projectId)`
+
+Deletes an existing project created by the logged-in user. Verifies that `currentUser.id === project.owner_id` before deleting from persistent storage.
+
+**Signature:**
+```js
+async function deleteProject(projectId: string) => Promise<boolean>
+```
+
+**Example:**
+```js
+import { deleteProject } from './api.js';
+
+await deleteProject('proj-123456');
+```
+
+---
+
 ## api.js — Profile Functions
 
 ### `getCurrentUserProfile()`
