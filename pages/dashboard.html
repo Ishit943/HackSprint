@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Monster Match</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+
+  <style>
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: var(--spacing-8);
+      padding: var(--spacing-8) 0;
+    }
+
+    @media (max-width: 900px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="../index.html" class="nav-brand">
+        <div class="brand-icon">👾</div>
+        <span>Monster<span style="color: var(--color-primary);">Match</span></span>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="explore.html" class="nav-link">🔍 Explore Students</a></li>
+          <li><a href="projects.html" class="nav-link">📋 Projects</a></li>
+          <li><a href="connections.html" class="nav-link">💬 Connections</a></li>
+          <li><a href="dashboard.html" class="nav-link active">⚡ Dashboard</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="btn-icon-toggle theme-toggle-btn" id="theme-toggle" title="Toggle Theme">🌙</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="dashboard-grid">
+      <!-- Left Column: User Profile Overview & Completeness -->
+      <aside>
+        <div class="card" style="margin-bottom: var(--spacing-6); text-align: center;">
+          <img id="dash-avatar" src="" alt="Avatar" style="width: 84px; height: 84px; border-radius: 50%; border: 3px solid var(--color-primary); margin: 0 auto var(--spacing-3); background: var(--bg-surface-subtle);" />
+          
+          <div class="flex items-center justify-center gap-2">
+            <h3 id="dash-name" style="margin-bottom: 2px;">Name</h3>
+            <span id="dash-verified-badge" style="display:none;" title="College Verified Student">🎓</span>
+          </div>
+
+          <p id="dash-branch" style="font-size: var(--font-size-xs); color: var(--text-muted); margin-bottom: var(--spacing-4);">
+            Branch • Year
+          </p>
+
+          <span id="dash-status" class="badge badge-open" style="margin-bottom: var(--spacing-4);">
+            ● Open to Teams
+          </span>
+
+          <!-- Profile Completeness Bar -->
+          <div style="background: var(--bg-surface-subtle); padding: var(--spacing-4); border-radius: var(--radius-xl); margin-bottom: var(--spacing-4); text-align: left;">
+            <div class="flex justify-between items-center" style="margin-bottom: 6px;">
+              <span style="font-size: 11px; font-weight: 700;">Profile Strength</span>
+              <span id="dash-meter-text" style="font-size: 12px; font-weight: 800; color: var(--color-primary);">80%</span>
+            </div>
+            <div class="progress-bar-bg">
+              <div id="dash-meter-fill" class="progress-bar-fill" style="width: 80%;"></div>
+            </div>
+          </div>
+
+          <div class="flex gap-2">
+            <a href="profile-edit.html" class="btn btn-outline btn-sm flex-1">✏️ Edit</a>
+            <a href="profile-view.html" class="btn btn-primary btn-sm flex-1">👁️ View</a>
+          </div>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="card">
+          <h4 style="font-size: var(--font-size-sm); margin-bottom: var(--spacing-4);">Quick Overview</h4>
+          <div style="display:flex; flex-direction:column; gap: var(--spacing-3); font-size: var(--font-size-sm);">
+            <div class="flex justify-between items-center">
+              <span style="color:var(--text-secondary);">Active Connections</span>
+              <strong id="dash-accepted-count">0</strong>
+            </div>
+            <div class="flex justify-between items-center">
+              <span style="color:var(--text-secondary);">Pending Requests</span>
+              <strong id="dash-pending-count">0</strong>
+            </div>
+            <div class="flex justify-between items-center">
+              <span style="color:var(--text-secondary);">Weekly Hours</span>
+              <strong id="dash-hours">15 hrs</strong>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Right Column: Smart Match Engine & Notifications -->
+      <section>
+        
+        <!-- Welcome Hero Banner -->
+        <div class="card" style="background: linear-gradient(135deg, rgba(124, 58, 237, 0.12), rgba(0, 245, 155, 0.12)); border-color: rgba(124, 58, 237, 0.3); margin-bottom: var(--spacing-8);">
+          <div class="flex items-center justify-between flex-wrap gap-4">
+            <div>
+              <span class="badge" style="background:var(--color-primary); color:#fff; margin-bottom:var(--spacing-2);">Smart Match v1.0</span>
+              <h2 style="font-size: var(--font-size-2xl); margin-bottom: var(--spacing-2);">
+                Ready for your next Hackathon? 🚀
+              </h2>
+              <p style="margin-bottom: 0; font-size: var(--font-size-sm);">
+                We analyzed your skills and matched you with compatible projects and complementary partners.
+              </p>
+            </div>
+            <a href="explore.html" class="btn btn-primary">Find More Partners 👾</a>
+          </div>
+        </div>
+
+        <!-- Section 1: Recommended Projects For You (Phase 5) -->
+        <div style="margin-bottom: var(--spacing-10);">
+          <div class="flex items-center justify-between" style="margin-bottom: var(--spacing-4);">
+            <div>
+              <h3 style="font-size: var(--font-size-xl); margin-bottom: 2px;">Recommended Projects for You</h3>
+              <span style="font-size: var(--font-size-xs); color: var(--text-muted);">Matches based on your primary skills & availability</span>
+            </div>
+            <a href="projects.html" class="btn btn-outline btn-sm">All Projects →</a>
+          </div>
+
+          <div id="dash-projects-grid" class="grid grid-cols-2 gap-4">
+            <!-- Injected via JS -->
+          </div>
+        </div>
+
+        <!-- Section 2: Recommended Teammates with Complementary Skills -->
+        <div>
+          <div class="flex items-center justify-between" style="margin-bottom: var(--spacing-4);">
+            <div>
+              <h3 style="font-size: var(--font-size-xl); margin-bottom: 2px;">Top Complementary Teammates</h3>
+              <span style="font-size: var(--font-size-xs); color: var(--text-muted);">Students with complementary strengths (Design, ML, Backend)</span>
+            </div>
+            <a href="explore.html" class="btn btn-outline btn-sm">Explore All →</a>
+          </div>
+
+          <div id="dash-teammates-grid" class="grid grid-cols-2 gap-4">
+            <!-- Injected via JS -->
+          </div>
+        </div>
+
+      </section>
+    </div>
+  </main>
+
+  <script type="module">
+    import { initTheme, calculateProfileCompleteness, calculateMatchScore } from '../js/utils.js';
+    import { Auth } from '../js/auth.js';
+    import { API, getCurrentUser } from '../js/api.js';
+
+    initTheme();
+    Auth.renderNavAuth();
+
+    async function initDashboard() {
+      const user = getCurrentUser();
+      if (!user) return;
+
+      // Populate Profile Card
+      document.getElementById('dash-avatar').src = user.avatar_url;
+      document.getElementById('dash-name').textContent = user.full_name;
+      document.getElementById('dash-branch').textContent = `${user.branch} • ${user.year}`;
+      document.getElementById('dash-hours').textContent = `${user.availability_hours || 10} hrs`;
+
+      if (user.email_verified) {
+        document.getElementById('dash-verified-badge').style.display = 'inline-block';
+      }
+
+      const completeness = calculateProfileCompleteness(user);
+      document.getElementById('dash-meter-text').textContent = `${completeness}%`;
+      document.getElementById('dash-meter-fill').style.width = `${completeness}%`;
+
+      // Connections counts
+      const connections = await API.getConnections();
+      const accepted = connections.filter(c => c.status === 'accepted');
+      const pending = connections.filter(c => c.status === 'pending');
+      document.getElementById('dash-accepted-count').textContent = accepted.length;
+      document.getElementById('dash-pending-count').textContent = pending.length;
+
+      // Recommended Projects
+      const projects = await API.getProjects();
+      const projectsGrid = document.getElementById('dash-projects-grid');
+
+      projectsGrid.innerHTML = projects.slice(0, 2).map(p => {
+        const requiredSkills = p.roles.flatMap(r => r.skills);
+        const matchScore = calculateMatchScore({
+          studentSkills: user.skills || [],
+          requiredSkills,
+          studentAvailability: user.availability_hours || 10,
+          studentInterests: user.interests || [],
+          projectCategory: p.category
+        });
+
+        return `
+          <div class="card card-hover flex flex-col justify-between">
+            <div>
+              <div class="flex justify-between items-center" style="margin-bottom: var(--spacing-2);">
+                <span class="badge" style="background:var(--color-primary-light); color:var(--color-primary); font-size:10px;">
+                  ${p.category}
+                </span>
+                <span class="match-score">⚡ ${matchScore}% Match</span>
+              </div>
+              <h4 style="font-size: var(--font-size-base); margin-bottom: 4px;">${p.title}</h4>
+              <p style="font-size: var(--font-size-xs); color: var(--text-secondary); margin-bottom: var(--spacing-3); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">
+                ${p.description}
+              </p>
+            </div>
+            <div class="flex justify-between items-center" style="border-top:1px solid var(--border-color); padding-top:var(--spacing-3);">
+              <span style="font-size:11px; color:var(--text-muted);">🏆 ${p.hackathon_name}</span>
+              <a href="explore.html?project=${p.id}" class="btn btn-outline btn-sm" style="font-size:11px; padding:2px 8px;">Explore</a>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // Complementary Teammates
+      const students = await API.getStudents();
+      const otherStudents = students.filter(s => s.id !== user.id).slice(0, 2);
+      const teammatesGrid = document.getElementById('dash-teammates-grid');
+
+      teammatesGrid.innerHTML = otherStudents.map(s => `
+        <div class="card card-hover flex flex-col justify-between">
+          <div>
+            <div class="flex items-center gap-3" style="margin-bottom: var(--spacing-3);">
+              <img src="${s.avatar_url}" alt="${s.full_name}" style="width: 44px; height: 44px; border-radius:50%; border:2px solid var(--color-primary);" />
+              <div>
+                <h4 style="margin-bottom: 2px; font-size: var(--font-size-sm);">${s.full_name}</h4>
+                <span style="font-size: 11px; color: var(--text-muted);">${s.branch}</span>
+              </div>
+            </div>
+            <div class="flex flex-wrap gap-1" style="margin-bottom: var(--spacing-3);">
+              ${s.skills.slice(0, 3).map(sk => {
+                const name = typeof sk === 'string' ? sk : sk.name;
+                return `<span class="chip chip-intermediate" style="padding:1px 6px; font-size:10px;">${name}</span>`;
+              }).join('')}
+            </div>
+          </div>
+          <div class="flex justify-between items-center" style="border-top:1px solid var(--border-color); padding-top:var(--spacing-3);">
+            <span class="match-score" style="font-size:11px;">⚡ ${s.matchScore || 90}% Match</span>
+            <a href="profile-view.html?id=${s.id}" class="btn btn-primary btn-sm" style="font-size:11px; padding:2px 8px;">View Profile</a>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    initDashboard();
+  </script>
+</body>
+</html>

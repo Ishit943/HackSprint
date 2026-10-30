@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connections & Messages - Monster Match</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+
+  <style>
+    .tabs-header {
+      display: flex;
+      gap: var(--spacing-4);
+      border-bottom: 2px solid var(--border-color);
+      margin-bottom: var(--spacing-8);
+    }
+
+    .tab-btn {
+      padding: var(--spacing-3) var(--spacing-4);
+      font-weight: 700;
+      font-size: var(--font-size-sm);
+      color: var(--text-secondary);
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      transition: all var(--transition-fast);
+    }
+
+    .tab-btn:hover {
+      color: var(--color-primary);
+    }
+
+    .tab-btn.active {
+      color: var(--color-primary);
+      border-bottom-color: var(--color-primary);
+    }
+
+    .tab-counter {
+      background: var(--bg-surface-subtle);
+      border-radius: var(--radius-full);
+      padding: 2px 8px;
+      font-size: 11px;
+    }
+
+    .tab-btn.active .tab-counter {
+      background: var(--color-primary-light);
+      color: var(--color-primary);
+    }
+
+    .connection-row {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: var(--spacing-5);
+      margin-bottom: var(--spacing-4);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--spacing-4);
+      transition: all var(--transition-fast);
+    }
+
+    .connection-row:hover {
+      border-color: var(--border-color-hover);
+      box-shadow: var(--shadow-md);
+    }
+
+    @media (max-width: 768px) {
+      .connection-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="../index.html" class="nav-brand">
+        <div class="brand-icon">👾</div>
+        <span>Monster<span style="color: var(--color-primary);">Match</span></span>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="explore.html" class="nav-link">🔍 Explore Students</a></li>
+          <li><a href="projects.html" class="nav-link">📋 Projects</a></li>
+          <li><a href="connections.html" class="nav-link active">💬 Connections</a></li>
+          <li><a href="dashboard.html" class="nav-link">⚡ Dashboard</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="btn-icon-toggle theme-toggle-btn" id="theme-toggle" title="Toggle Theme">🌙</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" style="padding-top: var(--spacing-8); padding-bottom: var(--spacing-16);">
+    <div style="margin-bottom: var(--spacing-6);">
+      <span class="badge" style="background:var(--color-primary-light); color:var(--color-primary); margin-bottom:var(--spacing-2);">
+        Phase 4: Instant Connectivity
+      </span>
+      <h2>Connections & Teammate Requests</h2>
+      <p>Manage your pending invites, accepted teammate network, and tap to trigger instant WhatsApp & Call channels.</p>
+    </div>
+
+    <!-- Tabs Navigation -->
+    <div class="tabs-header">
+      <button class="tab-btn active" data-tab="accepted">
+        <span>🤝 Accepted Connections</span>
+        <span class="tab-counter" id="count-accepted">0</span>
+      </button>
+      <button class="tab-btn" data-tab="received">
+        <span>📥 Received Requests</span>
+        <span class="tab-counter" id="count-received">0</span>
+      </button>
+      <button class="tab-btn" data-tab="sent">
+        <span>📤 Sent Requests</span>
+        <span class="tab-counter" id="count-sent">0</span>
+      </button>
+    </div>
+
+    <!-- Tab Content Container -->
+    <div id="connections-container">
+      <!-- Populated via JS -->
+    </div>
+  </main>
+
+  <script type="module">
+    import { initTheme, showToast, formatWhatsAppUrl, formatTelUrl, formatDate } from '../js/utils.js';
+    import { Auth } from '../js/auth.js';
+    import { API, getCurrentUser } from '../js/api.js';
+
+    initTheme();
+    Auth.renderNavAuth();
+
+    let currentTab = 'accepted';
+    let allConnections = [];
+
+    // Switch Tab Handlers
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentTab = btn.dataset.tab;
+        renderList();
+      });
+    });
+
+    async function loadData() {
+      try {
+        allConnections = await API.getConnections();
+        updateCounters();
+        renderList();
+      } catch (err) {
+        console.error(err);
+        showToast('Could not load connections', 'error');
+      }
+    }
+
+    function updateCounters() {
+      const currentUser = getCurrentUser();
+      const accepted = allConnections.filter(c => c.status === 'accepted');
+      const received = allConnections.filter(c => c.receiver_id === currentUser?.id && c.status === 'pending');
+      const sent = allConnections.filter(c => c.sender_id === currentUser?.id && c.status === 'pending');
+
+      document.getElementById('count-accepted').textContent = accepted.length;
+      document.getElementById('count-received').textContent = received.length;
+      document.getElementById('count-sent').textContent = sent.length;
+    }
+
+    function renderList() {
+      const container = document.getElementById('connections-container');
+      const currentUser = getCurrentUser();
+
+      let filtered = [];
+      if (currentTab === 'accepted') {
+        filtered = allConnections.filter(c => c.status === 'accepted');
+      } else if (currentTab === 'received') {
+        filtered = allConnections.filter(c => c.receiver_id === currentUser?.id && c.status === 'pending');
+      } else if (currentTab === 'sent') {
+        filtered = allConnections.filter(c => c.sender_id === currentUser?.id && c.status === 'pending');
+      }
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="card" style="text-align: center; padding: var(--spacing-12);">
+            <div style="font-size: 3rem; margin-bottom: var(--spacing-3);">👾</div>
+            <h3>No ${currentTab} connections found</h3>
+            <p style="margin-bottom: var(--spacing-4);">
+              ${currentTab === 'accepted' 
+                ? 'When a teammate accepts your connection request, their contact details unlock here.' 
+                : currentTab === 'received' 
+                ? 'No pending requests from other students at the moment.' 
+                : 'You have not sent any pending connection requests.'}
+            </p>
+            <a href="explore.html" class="btn btn-primary btn-sm">Find Teammates Now →</a>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(conn => {
+        const other = conn.otherUser || {};
+        const otherName = other.full_name || 'Teammate';
+        const otherAvatar = other.avatar_url || `https://api.dicebear.com/7.x/bottts/svg?seed=${otherName}`;
+        const otherPhone = other.phone || '+919876543210';
+        const otherWa = other.whatsapp_number || otherPhone;
+
+        const waUrl = formatWhatsAppUrl(otherWa, `Hi ${otherName}! We're connected on Monster Match. Let's talk about our hackathon project!`);
+        const telUrl = formatTelUrl(otherPhone);
+
+        return `
+          <div class="connection-row">
+            <div class="flex items-center gap-4">
+              <img src="${otherAvatar}" alt="${otherName}" style="width: 52px; height: 52px; border-radius: 50%; border: 2px solid var(--color-primary); background: var(--bg-surface-subtle);" />
+              <div>
+                <div class="flex items-center gap-2">
+                  <h4 style="margin-bottom: 2px;">${otherName}</h4>
+                  ${other.email_verified ? '<span title="Verified Student">🎓</span>' : ''}
+                </div>
+                <div style="font-size: var(--font-size-xs); color: var(--text-muted); margin-bottom: 4px;">
+                  ${other.branch || 'CSE'} • ${other.college || 'JUET'} • Sent ${formatDate(conn.created_at)}
+                </div>
+                <p style="font-size: var(--font-size-sm); color: var(--text-secondary); margin-bottom: 0;">
+                  "${conn.message}"
+                </p>
+              </div>
+            </div>
+
+            <!-- Action column -->
+            <div>
+              ${currentTab === 'accepted' ? `
+                <div class="flex items-center gap-2 flex-wrap">
+                  <a href="${waUrl}" target="_blank" rel="noopener" class="btn btn-whatsapp btn-sm" title="Open pre-filled chat in WhatsApp">
+                    💬 WhatsApp Chat
+                  </a>
+                  <a href="${telUrl}" class="btn btn-phone btn-sm" title="Call directly via phone">
+                    📞 Call
+                  </a>
+                  <a href="profile-view.html?id=${other.id}" class="btn btn-outline btn-sm">
+                    Profile
+                  </a>
+                </div>
+              ` : currentTab === 'received' ? `
+                <div class="flex items-center gap-2">
+                  <button class="btn btn-primary btn-sm accept-btn" data-id="${conn.id}" data-name="${otherName}">
+                    Accept & Unlock
+                  </button>
+                  <button class="btn btn-outline btn-sm decline-btn" data-id="${conn.id}">
+                    Decline
+                  </button>
+                </div>
+              ` : `
+                <div class="flex items-center gap-2">
+                  <span class="badge badge-busy">Awaiting Response</span>
+                  <button class="btn btn-outline btn-sm withdraw-btn" data-id="${conn.id}">
+                    Withdraw
+                  </button>
+                </div>
+              `}
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // Attach button action handlers
+      container.querySelectorAll('.accept-btn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          try {
+            await API.respondConnectionRequest(btn.dataset.id, 'accepted');
+            showToast(`Connected with ${btn.dataset.name}! WhatsApp and phone unlocked. 💬📞`, 'success');
+            await loadData();
+          } catch (e) {
+            showToast(e.message, 'error');
+          }
+        });
+      });
+
+      container.querySelectorAll('.decline-btn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          try {
+            await API.respondConnectionRequest(btn.dataset.id, 'declined');
+            showToast('Request declined.', 'info');
+            await loadData();
+          } catch (e) {
+            showToast(e.message, 'error');
+          }
+        });
+      });
+
+      container.querySelectorAll('.withdraw-btn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          try {
+            await API.respondConnectionRequest(btn.dataset.id, 'withdrawn');
+            showToast('Request withdrawn.', 'info');
+            await loadData();
+          } catch (e) {
+            showToast(e.message, 'error');
+          }
+        });
+      });
+    }
+
+    loadData();
+  </script>
+</body>
+</html>

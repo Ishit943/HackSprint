@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Profile - Monster Match</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="../index.html" class="nav-brand">
+        <div class="brand-icon">👾</div>
+        <span>Monster<span style="color: var(--color-primary);">Match</span></span>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="explore.html" class="nav-link">🔍 Explore Students</a></li>
+          <li><a href="projects.html" class="nav-link">📋 Projects</a></li>
+          <li><a href="connections.html" class="nav-link">💬 Connections</a></li>
+          <li><a href="dashboard.html" class="nav-link">⚡ Dashboard</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="btn-icon-toggle theme-toggle-btn" id="theme-toggle" title="Toggle Theme">🌙</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container container-narrow" style="padding-top: var(--spacing-8); padding-bottom: var(--spacing-16);">
+    <div style="margin-bottom: var(--spacing-6);">
+      <a href="dashboard.html" style="font-size: var(--font-size-sm); display:inline-block; margin-bottom: var(--spacing-2);">← Back to Dashboard</a>
+      <h2>Edit Your Monster Profile</h2>
+      <p>Configure your skills, proficiency levels, and privacy-controlled contact channels.</p>
+    </div>
+
+    <form id="profile-form" class="card">
+      <!-- Basic Details -->
+      <h4 style="margin-bottom: var(--spacing-4); border-bottom: 1px solid var(--border-color); padding-bottom: var(--spacing-2);">
+        1. Academic & Personal Info
+      </h4>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div class="form-group">
+          <label class="form-label" for="full-name">Full Name *</label>
+          <input type="text" id="full-name" class="input" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="college">College / University</label>
+          <input type="text" id="college" class="input" placeholder="Jaypee University of Engg & Tech">
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div class="form-group">
+          <label class="form-label" for="branch">Branch / Major</label>
+          <input type="text" id="branch" class="input" placeholder="Computer Science & Engineering">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="year">Year of Study</label>
+          <select id="year" class="select">
+            <option value="1st Year">1st Year</option>
+            <option value="2nd Year">2nd Year</option>
+            <option value="3rd Year">3rd Year</option>
+            <option value="4th Year">4th Year</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="bio">Bio & Hackathon Experience</label>
+        <textarea id="bio" class="textarea" rows="3" placeholder="Tell potential teammates what you love building, hackathons you've attended, and what roles you excel in..."></textarea>
+      </div>
+
+      <!-- Contact & Privacy Channels (Phase 4) -->
+      <h4 style="margin-top: var(--spacing-6); margin-bottom: var(--spacing-4); border-bottom: 1px solid var(--border-color); padding-bottom: var(--spacing-2);">
+        2. Direct Contact & Privacy Settings
+      </h4>
+      <p style="font-size: var(--font-size-xs); color: var(--text-muted); margin-top: -8px; margin-bottom: var(--spacing-4);">
+        Your phone & WhatsApp numbers will NEVER be shown publicly. They will only be unlocked for accepted connections.
+      </p>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div class="form-group">
+          <label class="form-label" for="phone">Phone Number (with Country Code)</label>
+          <input type="tel" id="phone" class="input" placeholder="+919876543210">
+          <label style="font-size: var(--font-size-xs); display:flex; align-items:center; gap:6px; margin-top:6px; cursor:pointer;">
+            <input type="checkbox" id="show-phone" checked>
+            Unlock phone for accepted teammates
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="whatsapp">WhatsApp Number</label>
+          <input type="tel" id="whatsapp" class="input" placeholder="+919876543210">
+          <label style="font-size: var(--font-size-xs); display:flex; align-items:center; gap:6px; margin-top:6px; cursor:pointer;">
+            <input type="checkbox" id="show-whatsapp" checked>
+            Unlock WhatsApp chat button for accepted teammates
+          </label>
+        </div>
+      </div>
+
+      <!-- Availability -->
+      <div class="grid grid-cols-2 gap-4" style="margin-top: var(--spacing-4);">
+        <div class="form-group">
+          <label class="form-label" for="avail-hours">Availability (Hours/Week)</label>
+          <input type="number" id="avail-hours" class="input" min="2" max="60" value="15">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="avail-status">Status</label>
+          <select id="avail-status" class="select">
+            <option value="open">Open to Teams</option>
+            <option value="busy">Busy / Forming Team</option>
+            <option value="teamed">Team Formed</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Skills & Proficiency (Phase 1) -->
+      <div style="margin-top: var(--spacing-6); border-top: 1px solid var(--border-color); padding-top: var(--spacing-6);">
+        <div class="flex items-center justify-between" style="margin-bottom: var(--spacing-4);">
+          <div>
+            <h4 style="margin-bottom: 2px;">3. Technical Skills & Proficiency</h4>
+            <span style="font-size: var(--font-size-xs); color: var(--text-muted);">Add skills with accurate proficiency levels to increase match accuracy.</span>
+          </div>
+          <button type="button" id="add-skill-btn" class="btn btn-outline btn-sm">+ Add Skill</button>
+        </div>
+
+        <div id="skills-list-container" style="display:flex; flex-direction:column; gap: var(--spacing-3);">
+          <!-- Dynamic Skill Rows injected via JS -->
+        </div>
+      </div>
+
+      <!-- Links -->
+      <h4 style="margin-top: var(--spacing-6); margin-bottom: var(--spacing-4); border-bottom: 1px solid var(--border-color); padding-bottom: var(--spacing-2);">
+        4. Portfolio & Links
+      </h4>
+
+      <div class="grid grid-cols-3 gap-3">
+        <div class="form-group">
+          <label class="form-label" style="font-size: 12px;" for="github-url">GitHub URL</label>
+          <input type="url" id="github-url" class="input" placeholder="https://github.com/...">
+        </div>
+        <div class="form-group">
+          <label class="form-label" style="font-size: 12px;" for="linkedin-url">LinkedIn URL</label>
+          <input type="url" id="linkedin-url" class="input" placeholder="https://linkedin.com/in/...">
+        </div>
+        <div class="form-group">
+          <label class="form-label" style="font-size: 12px;" for="portfolio-url">Portfolio / Devpost</label>
+          <input type="url" id="portfolio-url" class="input" placeholder="https://...">
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-3" style="border-top: 1px solid var(--border-color); padding-top: var(--spacing-6); margin-top: var(--spacing-6);">
+        <a href="dashboard.html" class="btn btn-outline">Cancel</a>
+        <button type="submit" class="btn btn-primary">Save Profile Changes 💾</button>
+      </div>
+    </form>
+  </main>
+
+  <script type="module">
+    import { initTheme, showToast } from '../js/utils.js';
+    import { Auth } from '../js/auth.js';
+    import { API, getCurrentUser } from '../js/api.js';
+
+    initTheme();
+    Auth.renderNavAuth();
+
+    const user = getCurrentUser() || {};
+    const skillsContainer = document.getElementById('skills-list-container');
+
+    // Populate existing fields
+    document.getElementById('full-name').value = user.full_name || '';
+    document.getElementById('college').value = user.college || '';
+    document.getElementById('branch').value = user.branch || '';
+    document.getElementById('year').value = user.year || '3rd Year';
+    document.getElementById('bio').value = user.bio || '';
+    document.getElementById('phone').value = user.phone || '';
+    document.getElementById('whatsapp').value = user.whatsapp_number || user.phone || '';
+    document.getElementById('show-phone').checked = user.show_phone !== false;
+    document.getElementById('show-whatsapp').checked = user.show_whatsapp !== false;
+    document.getElementById('avail-hours').value = user.availability_hours || 15;
+    document.getElementById('avail-status').value = user.status || 'open';
+    document.getElementById('github-url').value = user.github_url || '';
+    document.getElementById('linkedin-url').value = user.linkedin_url || '';
+    document.getElementById('portfolio-url').value = user.portfolio_url || '';
+
+    // Render Skill Rows
+    function renderSkillRow(name = '', level = 'intermediate') {
+      const row = document.createElement('div');
+      row.className = 'flex items-center gap-3 skill-row';
+      row.innerHTML = `
+        <input type="text" class="input skill-name-input flex-1" placeholder="Skill name (e.g. React, PyTorch, Figma)" value="${name}" required>
+        <select class="select skill-level-input" style="width: 160px;">
+          <option value="beginner" ${level === 'beginner' ? 'selected' : ''}>Beginner</option>
+          <option value="intermediate" ${level === 'intermediate' ? 'selected' : ''}>Intermediate</option>
+          <option value="advanced" ${level === 'advanced' ? 'selected' : ''}>Advanced</option>
+        </select>
+        <button type="button" class="btn btn-outline btn-sm remove-skill-btn" style="color:var(--color-danger); border-color:var(--border-color);">✕</button>
+      `;
+
+      row.querySelector('.remove-skill-btn').onclick = () => row.remove();
+      skillsContainer.appendChild(row);
+    }
+
+    const currentSkills = user.skills || [{ name: 'JavaScript', level: 'intermediate' }];
+    currentSkills.forEach(s => {
+      const name = typeof s === 'string' ? s : s.name;
+      const level = typeof s === 'object' && s.level ? s.level : 'intermediate';
+      renderSkillRow(name, level);
+    });
+
+    document.getElementById('add-skill-btn').onclick = () => renderSkillRow();
+
+    // Form Submit
+    document.getElementById('profile-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const skillRows = skillsContainer.querySelectorAll('.skill-row');
+      const skills = Array.from(skillRows).map(row => ({
+        name: row.querySelector('.skill-name-input').value.trim(),
+        level: row.querySelector('.skill-level-input').value
+      })).filter(s => s.name.length > 0);
+
+      const updates = {
+        full_name: document.getElementById('full-name').value.trim(),
+        college: document.getElementById('college').value.trim(),
+        branch: document.getElementById('branch').value.trim(),
+        year: document.getElementById('year').value,
+        bio: document.getElementById('bio').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        whatsapp_number: document.getElementById('whatsapp').value.trim(),
+        show_phone: document.getElementById('show-phone').checked,
+        show_whatsapp: document.getElementById('show-whatsapp').checked,
+        availability_hours: parseInt(document.getElementById('avail-hours').value) || 10,
+        status: document.getElementById('avail-status').value,
+        github_url: document.getElementById('github-url').value.trim(),
+        linkedin_url: document.getElementById('linkedin-url').value.trim(),
+        portfolio_url: document.getElementById('portfolio-url').value.trim(),
+        skills
+      };
+
+      try {
+        await API.updateProfile(updates);
+        showToast('Profile updated successfully! 🎉', 'success');
+        setTimeout(() => {
+          window.location.href = 'dashboard.html';
+        }, 800);
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    });
+  </script>
+</body>
+</html>

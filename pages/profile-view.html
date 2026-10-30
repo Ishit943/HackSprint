@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Profile - Monster Match</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+
+  <style>
+    .profile-header-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-2xl);
+      padding: var(--spacing-8);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: var(--spacing-8);
+    }
+
+    .profile-cover-gradient {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 120px;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+      opacity: 0.85;
+    }
+
+    .profile-avatar-wrapper {
+      position: relative;
+      margin-top: 40px;
+      display: inline-block;
+    }
+
+    .profile-avatar {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      border: 4px solid var(--bg-surface);
+      background: var(--bg-surface-subtle);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .profile-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: var(--spacing-8);
+    }
+
+    @media (max-width: 800px) {
+      .profile-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="../index.html" class="nav-brand">
+        <div class="brand-icon">👾</div>
+        <span>Monster<span style="color: var(--color-primary);">Match</span></span>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="explore.html" class="nav-link">🔍 Explore Students</a></li>
+          <li><a href="projects.html" class="nav-link">📋 Projects</a></li>
+          <li><a href="connections.html" class="nav-link">💬 Connections</a></li>
+          <li><a href="dashboard.html" class="nav-link">⚡ Dashboard</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="btn-icon-toggle theme-toggle-btn" id="theme-toggle" title="Toggle Theme">🌙</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" style="padding-top: var(--spacing-8); padding-bottom: var(--spacing-16);">
+    <div id="profile-container">
+      <div style="text-align: center; padding: var(--spacing-16);">
+        <div class="float-anim" style="font-size: 3rem;">👾</div>
+        <p>Loading profile...</p>
+      </div>
+    </div>
+  </main>
+
+  <script type="module">
+    import { initTheme, showToast, formatWhatsAppUrl, formatTelUrl, calculateProfileCompleteness } from '../js/utils.js';
+    import { Auth } from '../js/auth.js';
+    import { API, getCurrentUser } from '../js/api.js';
+
+    initTheme();
+    Auth.renderNavAuth();
+
+    async function loadProfile() {
+      const container = document.getElementById('profile-container');
+      const params = new URLSearchParams(window.location.search);
+      const studentId = params.get('id') || getCurrentUser()?.id;
+
+      try {
+        const student = await API.getStudentById(studentId);
+        if (!student) {
+          container.innerHTML = `
+            <div class="card" style="text-align:center; padding:var(--spacing-12);">
+              <h3>Profile not found</h3>
+              <a href="explore.html" class="btn btn-primary" style="margin-top:var(--spacing-4);">Explore Teammates</a>
+            </div>
+          `;
+          return;
+        }
+
+        const currentUser = getCurrentUser();
+        const isSelf = currentUser && currentUser.id === student.id;
+        const completeness = calculateProfileCompleteness(student);
+
+        const waUrl = student.unlockedWhatsApp 
+          ? formatWhatsAppUrl(student.unlockedWhatsApp, `Hi ${student.full_name}, I saw your profile on Monster Match!`)
+          : '#';
+        const telUrl = student.unlockedPhone 
+          ? formatTelUrl(student.unlockedPhone) 
+          : '#';
+
+        container.innerHTML = `
+          <!-- Profile Header Card -->
+          <div class="profile-header-card">
+            <div class="profile-cover-gradient"></div>
+            
+            <div class="flex items-end justify-between flex-wrap gap-4" style="position:relative; z-index:2;">
+              <div class="flex items-end gap-5 flex-wrap">
+                <div class="profile-avatar-wrapper">
+                  <img src="${student.avatar_url}" alt="${student.full_name}" class="profile-avatar" />
+                </div>
+                <div style="margin-bottom: 8px;">
+                  <div class="flex items-center gap-2">
+                    <h2 style="margin-bottom: 2px;">${student.full_name}</h2>
+                    ${student.email_verified ? '<span class="badge badge-open" title="College Verified Student">🎓 Verified Student</span>' : ''}
+                  </div>
+                  <p style="margin-bottom: 0; color: var(--text-secondary); font-size: var(--font-size-sm);">
+                    ${student.branch} • ${student.year} • 🏫 ${student.college || 'JUET'}
+                  </p>
+                </div>
+              </div>
+
+              <div style="margin-bottom: 8px;">
+                ${isSelf ? `
+                  <a href="profile-edit.html" class="btn btn-outline btn-sm">✏️ Edit Profile</a>
+                ` : student.canViewContact ? `
+                  <div class="flex items-center gap-2">
+                    <a href="${waUrl}" target="_blank" rel="noopener" class="btn btn-whatsapp btn-sm">
+                      💬 WhatsApp
+                    </a>
+                    <a href="${telUrl}" class="btn btn-phone btn-sm">
+                      📞 Call
+                    </a>
+                  </div>
+                ` : `
+                  <button id="profile-connect-btn" class="btn btn-primary btn-sm">
+                    Connect to Unlock Contact 👾
+                  </button>
+                `}
+              </div>
+            </div>
+          </div>
+
+          <!-- Two Column Profile Content -->
+          <div class="profile-grid">
+            <!-- Left Column: Bio, Skills, Interests -->
+            <div>
+              <!-- About Bio -->
+              <div class="card" style="margin-bottom: var(--spacing-6);">
+                <h3 style="font-size: var(--font-size-lg); margin-bottom: var(--spacing-3);">About & Bio</h3>
+                <p style="font-size: var(--font-size-base); line-height: 1.6; color: var(--text-secondary); margin-bottom: 0;">
+                  ${student.bio || 'No bio provided yet.'}
+                </p>
+              </div>
+
+              <!-- Technical Skills & Proficiency -->
+              <div class="card" style="margin-bottom: var(--spacing-6);">
+                <div class="flex items-center justify-between" style="margin-bottom: var(--spacing-4);">
+                  <h3 style="font-size: var(--font-size-lg); margin-bottom: 0;">Technical Skills</h3>
+                  <span style="font-size: var(--font-size-xs); color: var(--text-muted);">Proficiency Breakdown</span>
+                </div>
+                <div class="flex flex-wrap gap-3">
+                  ${student.skills.map(s => {
+                    const name = typeof s === 'string' ? s : s.name;
+                    const lvl = typeof s === 'object' && s.level ? s.level : 'intermediate';
+                    return `
+                      <div class="chip chip-${lvl}" style="padding: 0.5rem 0.85rem; font-size: var(--font-size-sm); display:flex; gap:6px; align-items:center;">
+                        <strong>${name}</strong>
+                        <span style="opacity:0.8; font-size:11px; text-transform:capitalize;">• ${lvl}</span>
+                      </div>
+                    `;
+                  }).join('')}
+                </div>
+              </div>
+
+              <!-- Hackathon Interests -->
+              <div class="card">
+                <h3 style="font-size: var(--font-size-lg); margin-bottom: var(--spacing-3);">Hackathon Interests</h3>
+                <div class="flex flex-wrap gap-2">
+                  ${(student.interests || []).map(i => `
+                    <span class="chip" style="background:var(--color-primary-light); color:var(--color-primary); border-color:var(--color-primary); font-size:var(--font-size-xs);">
+                      🏷️ ${i}
+                    </span>
+                  `).join('')}
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Column: Availability, Contact Card, Completeness -->
+            <div>
+              <!-- Contact Details & Privacy Box (Phase 4) -->
+              <div class="card" style="margin-bottom: var(--spacing-6); border-top: 4px solid ${student.canViewContact ? 'var(--color-whatsapp)' : 'var(--border-color)'};">
+                <h4 style="margin-bottom: var(--spacing-3); display:flex; align-items:center; gap:6px;">
+                  ${student.canViewContact ? '🔓 Contact Details' : '🔒 Direct Contact Locked'}
+                </h4>
+                
+                ${student.canViewContact ? `
+                  <div style="display:flex; flex-direction:column; gap: var(--spacing-3);">
+                    <div>
+                      <span style="font-size:var(--font-size-xs); color:var(--text-muted); font-weight:600;">WHATSAPP</span>
+                      <div style="font-size:var(--font-size-base); font-weight:700; color:var(--text-primary);">
+                        ${student.unlockedWhatsApp || 'Not provided'}
+                      </div>
+                    </div>
+                    <div>
+                      <span style="font-size:var(--font-size-xs); color:var(--text-muted); font-weight:600;">PHONE NUMBER</span>
+                      <div style="font-size:var(--font-size-base); font-weight:700; color:var(--text-primary);">
+                        ${student.unlockedPhone || 'Not provided'}
+                      </div>
+                    </div>
+                    <div class="flex gap-2" style="margin-top:var(--spacing-2);">
+                      <a href="${waUrl}" target="_blank" rel="noopener" class="btn btn-whatsapp btn-sm flex-1">
+                        💬 Open WhatsApp
+                      </a>
+                      <a href="${telUrl}" class="btn btn-phone btn-sm flex-1">
+                        📞 Call
+                      </a>
+                    </div>
+                  </div>
+                ` : `
+                  <p style="font-size:var(--font-size-sm); margin-bottom: var(--spacing-4);">
+                    This student's WhatsApp number and phone line are protected to prevent unsolicited spam.
+                  </p>
+                  <button id="unlock-request-btn" class="btn btn-primary btn-sm" style="width:100%;">
+                    Send Connection Request to Unlock
+                  </button>
+                `}
+              </div>
+
+              <!-- Availability -->
+              <div class="card" style="margin-bottom: var(--spacing-6);">
+                <h4 style="margin-bottom: var(--spacing-3);">Availability</h4>
+                <div style="font-size: var(--font-size-2xl); font-weight: 800; color: var(--color-primary); margin-bottom: 4px;">
+                  ${student.availability_hours || 12} hrs/week
+                </div>
+                <p style="font-size: var(--font-size-sm); color: var(--text-secondary); margin-bottom: 0;">
+                  ${student.availability_notes || 'Evenings & Weekends'}
+                </p>
+              </div>
+
+              <!-- Profile Completeness Meter -->
+              <div class="card">
+                <div class="flex items-center justify-between" style="margin-bottom: var(--spacing-2);">
+                  <span style="font-size: var(--font-size-xs); font-weight: 700;">Profile Completeness</span>
+                  <span style="font-size: var(--font-size-sm); font-weight: 800; color: var(--color-primary);">${completeness}%</span>
+                </div>
+                <div class="progress-bar-bg" style="margin-bottom: var(--spacing-3);">
+                  <div class="progress-bar-fill" style="width: ${completeness}%;"></div>
+                </div>
+                <span style="font-size: 11px; color: var(--text-muted);">
+                  ${completeness >= 80 ? '🌟 Highly complete profile!' : 'Add more skills and portfolio links to reach 100%.'}
+                </span>
+              </div>
+            </div>
+          </div>
+        `;
+
+        // Connect button handler
+        const connectBtn = document.getElementById('profile-connect-btn') || document.getElementById('unlock-request-btn');
+        if (connectBtn) {
+          connectBtn.addEventListener('click', async () => {
+            try {
+              await API.sendConnectionRequest({
+                receiverId: student.id,
+                message: `Hey ${student.full_name}! Let's team up for a hackathon on Monster Match.`
+              });
+              showToast(`Connection request sent to ${student.full_name}! 👾`, 'success');
+              connectBtn.textContent = '⏳ Request Pending';
+              connectBtn.disabled = true;
+            } catch (e) {
+              showToast(e.message, 'error');
+            }
+          });
+        }
+
+      } catch (err) {
+        console.error(err);
+        container.innerHTML = '<p style="color:var(--color-danger);">Failed to load profile.</p>';
+      }
+    }
+
+    loadProfile();
+  </script>
+</body>
+</html>

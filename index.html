@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monster Match - Find Your Project Teammate</title>
+  <meta name="description" content="Connect with passionate student developers, designers, and AI creators for hackathons and college projects with instant WhatsApp and call links.">
+  
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+
+  <style>
+    /* Hero Section Styles */
+    .hero {
+      position: relative;
+      padding: var(--spacing-16) 0 var(--spacing-12);
+      overflow: hidden;
+      background: radial-gradient(circle at 50% 10%, var(--color-primary-light) 0%, transparent 60%);
+    }
+
+    [data-theme="dark"] .hero {
+      background: radial-gradient(circle at 50% 10%, rgba(124, 58, 237, 0.15) 0%, transparent 70%);
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: 0.4rem 1rem;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-full);
+      font-size: var(--font-size-xs);
+      font-weight: 700;
+      color: var(--color-primary);
+      margin-bottom: var(--spacing-6);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .hero-title {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: var(--spacing-6);
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero-desc {
+      font-size: var(--font-size-lg);
+      color: var(--text-secondary);
+      max-width: 680px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: var(--spacing-8);
+      line-height: 1.6;
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--spacing-6);
+      max-width: 650px;
+      margin: var(--spacing-12) auto 0;
+      padding: var(--spacing-6);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-2xl);
+      box-shadow: var(--shadow-md);
+    }
+
+    .stat-number {
+      font-size: var(--font-size-3xl);
+      font-weight: 800;
+      color: var(--color-primary);
+    }
+
+    .stat-label {
+      font-size: var(--font-size-xs);
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Feature Grid Section */
+    .section-header {
+      text-align: center;
+      max-width: 650px;
+      margin: 0 auto var(--spacing-10);
+    }
+
+    .feature-icon-box {
+      width: 52px;
+      height: 52px;
+      border-radius: var(--radius-xl);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      margin-bottom: var(--spacing-4);
+      background: var(--color-primary-light);
+      color: var(--color-primary);
+    }
+
+    /* Live Preview Cards */
+    .preview-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-2xl);
+      padding: var(--spacing-6);
+      transition: all var(--transition-normal);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .preview-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-xl);
+      border-color: var(--color-primary);
+    }
+
+    /* Step Card */
+    .step-badge {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-full);
+      background: var(--color-primary);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: var(--font-size-sm);
+      margin-bottom: var(--spacing-3);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="nav-brand">
+        <div class="brand-icon">👾</div>
+        <span>Monster<span style="color: var(--color-primary);">Match</span></span>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="pages/explore.html" class="nav-link">🔍 Explore Students</a></li>
+          <li><a href="pages/projects.html" class="nav-link">📋 Projects</a></li>
+          <li><a href="pages/connections.html" class="nav-link">💬 Connections</a></li>
+          <li><a href="pages/dashboard.html" class="nav-link">⚡ Dashboard</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="btn-icon-toggle theme-toggle-btn" id="theme-toggle" title="Toggle Theme">🌙</button>
+        <a href="pages/login.html" class="btn btn-outline btn-sm">Log in</a>
+        <a href="pages/signup.html" class="btn btn-primary btn-sm">Sign up</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <main>
+    <section class="hero">
+      <div class="container" style="text-align: center;">
+        <div class="hero-badge float-anim">
+          <span>🏆 Built for Hackathons & College Projects</span>
+          <span style="background: var(--color-secondary); color:#064e3b; padding: 2px 6px; border-radius: 99px; font-size:10px;">PS10</span>
+        </div>
+
+        <h1 class="hero-title">
+          Stop solo-hacking. <br>
+          Find your <span class="gradient-text">Monster Teammate</span> in minutes.
+        </h1>
+
+        <p class="hero-desc">
+          Create your student skill profile, post requirements, filter candidates by proficiency, 
+          and connect instantly via in-app requests, verified phone calls, and WhatsApp.
+        </p>
+
+        <div class="flex items-center justify-center gap-4 flex-wrap">
+          <a href="pages/explore.html" class="btn btn-primary btn-lg">
+            <span>🔍 Explore Teammates</span>
+          </a>
+          <a href="pages/project-new.html" class="btn btn-outline btn-lg">
+            <span>✨ Post a Project</span>
+          </a>
+        </div>
+
+        <div class="hero-stats">
+          <div>
+            <div class="stat-number">500+</div>
+            <div class="stat-label">Student Monsters</div>
+          </div>
+          <div>
+            <div class="stat-number">120+</div>
+            <div class="stat-label">Hackathon Teams</div>
+          </div>
+          <div>
+            <div class="stat-number">98%</div>
+            <div class="stat-label">Match Rate</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Key Features Section -->
+    <section style="padding: var(--spacing-16) 0; background-color: var(--bg-surface-subtle);">
+      <div class="container">
+        <div class="section-header">
+          <span class="badge" style="background: var(--color-primary-light); color: var(--color-primary); margin-bottom: var(--spacing-2);">Why Monster Match</span>
+          <h2>Everything you need to form winning teams</h2>
+          <p>Designed specifically for collegiate hackers, open-source builders, and sprint competitors.</p>
+        </div>
+
+        <div class="grid grid-cols-3 gap-6">
+          <!-- Feature 1 -->
+          <div class="card card-hover">
+            <div class="feature-icon-box">🎯</div>
+            <h3>Skill & Proficiency Profiles</h3>
+            <p>Showcase skills with verified proficiency tags (Beginner, Intermediate, Advanced), availability hours, GitHub, and past hackathon credentials.</p>
+          </div>
+
+          <!-- Feature 2 -->
+          <div class="card card-hover">
+            <div class="feature-icon-box">🧠</div>
+            <h3>Smart Match Score</h3>
+            <p>Our algorithm matches candidate skills, availability overlaps, and interests against your project requirements to calculate a real-time compatibility %.</p>
+          </div>
+
+          <!-- Feature 3 -->
+          <div class="card card-hover">
+            <div class="feature-icon-box">⚡</div>
+            <h3>1-Click WhatsApp & Call</h3>
+            <p>No more waiting on emails. Once a connection request is accepted, phone and WhatsApp contact are unlocked for instant chat via <code>wa.me</code> links.</p>
+          </div>
+
+          <!-- Feature 4 -->
+          <div class="card card-hover">
+            <div class="feature-icon-box">🔎</div>
+            <h3>Advanced Search & AND/OR Filters</h3>
+            <p>Filter candidates by multiple skills, branch, year, college, and availability with instant debounced live search.</p>
+          </div>
+
+          <!-- Feature 5 -->
+          <div class="card card-hover">
+            <div class="feature-icon-box">📌</div>
+            <h3>Project Requirement Posts</h3>
+            <p>Post hackathon requirements specifying exact roles needed (e.g. 1 Frontend Dev, 1 ML Engineer) with custom slots and deadlines.</p>
+          </div>
+
+          <!-- Feature 6 -->
+          <div class="card card-hover">
+            <div class="feature-icon-box">🛡️</div>
+            <h3>Privacy & Trust By Default</h3>
+            <p>Phone numbers and social links remain strictly private until you accept a connection request, keeping student data spam-free.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Teammates Live Showcase -->
+    <section style="padding: var(--spacing-16) 0;">
+      <div class="container">
+        <div class="flex items-center justify-between flex-wrap gap-4" style="margin-bottom: var(--spacing-8);">
+          <div>
+            <span class="badge badge-open" style="margin-bottom: var(--spacing-2);">Live Directory</span>
+            <h2>Top Recommended Teammates</h2>
+            <p>Ready to join hackathon teams right now.</p>
+          </div>
+          <a href="pages/explore.html" class="btn btn-outline">View All Students →</a>
+        </div>
+
+        <div id="featured-students-grid" class="grid grid-cols-3 gap-6">
+          <!-- Populated dynamically via JS -->
+          <div class="card" style="text-align: center; padding: var(--spacing-8);">
+            <div class="float-anim" style="font-size: 3rem;">👾</div>
+            <p style="margin-top: var(--spacing-2);">Loading monster profiles...</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section style="padding: var(--spacing-16) 0; background-color: var(--bg-surface-subtle);">
+      <div class="container">
+        <div class="section-header">
+          <span class="badge" style="background: var(--color-secondary-light); color: #065f46; margin-bottom: var(--spacing-2);">Simple 3-Step Flow</span>
+          <h2>How Monster Match Works</h2>
+          <p>From solo builder to fully staffed hackathon squad in under five minutes.</p>
+        </div>
+
+        <div class="grid grid-cols-3 gap-8">
+          <div class="card" style="border-top: 4px solid var(--color-primary);">
+            <div class="step-badge">1</div>
+            <h3>Create Skill Profile</h3>
+            <p>List your technical skills, proficiency levels, availability per week, and college details. Our profile completeness meter helps you stand out.</p>
+          </div>
+
+          <div class="card" style="border-top: 4px solid var(--color-secondary);">
+            <div class="step-badge" style="background: var(--color-secondary); color:#064e3b;">2</div>
+            <h3>Search or Post Projects</h3>
+            <p>Use multi-skill filters (AND/OR mode) to pinpoint exact teammates, or post your hackathon project with open role slots.</p>
+          </div>
+
+          <div class="card" style="border-top: 4px solid var(--color-whatsapp);">
+            <div class="step-badge" style="background: var(--color-whatsapp);">3</div>
+            <h3>Connect & WhatsApp</h3>
+            <p>Send a connection request. As soon as it's accepted, tap the WhatsApp or Call button to kick off project planning immediately.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer style="padding: var(--spacing-12) 0 var(--spacing-8); border-top: 1px solid var(--border-color); background: var(--bg-surface);">
+    <div class="container">
+      <div class="flex items-center justify-between flex-wrap gap-4" style="margin-bottom: var(--spacing-6);">
+        <div class="flex items-center gap-3">
+          <div class="brand-icon" style="width:32px; height:32px; font-size:18px;">👾</div>
+          <span style="font-weight: 800; font-size: var(--font-size-lg);">Monster Match</span>
+        </div>
+        <p style="margin-bottom: 0; font-size: var(--font-size-sm);">
+          Find Your Project Teammate • Runtime Terror HackSprint 2026
+        </p>
+      </div>
+      <div style="text-align: center; font-size: var(--font-size-xs); color: var(--text-muted); border-top: 1px solid var(--border-color); padding-top: var(--spacing-6);">
+        &copy; 2026 Monster Match. Built with HTML5, CSS3, ES6 JavaScript & Supabase.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script type="module">
+    import { initTheme } from './js/utils.js';
+    import { Auth } from './js/auth.js';
+    import { API } from './js/api.js';
+    import { formatWhatsAppUrl, formatTelUrl } from './js/utils.js';
+
+    // 1. Initialize Theme & Nav Auth
+    initTheme();
+    Auth.renderNavAuth();
+
+    // 2. Load Featured Student Cards
+    async function loadFeaturedStudents() {
+      const grid = document.getElementById('featured-students-grid');
+      if (!grid) return;
+
+      try {
+        const students = await API.getStudents();
+        const topStudents = students.slice(0, 3);
+
+        grid.innerHTML = topStudents.map(student => `
+          <div class="preview-card card-hover">
+            <div>
+              <div class="flex items-center justify-between" style="margin-bottom: var(--spacing-4);">
+                <div class="flex items-center gap-3">
+                  <img src="${student.avatar_url}" alt="${student.full_name}" style="width: 52px; height: 52px; border-radius: 50%; border: 2px solid var(--color-primary); background: var(--bg-surface-subtle);" />
+                  <div>
+                    <h4 style="margin-bottom: 2px;">${student.full_name}</h4>
+                    <span style="font-size: var(--font-size-xs); color: var(--text-muted);">${student.branch} • ${student.year}</span>
+                  </div>
+                </div>
+                <div class="match-score" title="Match compatibility score">
+                  ⚡ ${student.matchScore || 92}%
+                </div>
+              </div>
+
+              <p style="font-size: var(--font-size-sm); margin-bottom: var(--spacing-4); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                ${student.bio}
+              </p>
+
+              <div class="flex flex-wrap gap-2" style="margin-bottom: var(--spacing-4);">
+                ${student.skills.map(skill => {
+                  const name = typeof skill === 'string' ? skill : skill.name;
+                  const lvl = typeof skill === 'object' && skill.level ? skill.level : 'intermediate';
+                  return `<span class="chip chip-${lvl}">${name}</span>`;
+                }).join('')}
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between" style="border-top: 1px solid var(--border-color); padding-top: var(--spacing-4); margin-top: auto;">
+              <span class="badge ${student.status === 'open' ? 'badge-open' : 'badge-busy'}">
+                ● ${student.status === 'open' ? 'Open to Teams' : 'Busy'}
+              </span>
+              <a href="pages/profile-view.html?id=${student.id}" class="btn btn-outline btn-sm">
+                View Profile →
+              </a>
+            </div>
+          </div>
+        `).join('');
+      } catch (err) {
+        console.error(err);
+        grid.innerHTML = '<p style="color:var(--color-danger);">Unable to load featured students.</p>';
+      }
+    }
+
+    loadFeaturedStudents();
+  </script>
+</body>
+</html>

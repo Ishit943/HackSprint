@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up - Monster Match</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="../index.html" class="nav-brand">
+        <div class="brand-icon">👾</div>
+        <span>Monster<span style="color: var(--color-primary);">Match</span></span>
+      </a>
+      <div class="nav-actions">
+        <button class="btn-icon-toggle theme-toggle-btn" id="theme-toggle" title="Toggle Theme">🌙</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container container-narrow" style="padding-top: var(--spacing-10); padding-bottom: var(--spacing-16); max-width: 520px;">
+    <div style="text-align: center; margin-bottom: var(--spacing-6);">
+      <div class="float-anim" style="font-size: 3rem; margin-bottom: var(--spacing-2);">👾</div>
+      <h2>Join Monster Match</h2>
+      <p>Create your student skill profile and unlock instant WhatsApp & Call partner matching.</p>
+    </div>
+
+    <form id="signup-form" class="card">
+      <div class="form-group">
+        <label class="form-label" for="signup-name">Full Name *</label>
+        <input type="text" id="signup-name" class="input" placeholder="e.g. Priyanshu Singh" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="signup-email">Email Address *</label>
+        <input type="email" id="signup-email" class="input" placeholder="e.g. student@juet.ac.in" required>
+        <span style="font-size: 11px; color: var(--color-primary); font-weight: 600; margin-top: 4px;">
+          🎓 Tip: Use your college email (.ac.in or .edu) to automatically earn a Verified Student badge!
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="signup-password">Create Password *</label>
+        <input type="password" id="signup-password" class="input" placeholder="At least 6 characters" minlength="6" required>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div class="form-group">
+          <label class="form-label" for="signup-branch">Branch / Major</label>
+          <input type="text" id="signup-branch" class="input" placeholder="CSE / IT / ECE" value="Computer Science">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="signup-year">Year</label>
+          <select id="signup-year" class="select">
+            <option value="1st Year">1st Year</option>
+            <option value="2nd Year">2nd Year</option>
+            <option value="3rd Year" selected>3rd Year</option>
+            <option value="4th Year">4th Year</option>
+          </select>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: var(--spacing-4);">
+        Create Monster Profile 🚀
+      </button>
+
+      <p style="text-align: center; font-size: var(--font-size-sm); margin-top: var(--spacing-6); margin-bottom: 0;">
+        Already have an account? <a href="login.html" style="font-weight: 700;">Log in</a>
+      </p>
+    </form>
+  </main>
+
+  <script type="module">
+    import { initTheme, showToast } from '../js/utils.js';
+    import { Auth } from '../js/auth.js';
+
+    initTheme();
+
+    const form = document.getElementById('signup-form');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('signup-name').value;
+      const email = document.getElementById('signup-email').value;
+      const password = document.getElementById('signup-password').value;
+      const branch = document.getElementById('signup-branch').value;
+      const year = document.getElementById('signup-year').value;
+
+      try {
+        await Auth.signUp({
+          full_name: name,
+          email,
+          password,
+          branch,
+          year,
+          college: 'Jaypee University of Engg & Tech'
+        });
+        setTimeout(() => {
+          window.location.href = 'profile-edit.html';
+        }, 600);
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    });
+  </script>
+</body>
+</html>

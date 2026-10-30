@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Explore Teammates - Monster Match</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+
+  <style>
+    .explore-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: var(--spacing-8);
+      padding: var(--spacing-8) 0;
+    }
+
+    @media (max-width: 900px) {
+      .explore-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .filter-panel {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-2xl);
+      padding: var(--spacing-6);
+      position: sticky;
+      top: 90px;
+      height: fit-content;
+    }
+
+    .filter-group {
+      margin-bottom: var(--spacing-6);
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: var(--spacing-5);
+    }
+
+    .filter-group:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .filter-title {
+      font-size: var(--font-size-sm);
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: var(--spacing-3);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .skill-tags-selector {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-2);
+      max-height: 200px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .selectable-tag {
+      cursor: pointer;
+      user-select: none;
+      transition: all var(--transition-fast);
+      border: 1px solid var(--border-color);
+      background: var(--bg-surface-subtle);
+      color: var(--text-secondary);
+      font-size: var(--font-size-xs);
+      font-weight: 600;
+      padding: 0.35rem 0.65rem;
+      border-radius: var(--radius-lg);
+    }
+
+    .selectable-tag:hover {
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+    }
+
+    .selectable-tag.selected {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+      color: #ffffff;
+      box-shadow: 0 2px 8px var(--color-primary-glow);
+    }
+
+    .toggle-group {
+      display: flex;
+      background: var(--bg-surface-subtle);
+      border-radius: var(--radius-lg);
+      padding: 3px;
+      gap: 3px;
+    }
+
+    .toggle-btn {
+      flex: 1;
+      padding: 4px 8px;
+      font-size: var(--font-size-xs);
+      font-weight: 600;
+      border-radius: var(--radius-md);
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      cursor: pointer;
+      text-align: center;
+      transition: all var(--transition-fast);
+    }
+
+    .toggle-btn.active {
+      background: var(--bg-surface);
+      color: var(--color-primary);
+      box-shadow: var(--shadow-sm);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="../index.html" class="nav-brand">
+        <div class="brand-icon">👾</div>
+        <span>Monster<span style="color: var(--color-primary);">Match</span></span>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="explore.html" class="nav-link active">🔍 Explore Students</a></li>
+          <li><a href="projects.html" class="nav-link">📋 Projects</a></li>
+          <li><a href="connections.html" class="nav-link">💬 Connections</a></li>
+          <li><a href="dashboard.html" class="nav-link">⚡ Dashboard</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="btn-icon-toggle theme-toggle-btn" id="theme-toggle" title="Toggle Theme">🌙</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="explore-layout">
+      
+      <!-- Filter Sidebar (Phase 2 Search & Filter Engine) -->
+      <aside class="filter-panel">
+        <div class="flex items-center justify-between" style="margin-bottom: var(--spacing-4);">
+          <h3 style="font-size: var(--font-size-lg); margin-bottom: 0;">Filters</h3>
+          <button id="reset-filters-btn" class="btn btn-outline btn-sm" style="font-size: 11px; padding: 2px 8px;">Reset</button>
+        </div>
+
+        <!-- Skill Filter & AND/OR Mode -->
+        <div class="filter-group">
+          <div class="filter-title">
+            <span>Required Skills</span>
+            <div class="toggle-group" title="Match all skills (AND) or any skill (OR)">
+              <button class="toggle-btn" id="mode-and">AND</button>
+              <button class="toggle-btn active" id="mode-or">OR</button>
+            </div>
+          </div>
+          <div class="skill-tags-selector" id="skills-selector-container">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- Academic Filters -->
+        <div class="filter-group">
+          <div class="filter-title">Year of Study</div>
+          <select id="filter-year" class="select">
+            <option value="">All Years</option>
+            <option value="1st Year">1st Year</option>
+            <option value="2nd Year">2nd Year</option>
+            <option value="3rd Year">3rd Year</option>
+            <option value="4th Year">4th Year</option>
+          </select>
+        </div>
+
+        <!-- Availability Status -->
+        <div class="filter-group">
+          <div class="filter-title">Availability Status</div>
+          <select id="filter-status" class="select">
+            <option value="">Any Status</option>
+            <option value="open">Open to Teams</option>
+            <option value="busy">Busy</option>
+          </select>
+        </div>
+
+        <!-- Branch / Major -->
+        <div class="filter-group">
+          <div class="filter-title">Branch / Major</div>
+          <select id="filter-branch" class="select">
+            <option value="">All Branches</option>
+            <option value="Computer Science">Computer Science & Engg</option>
+            <option value="Information Technology">Information Technology</option>
+            <option value="Electronics">Electronics & Comm</option>
+          </select>
+        </div>
+      </aside>
+
+      <!-- Students Grid & Search Top Bar -->
+      <section>
+        <!-- Search and Sort Bar -->
+        <div class="flex items-center justify-between flex-wrap gap-4" style="margin-bottom: var(--spacing-6);">
+          <div class="search-wrapper" style="max-width: 480px;">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="search-input" class="input search-input" placeholder="Search by name, skill, branch, or keywords...">
+          </div>
+
+          <div class="flex items-center gap-3">
+            <span style="font-size: var(--font-size-xs); font-weight: 600; color: var(--text-muted);">Sort by:</span>
+            <select id="sort-select" class="select" style="width: auto; padding: 0.5rem 1rem;">
+              <option value="match">⚡ Smart Match %</option>
+              <option value="availability">⏱️ Most Available</option>
+              <option value="name">🔤 Name (A-Z)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Active Filter Chips -->
+        <div id="active-filters-bar" class="flex items-center gap-2 flex-wrap" style="margin-bottom: var(--spacing-4); min-height: 28px;"></div>
+
+        <!-- Results Summary -->
+        <div class="flex items-center justify-between" style="margin-bottom: var(--spacing-4);">
+          <span id="results-count" style="font-size: var(--font-size-sm); font-weight: 600; color: var(--text-secondary);">
+            Loading candidate monsters...
+          </span>
+        </div>
+
+        <!-- Students Cards Grid -->
+        <div id="students-grid" class="grid grid-cols-2 gap-6">
+          <!-- Dynamic cards injected via JS -->
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Connect Request Modal (Phase 4) -->
+  <div class="modal-overlay" id="connect-modal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3 style="margin-bottom: 0;">Request to Connect</h3>
+        <button id="close-modal-btn" class="btn btn-outline btn-sm" style="border:none; font-size:18px;">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="flex items-center gap-3" style="margin-bottom: var(--spacing-5);">
+          <img id="modal-target-avatar" src="" alt="Target" style="width: 48px; height: 48px; border-radius: 50%; border:2px solid var(--color-primary);">
+          <div>
+            <h4 id="modal-target-name" style="margin-bottom: 2px;">Name</h4>
+            <span id="modal-target-branch" style="font-size: var(--font-size-xs); color: var(--text-muted);">Branch</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Associate with a Project (Optional)</label>
+          <select id="modal-project-select" class="select">
+            <option value="">General Connection / Hackathon Partner</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Personal Message</label>
+          <textarea id="modal-message-input" class="textarea" rows="4" placeholder="Hi! I loved your skill profile and would love to team up on..."></textarea>
+        </div>
+
+        <div style="background: var(--bg-surface-subtle); padding: var(--spacing-3); border-radius: var(--radius-lg); font-size: var(--font-size-xs); color: var(--text-secondary);">
+          ℹ️ <strong>Privacy Protection:</strong> Phone number and direct WhatsApp buttons will be unlocked as soon as this request is accepted!
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="cancel-connect-btn" class="btn btn-outline">Cancel</button>
+        <button id="send-connect-btn" class="btn btn-primary">Send Connection Request 👾</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initTheme, debounce, showToast, formatWhatsAppUrl, formatTelUrl } from '../js/utils.js';
+    import { Auth } from '../js/auth.js';
+    import { API, getCurrentUser } from '../js/api.js';
+
+    initTheme();
+    Auth.renderNavAuth();
+
+    // Available Skills List for Multi-select
+    const AVAILABLE_SKILLS = [
+      'React', 'Vue.js', 'Next.js', 'HTML5/CSS3', 'Tailwind CSS', 'TypeScript',
+      'Node.js', 'Python', 'FastAPI', 'Django', 'PyTorch', 'Machine Learning',
+      'Flutter', 'UI/UX Design', 'Figma', 'Solidity / Web3', 'Docker', 'PostgreSQL'
+    ];
+
+    // Filter State
+    const state = {
+      query: '',
+      selectedSkills: [],
+      skillMode: 'OR', // 'AND' or 'OR'
+      year: '',
+      status: '',
+      branch: '',
+      sortBy: 'match',
+      activeTargetStudent: null
+    };
+
+    // Render Skill Selector Chips
+    const skillContainer = document.getElementById('skills-selector-container');
+    skillContainer.innerHTML = AVAILABLE_SKILLS.map(skill => `
+      <div class="selectable-tag" data-skill="${skill}">${skill}</div>
+    `).join('');
+
+    // Attach Tag Click Event
+    skillContainer.addEventListener('click', (e) => {
+      const tag = e.target.closest('.selectable-tag');
+      if (!tag) return;
+      const skill = tag.dataset.skill;
+
+      if (state.selectedSkills.includes(skill)) {
+        state.selectedSkills = state.selectedSkills.filter(s => s !== skill);
+        tag.classList.remove('selected');
+      } else {
+        state.selectedSkills.push(skill);
+        tag.classList.add('selected');
+      }
+
+      applyFilters();
+    });
+
+    // Toggle AND / OR
+    const btnAnd = document.getElementById('mode-and');
+    const btnOr = document.getElementById('mode-or');
+    btnAnd.addEventListener('click', () => {
+      btnAnd.classList.add('active');
+      btnOr.classList.remove('active');
+      state.skillMode = 'AND';
+      applyFilters();
+    });
+    btnOr.addEventListener('click', () => {
+      btnOr.classList.add('active');
+      btnAnd.classList.remove('active');
+      state.skillMode = 'OR';
+      applyFilters();
+    });
+
+    // Inputs & Dropdowns
+    const searchInput = document.getElementById('search-input');
+    searchInput.addEventListener('input', debounce((e) => {
+      state.query = e.target.value;
+      applyFilters();
+    }, 300));
+
+    document.getElementById('filter-year').addEventListener('change', (e) => {
+      state.year = e.target.value;
+      applyFilters();
+    });
+
+    document.getElementById('filter-status').addEventListener('change', (e) => {
+      state.status = e.target.value;
+      applyFilters();
+    });
+
+    document.getElementById('filter-branch').addEventListener('change', (e) => {
+      state.branch = e.target.value;
+      applyFilters();
+    });
+
+    document.getElementById('sort-select').addEventListener('change', (e) => {
+      state.sortBy = e.target.value;
+      applyFilters();
+    });
+
+    document.getElementById('reset-filters-btn').addEventListener('click', () => {
+      state.query = '';
+      state.selectedSkills = [];
+      state.skillMode = 'OR';
+      state.year = '';
+      state.status = '';
+      state.branch = '';
+      state.sortBy = 'match';
+
+      searchInput.value = '';
+      document.getElementById('filter-year').value = '';
+      document.getElementById('filter-status').value = '';
+      document.getElementById('filter-branch').value = '';
+      document.getElementById('sort-select').value = 'match';
+      document.querySelectorAll('.selectable-tag').forEach(t => t.classList.remove('selected'));
+      btnOr.classList.add('active');
+      btnAnd.classList.remove('active');
+
+      applyFilters();
+    });
+
+    // Main Filter Function
+    async function applyFilters() {
+      const grid = document.getElementById('students-grid');
+      const countEl = document.getElementById('results-count');
+      const filterBar = document.getElementById('active-filters-bar');
+
+      // Render Active Chips
+      filterBar.innerHTML = state.selectedSkills.map(s => `
+        <span class="chip chip-intermediate" style="cursor:pointer;" title="Click to remove">
+          ${s} ✕
+        </span>
+      `).join('');
+
+      // Add click handler to active chips to remove them
+      filterBar.querySelectorAll('.chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+          const skill = chip.textContent.replace(' ✕', '').trim();
+          const tag = skillContainer.querySelector(`[data-skill="${skill}"]`);
+          if (tag) tag.classList.remove('selected');
+          state.selectedSkills = state.selectedSkills.filter(s => s !== skill);
+          applyFilters();
+        });
+      });
+
+      try {
+        const students = await API.getStudents({
+          query: state.query,
+          skills: state.selectedSkills,
+          skillMode: state.skillMode,
+          college: '',
+          branch: state.branch,
+          year: state.year,
+          status: state.status,
+          sortBy: state.sortBy
+        });
+
+        countEl.textContent = `Showing ${students.length} student monster${students.length === 1 ? '' : 's'}`;
+
+        if (students.length === 0) {
+          grid.innerHTML = `
+            <div class="card" style="grid-column: 1 / -1; text-align: center; padding: var(--spacing-12);">
+              <div style="font-size: 3rem; margin-bottom: var(--spacing-3);">🧐</div>
+              <h3>No student monsters match your filters</h3>
+              <p>Try switching from AND to OR mode, or clearing some skill filters.</p>
+            </div>
+          `;
+          return;
+        }
+
+        const currentUser = getCurrentUser();
+        const connections = await API.getConnections();
+
+        grid.innerHTML = students.map(student => {
+          // Check connection status
+          const conn = connections.find(c =>
+            (c.sender_id === currentUser?.id && c.receiver_id === student.id) ||
+            (c.receiver_id === currentUser?.id && c.sender_id === student.id)
+          );
+          const isAccepted = conn && conn.status === 'accepted';
+          const isPending = conn && conn.status === 'pending';
+          const isMe = currentUser && currentUser.id === student.id;
+
+          const waUrl = isAccepted && student.phone 
+            ? formatWhatsAppUrl(student.whatsapp_number || student.phone, `Hi ${student.full_name}, let's team up on Monster Match!`) 
+            : '#';
+          const telUrl = isAccepted && student.phone 
+            ? formatTelUrl(student.phone) 
+            : '#';
+
+          return `
+            <div class="card card-hover flex flex-col justify-between">
+              <div>
+                <!-- Top Header -->
+                <div class="flex items-center justify-between" style="margin-bottom: var(--spacing-4);">
+                  <div class="flex items-center gap-3">
+                    <img src="${student.avatar_url}" alt="${student.full_name}" style="width: 56px; height: 56px; border-radius: 50%; border: 2px solid var(--color-primary); background: var(--bg-surface-subtle);" />
+                    <div>
+                      <div class="flex items-center gap-1">
+                        <h4 style="margin-bottom: 0;">${student.full_name}</h4>
+                        ${student.email_verified ? '<span title="Verified College Student" style="cursor:help;">🎓</span>' : ''}
+                      </div>
+                      <span style="font-size: var(--font-size-xs); color: var(--text-muted);">${student.branch} • ${student.year}</span>
+                    </div>
+                  </div>
+                  <div class="match-score" title="Match compatibility score based on skills & availability">
+                    ⚡ ${student.matchScore || 88}%
+                  </div>
+                </div>
+
+                <!-- Bio -->
+                <p style="font-size: var(--font-size-sm); margin-bottom: var(--spacing-4); line-height: 1.5;">
+                  ${student.bio}
+                </p>
+
+                <!-- Availability Badge & College -->
+                <div class="flex items-center gap-2 flex-wrap" style="margin-bottom: var(--spacing-4);">
+                  <span class="chip" style="font-size: 11px;">
+                    ⏱️ ${student.availability_hours || 10} hrs/week
+                  </span>
+                  <span class="chip" style="font-size: 11px;">
+                    🏫 ${student.college || 'JUET'}
+                  </span>
+                </div>
+
+                <!-- Skills -->
+                <div class="flex flex-wrap gap-2" style="margin-bottom: var(--spacing-6);">
+                  ${student.skills.map(s => {
+                    const name = typeof s === 'string' ? s : s.name;
+                    const lvl = typeof s === 'object' && s.level ? s.level : 'intermediate';
+                    return `<span class="chip chip-${lvl}">${name} <small style="opacity:0.7">(${lvl})</small></span>`;
+                  }).join('')}
+                </div>
+              </div>
+
+              <!-- Footer Actions (WhatsApp / Call / Connect) -->
+              <div style="border-top: 1px solid var(--border-color); padding-top: var(--spacing-4);">
+                ${isMe ? `
+                  <span class="badge" style="background:var(--color-primary-light); color:var(--color-primary);">This is You</span>
+                ` : isAccepted ? `
+                  <div class="flex items-center justify-between flex-wrap gap-2">
+                    <span class="badge badge-open">✓ Connected</span>
+                    <div class="flex items-center gap-2">
+                      <a href="${waUrl}" target="_blank" rel="noopener" class="btn btn-whatsapp btn-sm">
+                        💬 WhatsApp
+                      </a>
+                      <a href="${telUrl}" class="btn btn-phone btn-sm">
+                        📞 Call
+                      </a>
+                    </div>
+                  </div>
+                ` : isPending ? `
+                  <div class="flex items-center justify-between">
+                    <span class="badge badge-busy">⏳ Request Pending</span>
+                    <a href="profile-view.html?id=${student.id}" class="btn btn-outline btn-sm">View Profile</a>
+                  </div>
+                ` : `
+                  <div class="flex items-center justify-between">
+                    <a href="profile-view.html?id=${student.id}" class="btn btn-outline btn-sm">View Profile</a>
+                    <button class="btn btn-primary btn-sm connect-trigger-btn" data-id="${student.id}" data-name="${student.full_name}" data-avatar="${student.avatar_url}" data-branch="${student.branch}">
+                      Connect 👾
+                    </button>
+                  </div>
+                `}
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        // Attach click handlers to Connect buttons
+        document.querySelectorAll('.connect-trigger-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            openConnectModal({
+              id: btn.dataset.id,
+              name: btn.dataset.name,
+              avatar: btn.dataset.avatar,
+              branch: btn.dataset.branch
+            });
+          });
+        });
+
+      } catch (err) {
+        console.error(err);
+        grid.innerHTML = '<p style="color:var(--color-danger);">Failed to load students.</p>';
+      }
+    }
+
+    // Modal Handlers
+    const modal = document.getElementById('connect-modal');
+    function openConnectModal(student) {
+      state.activeTargetStudent = student;
+      document.getElementById('modal-target-avatar').src = student.avatar;
+      document.getElementById('modal-target-name').textContent = student.name;
+      document.getElementById('modal-target-branch').textContent = student.branch;
+      document.getElementById('modal-message-input').value = `Hi ${student.name.split(' ')[0]}! I found your profile on Monster Match and would love to team up for a hackathon.`;
+      modal.classList.add('active');
+    }
+
+    document.getElementById('close-modal-btn').onclick = () => modal.classList.remove('active');
+    document.getElementById('cancel-connect-btn').onclick = () => modal.classList.remove('active');
+
+    document.getElementById('send-connect-btn').onclick = async () => {
+      if (!state.activeTargetStudent) return;
+      const msg = document.getElementById('modal-message-input').value;
+
+      try {
+        await API.sendConnectionRequest({
+          receiverId: state.activeTargetStudent.id,
+          message: msg
+        });
+        modal.classList.remove('active');
+        showToast(`Connection request sent to ${state.activeTargetStudent.name}! 👾`, 'success');
+        applyFilters(); // Re-render card with pending state
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    };
+
+    // Initial Filter Load
+    applyFilters();
+  </script>
+</body>
+</html>
