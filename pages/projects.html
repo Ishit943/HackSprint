@@ -103,11 +103,11 @@
 
         if (projects.length === 0) {
           grid.innerHTML = `
-            <div class="card" style="grid-column: 1 / -1; text-align: center; padding: var(--spacing-12);">
-              <div style="font-size: 3rem; margin-bottom: var(--spacing-3);">🚀</div>
-              <h3>No projects found</h3>
-              <p>Be the first one to post a project and recruit monster teammates!</p>
-              <a href="project-new.html" class="btn btn-primary btn-sm">Post a Project Now</a>
+            <div class="grimoire-card" style="grid-column: 1 / -1; text-align: center; padding: var(--spacing-12);">
+              <div style="font-size: 3rem; margin-bottom: var(--spacing-3);">🎃</div>
+              <h3 class="font-creepster" style="color: #ff5500; font-size: 1.8rem;">No Project Grimoires Found</h3>
+              <p>Be the first one to summon a project and recruit monster teammates!</p>
+              <a href="project-new.html" class="btn btn-primary btn-sm">Summon a Project Now 🎃</a>
             </div>
           `;
           return;
@@ -119,11 +119,11 @@
           const isOwner = currentUser && (currentUser.id === p.owner_id);
 
           return `
-            <div class="card card-hover flex flex-col justify-between">
+            <div class="grimoire-card card-hover flex flex-col justify-between">
               <div>
                 <!-- Header -->
                 <div class="flex items-center justify-between" style="margin-bottom: var(--spacing-3);">
-                  <span class="badge" style="background:var(--color-primary-light); color:var(--color-primary); font-size: 11px;">
+                  <span class="badge" style="background:rgba(255, 85, 0, 0.15); color:var(--color-primary); border: 1px solid rgba(255, 85, 0, 0.35); font-size: 11px;">
                     ${p.category || 'Web Project'}
                   </span>
                   <div class="flex items-center gap-2">
@@ -165,7 +165,7 @@
 
                 <!-- Looking For Note (if provided) -->
                 ${p.looking_for ? `
-                  <div style="font-size: 11px; color: #ff8c26; background: rgba(255, 115, 0, 0.08); border: 1px solid rgba(255, 115, 0, 0.2); border-radius: 6px; padding: 6px 10px; margin-bottom: var(--spacing-4);">
+                  <div style="font-size: 11px; color: #ff8c26; background: rgba(255, 85, 0, 0.1); border: 1px solid rgba(255, 85, 0, 0.25); border-radius: 6px; padding: 6px 10px; margin-bottom: var(--spacing-4);">
                     🤝 <strong>Looking for:</strong> ${p.looking_for}
                   </div>
                 ` : ''}
@@ -179,7 +179,7 @@
                       </a>
                     ` : ''}
                     ${p.demo_url ? `
-                      <a href="${p.demo_url}" target="_blank" rel="noopener" class="btn btn-outline btn-sm" style="font-size: 11px; padding: 3px 8px; border-color: var(--color-success); color: var(--color-success);">
+                      <a href="${p.demo_url}" target="_blank" rel="noopener" class="btn btn-outline btn-sm" style="font-size: 11px; padding: 3px 8px; border-color: var(--color-slime); color: var(--color-slime);">
                         🌐 Live Demo ↗
                       </a>
                     ` : ''}
@@ -188,7 +188,7 @@
               </div>
 
               <!-- Footer: Owner & Actions -->
-              <div class="flex items-center justify-between" style="border-top: 1px solid rgba(255,255,255,0.08); padding-top: var(--spacing-4); margin-top: auto;">
+              <div class="flex items-center justify-between" style="border-top: 1px solid rgba(255, 85, 0, 0.18); padding-top: var(--spacing-4); margin-top: auto;">
                 <div class="flex items-center gap-2" style="min-width: 0;">
                   <img src="${p.owner_avatar}" alt="${p.owner_name}" style="width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--color-primary); flex-shrink: 0;" />
                   <div>

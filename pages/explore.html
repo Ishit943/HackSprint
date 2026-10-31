@@ -28,13 +28,14 @@
     }
 
     .filter-panel {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-color);
+      background: linear-gradient(180deg, rgba(14, 12, 22, 0.97) 0%, rgba(10, 8, 16, 0.99) 100%);
+      border: 1.5px solid rgba(255, 85, 0, 0.28);
       border-radius: var(--radius-2xl);
       padding: var(--spacing-6);
       position: sticky;
       top: 90px;
       height: fit-content;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.7), 0 0 20px rgba(255, 85, 0, 0.08);
     }
 
     .filter-group {
@@ -98,9 +99,10 @@
     }
 
     .selectable-tag:hover {
-      border-color: rgba(255, 115, 0, 0.5);
-      background: rgba(255, 115, 0, 0.08);
+      border-color: rgba(255, 85, 0, 0.6);
+      background: rgba(255, 85, 0, 0.1);
       color: #ffffff;
+      box-shadow: 0 0 8px rgba(255, 85, 0, 0.25);
     }
 
     .selectable-tag.selected {
@@ -108,7 +110,7 @@
       border-color: var(--color-primary);
       color: #ffffff;
       font-weight: 600;
-      box-shadow: 0 2px 10px rgba(255, 115, 0, 0.4);
+      box-shadow: 0 2px 14px rgba(255, 85, 0, 0.55), 0 0 8px rgba(255, 85, 0, 0.3);
     }
 
     .meta-pill {
@@ -146,9 +148,10 @@
     }
 
     .toggle-btn.active {
-      background: var(--bg-surface);
+      background: rgba(255, 85, 0, 0.15);
       color: var(--color-primary);
-      box-shadow: var(--shadow-sm);
+      box-shadow: 0 0 12px rgba(255, 85, 0, 0.3), var(--shadow-sm);
+      border: 1px solid rgba(255, 85, 0, 0.35);
     }
   </style>
 </head>
@@ -532,16 +535,16 @@
             : '#';
 
           return `
-            <div class="card card-hover flex flex-col justify-between">
+            <div class="grimoire-card card-hover flex flex-col justify-between" style="position:relative;">
               <div>
                 <!-- Top Header -->
                 <div class="flex items-start justify-between gap-3" style="margin-bottom: var(--spacing-4);">
                   <div class="flex items-center gap-3" style="min-width: 0; flex: 1;">
-                    <img src="${student.avatar_url}" alt="${student.full_name}" style="width: 52px; height: 52px; border-radius: 50%; border: 2px solid var(--color-primary); flex-shrink: 0; background: var(--bg-surface-subtle);" />
+                    <img src="${student.avatar_url}" alt="${student.full_name}" style="width: 52px; height: 52px; border-radius: 50%; border: 2px solid var(--color-primary); flex-shrink: 0; background: var(--bg-surface-subtle); box-shadow: 0 0 12px rgba(255,85,0,0.4);" />
                     <div style="min-width: 0; flex: 1;">
                       <div class="flex items-center gap-2 flex-wrap">
                         <h4 style="margin-bottom: 0; font-size: var(--font-size-base); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${student.full_name}</h4>
-                        ${student.email_verified ? '<span class="badge" style="font-size: 10px; padding: 1px 6px; background: rgba(255, 115, 0, 0.15); color: #ff8c26; border: 1px solid rgba(255, 115, 0, 0.3);">🎓 Verified</span>' : ''}
+                        ${student.email_verified ? '<span class="badge" style="font-size: 10px; padding: 1px 6px; background: rgba(255, 85, 0, 0.18); color: #ff8c26; border: 1px solid rgba(255, 85, 0, 0.4);">🎓 Verified</span>' : ''}
                       </div>
                       <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${student.branch} • ${student.year}">
                         ${student.branch} • ${student.year}
@@ -554,11 +557,11 @@
                     </div>
                   </div>
                   ${isMe ? `
-                    <span class="badge" style="background: rgba(255, 115, 0, 0.15); color: #ff8c26; border: 1px solid rgba(255, 115, 0, 0.3); font-size: 11px; white-space: nowrap; flex-shrink: 0;">
+                    <span class="badge" style="background: rgba(255, 85, 0, 0.18); color: #ff8c26; border: 1px solid rgba(255, 85, 0, 0.4); font-size: 11px; white-space: nowrap; flex-shrink: 0;">
                       👾 You
                     </span>
                   ` : student.status === 'teamed' ? `
-                    <div class="badge" style="background: rgba(255, 115, 0, 0.1); color: #ff8c26; border: 1px solid rgba(255, 115, 0, 0.3); font-size: 11px; white-space: nowrap; flex-shrink: 0;">
+                    <div class="badge" style="background: rgba(255, 85, 0, 0.12); color: #ff8c26; border: 1px solid rgba(255, 85, 0, 0.35); font-size: 11px; white-space: nowrap; flex-shrink: 0;">
                       🔒 Teammate Shield
                     </div>
                   ` : student.matchScore !== null && student.matchScore !== undefined ? `
@@ -574,7 +577,7 @@
 
                 <!-- Match Reason Tag (Teammate Synergy / Filter Match) -->
                 ${!isMe && student.matchScore !== null && student.matchReason ? `
-                  <div style="font-size: 11px; color: #ff8c26; background: rgba(255, 115, 0, 0.08); border: 1px solid rgba(255, 115, 0, 0.2); border-radius: 6px; padding: 3px 8px; margin-bottom: var(--spacing-3); display: flex; align-items: center; gap: 6px;">
+                  <div style="font-size: 11px; color: #ff8c26; background: rgba(255, 85, 0, 0.1); border: 1px solid rgba(255, 85, 0, 0.25); border-radius: 6px; padding: 3px 8px; margin-bottom: var(--spacing-3); display: flex; align-items: center; gap: 6px;">
                     <span style="font-size: 12px;">💡</span>
                     <span style="font-weight: 500;">${student.matchReason}</span>
                   </div>
@@ -606,17 +609,17 @@
               </div>
 
               <!-- Footer Actions (WhatsApp / Call / Connect) -->
-              <div style="border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: var(--spacing-4); margin-top: auto;">
+              <div style="border-top: 1px solid rgba(255, 85, 0, 0.15); padding-top: var(--spacing-4); margin-top: auto;">
                 ${isMe ? `
                   <div class="flex items-center justify-between">
-                    <span class="badge" style="background: rgba(255, 115, 0, 0.15); color: #ff8c26; border: 1px solid rgba(255, 115, 0, 0.3);">
+                    <span class="badge" style="background: rgba(255, 85, 0, 0.18); color: #ff8c26; border: 1px solid rgba(255, 85, 0, 0.4);">
                       ${student.status === 'teamed' ? `🏆 Team Formed (${student.team_hackathon || 'HackSprint'})` : '👾 Your Profile'}
                     </span>
                     <a href="profile-edit.html" class="btn btn-outline btn-sm">Edit Profile ✏️</a>
                   </div>
                 ` : student.status === 'teamed' ? `
                   <div class="flex items-center justify-between">
-                    <span class="badge" style="background: rgba(255, 115, 0, 0.1); color: #ff8c26; border: 1px solid rgba(255, 115, 0, 0.3); font-size: 11px;">
+                    <span class="badge" style="background: rgba(255, 85, 0, 0.12); color: #ff8c26; border: 1px solid rgba(255, 85, 0, 0.3); font-size: 11px;">
                       🔒 Team Formed (${student.team_hackathon || 'HackSprint 2026'})
                     </span>
                     <a href="profile-view.html?id=${student.id}" class="btn btn-outline btn-sm">View Profile</a>

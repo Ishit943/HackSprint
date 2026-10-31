@@ -47,13 +47,13 @@
       <p style="color: var(--text-secondary);">Configure your skills, proficiency levels, and privacy-controlled contact channels.</p>
     </div>
 
-    <form id="profile-form" class="card">
+    <form id="profile-form" class="card grimoire-card">
       <!-- Profile Picture & Mascot Customizer -->
-      <div id="avatar-section" style="margin-bottom: var(--spacing-6); background: rgba(255, 115, 0, 0.04); border: 1px solid rgba(255, 115, 0, 0.25); border-radius: var(--radius-xl); padding: var(--spacing-5);">
+      <div id="avatar-section" style="margin-bottom: var(--spacing-6); background: rgba(255, 85, 0, 0.08); border: 1.5px solid rgba(255, 85, 0, 0.35); border-radius: var(--radius-xl); padding: var(--spacing-5);">
         <div class="flex items-center gap-5 flex-wrap">
           <!-- Current Avatar Live Preview -->
           <div style="position: relative; flex-shrink: 0;">
-            <img id="avatar-preview" src="" alt="Avatar Preview" style="width: 96px; height: 96px; border-radius: 50%; border: 3px solid var(--color-primary); background: var(--bg-surface-subtle); object-fit: cover; box-shadow: 0 4px 20px rgba(255, 115, 0, 0.35); display: block;" />
+            <img id="avatar-preview" src="" alt="Avatar Preview" style="width: 96px; height: 96px; border-radius: 50%; border: 3px solid var(--color-primary); background: var(--bg-surface-subtle); object-fit: cover; box-shadow: 0 4px 25px rgba(255, 85, 0, 0.55); display: block;" />
             <span style="position: absolute; bottom: 0; right: 0; background: var(--color-primary); color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: 13px; box-shadow: 0 2px 8px rgba(0,0,0,0.4);" title="Profile Mascot">🎨</span>
           </div>
 
@@ -61,7 +61,7 @@
           <div style="flex: 1; min-width: 280px;">
             <div class="flex items-center justify-between gap-2 flex-wrap" style="margin-bottom: 4px;">
               <h4 style="margin-bottom: 0;">Profile Picture & Monster Mascot</h4>
-              <button type="button" id="random-monster-btn" class="btn btn-outline btn-sm" style="font-size: 11px; padding: 3px 10px; color: #ff8c26; border-color: rgba(255, 115, 0, 0.4);" title="Generate a fresh random DiceBear monster">
+              <button type="button" id="random-monster-btn" class="btn btn-outline btn-sm" style="font-size: 11px; padding: 3px 10px; color: #ff8c26; border-color: rgba(255, 85, 0, 0.45);" title="Generate a fresh random DiceBear monster">
                 🎲 Roll Random Monster
               </button>
             </div>
@@ -252,7 +252,7 @@
       avatarPresetsContainer.querySelectorAll('.preset-btn').forEach(btn => {
         if (btn.dataset.url === url) {
           btn.style.borderColor = 'var(--color-primary)';
-          btn.style.boxShadow = '0 0 10px rgba(255, 115, 0, 0.6)';
+          btn.style.boxShadow = '0 0 12px rgba(255, 85, 0, 0.7)';
         } else {
           btn.style.borderColor = 'rgba(255, 255, 255, 0.15)';
           btn.style.boxShadow = 'none';

@@ -57,9 +57,9 @@
     <div class="dashboard-grid">
       <!-- Left Column: User Profile Overview & Completeness -->
       <aside>
-        <div class="card" style="margin-bottom: var(--spacing-6); text-align: center;">
+        <div class="card grimoire-card" style="margin-bottom: var(--spacing-6); text-align: center;">
           <div style="position: relative; display: inline-block; margin: 0 auto var(--spacing-3);">
-            <img id="dash-avatar" src="" alt="Avatar" style="width: 84px; height: 84px; border-radius: 50%; border: 3px solid var(--color-primary); background: var(--bg-surface-subtle); display: block;" />
+            <img id="dash-avatar" src="" alt="Avatar" style="width: 84px; height: 84px; border-radius: 50%; border: 3px solid var(--color-primary); background: var(--bg-surface-subtle); display: block; box-shadow: 0 0 15px rgba(255,85,0,0.4);" />
             <a href="profile-edit.html#avatar-section" style="position: absolute; bottom: 0; right: 0; background: var(--color-primary); color: #fff; border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; font-size: 12px; text-decoration: none; box-shadow: 0 2px 6px rgba(0,0,0,0.5); border: 2px solid var(--bg-surface);" title="Change Profile Picture">
               📷
             </a>
@@ -82,7 +82,7 @@
           </span>
 
           <!-- Profile Completeness Bar -->
-          <div style="background: var(--bg-surface-subtle); padding: var(--spacing-4); border-radius: var(--radius-xl); margin-bottom: var(--spacing-4); text-align: left;">
+          <div style="background: var(--bg-surface-subtle); padding: var(--spacing-4); border-radius: var(--radius-xl); margin-bottom: var(--spacing-4); text-align: left; border: 1px solid rgba(255,85,0,0.2);">
             <div class="flex justify-between items-center" style="margin-bottom: 6px;">
               <span style="font-size: 11px; font-weight: 700;">Profile Strength</span>
               <span id="dash-meter-text" style="font-size: 12px; font-weight: 800; color: var(--color-primary);">80%</span>
@@ -99,7 +99,7 @@
         </div>
 
         <!-- Quick Stats -->
-        <div class="card">
+        <div class="card grimoire-card">
           <h4 style="font-size: var(--font-size-sm); margin-bottom: var(--spacing-4);">Quick Overview</h4>
           <div style="display:flex; flex-direction:column; gap: var(--spacing-3); font-size: var(--font-size-sm);">
             <div class="flex justify-between items-center">
@@ -243,10 +243,10 @@
         const stackParam = encodeURIComponent(requiredSkills.slice(0, 3).join(','));
 
         return `
-          <div class="card card-hover flex flex-col justify-between">
+          <div class="grimoire-card card-hover flex flex-col justify-between">
             <div>
               <div class="flex justify-between items-center" style="margin-bottom: var(--spacing-2);">
-                <span class="badge" style="background:var(--color-primary-light); color:var(--color-primary); font-size:10px;">
+                <span class="badge" style="background:rgba(255, 85, 0, 0.15); color:var(--color-primary); border: 1px solid rgba(255, 85, 0, 0.35); font-size:10px;">
                   ${p.category || 'Project'}
                 </span>
                 <span class="match-score">⚡ ${matchScore}% Match</span>
@@ -257,13 +257,13 @@
               </p>
               ${p.github_url ? `
                 <div style="margin-bottom: var(--spacing-3);">
-                  <a href="${p.github_url}" target="_blank" rel="noopener" style="font-size:11px; color:var(--color-accent); text-decoration:none; display:inline-flex; align-items:center; gap:4px;">
+                  <a href="${p.github_url}" target="_blank" rel="noopener" style="font-size:11px; color:var(--color-primary); text-decoration:none; display:inline-flex; align-items:center; gap:4px;">
                     📂 GitHub Repository ↗
                   </a>
                 </div>
               ` : ''}
             </div>
-            <div class="flex justify-between items-center" style="border-top:1px solid rgba(255,255,255,0.08); padding-top:var(--spacing-3);">
+            <div class="flex justify-between items-center" style="border-top:1px solid rgba(255, 85, 0, 0.18); padding-top:var(--spacing-3);">
               <span style="font-size:11px; color:var(--text-muted);">👤 ${p.owner_name}</span>
               <a href="explore.html?skills=${stackParam}" class="btn btn-outline btn-sm" style="font-size:11px; padding:2px 8px;">Find Teammates ⚡</a>
             </div>
@@ -277,10 +277,10 @@
       const teammatesGrid = document.getElementById('dash-teammates-grid');
 
       teammatesGrid.innerHTML = otherStudents.map(s => `
-        <div class="card card-hover flex flex-col justify-between">
+        <div class="grimoire-card card-hover flex flex-col justify-between">
           <div>
             <div class="flex items-center gap-3" style="margin-bottom: var(--spacing-3);">
-              <img src="${s.avatar_url}" alt="${s.full_name}" style="width: 44px; height: 44px; border-radius:50%; border:2px solid var(--color-primary); flex-shrink:0;" />
+              <img src="${s.avatar_url}" alt="${s.full_name}" style="width: 44px; height: 44px; border-radius:50%; border:2px solid var(--color-primary); box-shadow: 0 0 10px rgba(255,85,0,0.4); flex-shrink:0;" />
               <div style="min-width:0; flex:1;">
                 <h4 style="margin-bottom: 2px; font-size: var(--font-size-sm); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${s.full_name}</h4>
                 <span style="font-size: 11px; color: var(--text-muted); display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${s.branch}</span>
@@ -299,7 +299,7 @@
               </div>
             ` : ''}
           </div>
-          <div class="flex justify-between items-center" style="border-top:1px solid rgba(255,255,255,0.08); padding-top:var(--spacing-3); margin-top: auto;">
+          <div class="flex justify-between items-center" style="border-top:1px solid rgba(255, 85, 0, 0.18); padding-top:var(--spacing-3); margin-top: auto;">
             <span class="match-score" style="font-size:11px; padding:2px 8px; white-space:nowrap; flex-shrink:0;" title="${s.matchReason || ''}">⚡ ${s.matchScore || 90}% Match</span>
             <a href="profile-view.html?id=${s.id}" class="btn btn-primary btn-sm" style="font-size:11px; padding:3px 10px;">View Profile</a>
           </div>

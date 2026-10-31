@@ -10,13 +10,14 @@
 ### Added
 - **Full Crazy Halloween Horror Theme (`css/variables.css`, `css/base.css`, `css/components.css`)** — Elevated design tokens to deep crypt obsidian (`#06050a`), blazing pumpkin hellfire (`#ff5500`), vampire crimson blood (`#ff0044`), radioactive ectoplasm slime green (`#00ff66`), and spectral violet (`#a855f7`).
 - **Gothic Horror Typography Suite** — Integrated Google Fonts `Creepster`, `Nosifer`, and `Cinzel Decorative` for prominent dripping horror brand titles, display headlines, grimoire banners, and eerie badges.
-- **Ambient Cemetery Canvas Particle Engine (`js/horror-theme.js`)** — Added high-performance background canvas rendering floating pumpkin campfire embers, radioactive ectoplasm orbs, and flying bat silhouettes.
+- **Ambient Cemetery Canvas Particle Engine (`js/horror-theme.js`)** — Added high-performance background canvas rendering floating pumpkin campfire embers, radioactive ectoplasm orbs, glowing ambient eye pairs in darkness, and flying bat silhouettes.
+- **Horror Page Entry Lightning Flash & Custom Cursed Scrollbar** — Dynamic subtle lightning aura on page transitions and custom blood-orange glowing scrollbars.
 - **Pure Web Audio API Haunted Sound Synthesizer** — Autonomous zero-dependency audio synthesizer generating real-time spectral theremin hover glides, crypt coffin clicks, witch sparkle spells, and dungeon booms.
 - **Interactive Haunted Audio Controller (`#haunted-audio-toggle`)** — Added persistent audio switch in the navbar with state saved in `localStorage`, accompanied by contextual toast feedback.
 - **Interactive Mouse Ember Particle Trail** — Dynamic particle trail spawning glowing sparks along cursor movements.
-- **Interactive "🎃 Summon Spook" Easter Egg** — Floating quick-action badge that unleashes a flying hackathon spectre across the viewport with whimsical developer blessings.
+- **Interactive "🎃 Summon Spook" Easter Egg** — Floating quick-action badge that unleashes a flying hackathon spectre across the viewport with whimsical developer blessings and quotes.
 - **Dripping Slime/Blood Accent Line** — Injected dripping SVG accent directly below the navigation bar across all views.
-- **Haunted Grimoire Card Design (`.grimoire-card`)** — Enhanced card surfaces with corner spiderweb flourishes (`🕸️`), levitating lift animations, and dual pumpkin/ectoplasm aura glows.
+- **Haunted Grimoire Card Design (`.grimoire-card`)** — Enhanced card surfaces with corner spiderweb flourishes (`🕸️`), levitating lift animations, and dual pumpkin/ectoplasm aura glows across explore, projects, dashboard, and profile views.
 - **Halloween Narrative Polish Across All Pages** — Overhauled hero copy, feature cards, grimoire forms, and headers across `index.html`, `pages/explore.html`, `pages/projects.html`, `pages/project-new.html`, `pages/connections.html`, `pages/dashboard.html`, `pages/login.html`, `pages/signup.html`, `pages/profile-view.html`, and `pages/profile-edit.html`.
 
 ---

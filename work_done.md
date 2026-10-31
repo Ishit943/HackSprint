@@ -232,3 +232,13 @@ The entire UI has been styled with a custom **Halloween Obsidian Black & Jack-o'
 - **`DESIGN_SYSTEM.md`** — Documented the new horror design system, audio engine, and typography
 - **`PROJECT_STRUCTURE.md`** — Added `js/horror-theme.js` mapping
 - **`TASKS.md`** & **`CHANGELOG.md`** — Synchronized task checklist and release notes for v0.9.5
+
+## 🎃 Polish: Halloween Atmosphere, Ambient Eyes, & Grimoire Unification — 2026-10-31
+
+**Enhancements:**
+1. **Ambient Glowing Eyes in Canvas Engine (`js/horror-theme.js`):** Added glowing eye pairs blinking and fading in dark background corners with slit pupils.
+2. **Page-Enter Lightning Flash:** Subtly flashes eerie pumpkin-amber light upon view transitions.
+3. **Cursed Custom Scrollbars:** Unified custom webkit and standard scrollbars with pumpkin-to-blood crimson gradients.
+4. **Grimoire Card Integration across Dynamic Views:** Upgraded student cards on `explore.html`, project cards on `projects.html`, dashboard recommendation cards on `dashboard.html`, and profile section cards on `profile-view.html` to inherit `.grimoire-card` styling with spiderweb accents and aura glows.
+5. **Interactive Audio Triggers:** Bound hover and click sound synthesizers across `.grimoire-card` elements.
+6. **Token Purity Audit:** Replaced all legacy orange hex references with theme variables across all 7 pages.

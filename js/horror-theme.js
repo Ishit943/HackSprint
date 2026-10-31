@@ -1,7 +1,8 @@
 /**
  * MONSTER MATCH - HALLOWEEN HORROR THEME ENGINE
  * Ambient cemetery canvas particles, Web Audio API sound synthesizer,
- * mouse ember trails, dripping accents, and interactive horror easter eggs.
+ * mouse ember trails, dripping accents, glowing pumpkin eyes, screech page
+ * transition flash, and interactive horror easter eggs.
  */
 
 class HalloweenHorrorEngine {
@@ -13,9 +14,10 @@ class HalloweenHorrorEngine {
     this.particles = [];
     this.cursorParticles = [];
     this.bats = [];
-    this.eyes = [];
+    this.eyes = [];        // glowing ambient eyes in darkness
     this.animId = null;
     this.lastTime = 0;
+    this.eyeTimer = 0;
   }
 
   init() {
@@ -27,12 +29,44 @@ class HalloweenHorrorEngine {
   }
 
   boot() {
+    this.injectPageEnterFlash();
     this.injectDrippingAccent();
     this.setupAudioToggle();
     this.initCanvas();
     this.bindHoverAndClickAudio();
     this.setupCursorTrails();
     this.injectSummonGhostButton();
+    this.injectHorrorScrollbar();
+  }
+
+  // --- 0. Page Enter Lightning Flash ---
+  injectPageEnterFlash() {
+    if (sessionStorage.getItem('mm_flash_done') && !document.referrer.includes(location.host)) return;
+    const flash = document.createElement('div');
+    flash.id = 'horror-page-flash';
+    flash.style.cssText = `
+      position: fixed; inset: 0; z-index: 99999;
+      background: radial-gradient(ellipse at center, rgba(255,85,0,0.18) 0%, rgba(6,5,10,0.97) 70%);
+      pointer-events: none;
+      animation: horrorFlash 0.75s ease-out forwards;
+    `;
+    document.body.appendChild(flash);
+    // inject keyframes once
+    if (!document.getElementById('horror-flash-style')) {
+      const s = document.createElement('style');
+      s.id = 'horror-flash-style';
+      s.textContent = `
+        @keyframes horrorFlash {
+          0%   { opacity: 1; }
+          40%  { opacity: 0.6; }
+          70%  { opacity: 0.15; }
+          100% { opacity: 0; }
+        }
+      `;
+      document.head.appendChild(s);
+    }
+    setTimeout(() => flash.remove(), 800);
+    sessionStorage.setItem('mm_flash_done', '1');
   }
 
   // --- 1. Web Audio API Haunted Synthesizer (Zero External Audio Files) ---
@@ -225,7 +259,7 @@ class HalloweenHorrorEngine {
   // --- 4. Interactive Spooky Audio Binding ---
   bindHoverAndClickAudio() {
     document.addEventListener('mouseover', (e) => {
-      const target = e.target.closest('.btn, .card-hover, .nav-link, .selectable-tag, .chip, .match-score');
+      const target = e.target.closest('.btn, .card-hover, .nav-link, .selectable-tag, .chip, .match-score, .grimoire-card');
       if (target && !target.dataset.soundBound) {
         target.dataset.soundBound = 'true';
         target.addEventListener('mouseenter', () => this.playHoverSound());
@@ -275,14 +309,19 @@ class HalloweenHorrorEngine {
     window.addEventListener('resize', resize);
 
     // Seed floating ember and ectoplasm particles
-    const particleCount = Math.min(50, Math.floor(window.innerWidth / 30));
+    const particleCount = Math.min(55, Math.floor(window.innerWidth / 28));
     for (let i = 0; i < particleCount; i++) {
       this.particles.push(this.createParticle(true));
     }
 
     // Seed occasional bats
-    for (let b = 0; b < 2; b++) {
+    for (let b = 0; b < 3; b++) {
       this.bats.push(this.createBat());
+    }
+
+    // Seed glowing ambient eye pairs
+    for (let e = 0; e < 4; e++) {
+      this.eyes.push(this.createEyePair());
     }
 
     this.lastTime = performance.now();
@@ -291,6 +330,7 @@ class HalloweenHorrorEngine {
 
   createParticle(randomY = false) {
     const isEcto = Math.random() > 0.7;
+    const isPurple = Math.random() > 0.85;
     return {
       x: Math.random() * window.innerWidth,
       y: randomY ? Math.random() * window.innerHeight : window.innerHeight + 10,
@@ -299,7 +339,7 @@ class HalloweenHorrorEngine {
       vy: -Math.random() * 1.2 - 0.4,
       alpha: Math.random() * 0.7 + 0.2,
       fadeSpeed: Math.random() * 0.004 + 0.002,
-      color: isEcto ? '#00ff66' : (Math.random() > 0.4 ? '#ff5500' : '#ffaa00')
+      color: isPurple ? '#a855f7' : (isEcto ? '#00ff66' : (Math.random() > 0.4 ? '#ff5500' : '#ffaa00'))
     };
   }
 
@@ -313,6 +353,21 @@ class HalloweenHorrorEngine {
       flap: 0,
       flapSpeed: 0.18 + Math.random() * 0.08,
       delay: Math.random() * 300
+    };
+  }
+
+  createEyePair() {
+    return {
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight * 0.85 + 50,
+      alpha: 0,
+      targetAlpha: Math.random() * 0.45 + 0.15,
+      size: Math.random() * 4 + 3,
+      gap: Math.random() * 10 + 8,
+      color: Math.random() > 0.5 ? '#ff5500' : '#00ff66',
+      blinkTimer: Math.random() * 200 + 60,
+      visible: true,
+      lifeTimer: Math.random() * 400 + 200,
     };
   }
 
@@ -388,6 +443,30 @@ class HalloweenHorrorEngine {
 
         this.drawBat(bat.x, bat.y, bat.size, bat.flap);
       }
+
+      // Render Ambient Glowing Eyes
+      for (let e = 0; e < this.eyes.length; e++) {
+        const eye = this.eyes[e];
+        eye.lifeTimer--;
+        eye.blinkTimer--;
+
+        if (eye.blinkTimer <= 0) {
+          eye.visible = !eye.visible;
+          eye.blinkTimer = eye.visible ? (Math.random() * 200 + 60) : (Math.random() * 8 + 3);
+        }
+
+        const targetA = eye.visible ? eye.targetAlpha : 0;
+        eye.alpha += (targetA - eye.alpha) * 0.06;
+
+        if (eye.lifeTimer <= 0) {
+          this.eyes[e] = this.createEyePair();
+          continue;
+        }
+
+        if (eye.alpha > 0.01) {
+          this.drawEyePair(eye);
+        }
+      }
     }
 
     this.animId = requestAnimationFrame(() => this.renderLoop());
@@ -421,7 +500,55 @@ class HalloweenHorrorEngine {
     this.ctx.restore();
   }
 
-  // --- 7. Interactive "🎃 Summon Ghost" Easter Egg ---
+  drawEyePair(eye) {
+    this.ctx.save();
+    this.ctx.globalAlpha = eye.alpha;
+    this.ctx.fillStyle = eye.color;
+    this.ctx.shadowBlur = 14;
+    this.ctx.shadowColor = eye.color;
+    // Left eye
+    this.ctx.beginPath();
+    this.ctx.ellipse(eye.x - eye.gap / 2, eye.y, eye.size * 1.4, eye.size, 0, 0, Math.PI * 2);
+    this.ctx.fill();
+    // Right eye
+    this.ctx.beginPath();
+    this.ctx.ellipse(eye.x + eye.gap / 2, eye.y, eye.size * 1.4, eye.size, 0, 0, Math.PI * 2);
+    this.ctx.fill();
+    // Pupil slit
+    this.ctx.fillStyle = 'rgba(0,0,0,0.8)';
+    this.ctx.shadowBlur = 0;
+    this.ctx.beginPath();
+    this.ctx.ellipse(eye.x - eye.gap / 2, eye.y, eye.size * 0.25, eye.size * 0.95, 0, 0, Math.PI * 2);
+    this.ctx.fill();
+    this.ctx.beginPath();
+    this.ctx.ellipse(eye.x + eye.gap / 2, eye.y, eye.size * 0.25, eye.size * 0.95, 0, 0, Math.PI * 2);
+    this.ctx.fill();
+    this.ctx.restore();
+  }
+
+  // --- 7. Inject Horror Custom Scrollbar Styles ---
+  injectHorrorScrollbar() {
+    if (document.getElementById('horror-scrollbar-style')) return;
+    const s = document.createElement('style');
+    s.id = 'horror-scrollbar-style';
+    s.textContent = `
+      ::-webkit-scrollbar { width: 6px; height: 6px; }
+      ::-webkit-scrollbar-track { background: rgba(6,5,10,0.9); }
+      ::-webkit-scrollbar-thumb {
+        background: linear-gradient(180deg, #ff5500 0%, #ff0044 100%);
+        border-radius: 4px;
+        box-shadow: 0 0 6px rgba(255,85,0,0.6);
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(180deg, #ff7700 0%, #ff0066 100%);
+        box-shadow: 0 0 10px rgba(255,85,0,0.9);
+      }
+      * { scrollbar-width: thin; scrollbar-color: #ff5500 rgba(6,5,10,0.9); }
+    `;
+    document.head.appendChild(s);
+  }
+
+  // --- 8. Interactive "🎃 Summon Ghost" Easter Egg ---
   injectSummonGhostButton() {
     if (document.getElementById('summon-ghost-btn')) return;
 
@@ -482,7 +609,9 @@ class HalloweenHorrorEngine {
       "🧛 Vampire Architect: 'Clean code only happens between midnight and sunrise!'",
       "🧟 Undead Coder: 'Braaiiins... and zero merge conflicts!'",
       "🎃 Pumpkin King: 'Your match compatibility is off the supernatural charts!'",
-      "⚡ Frankenstein Dev: 'IT'S ALIVE! The production deployment lives!'"
+      "⚡ Frankenstein Dev: 'IT'S ALIVE! The production deployment lives!'",
+      "🕷️ Spider Dev: 'My web of microservices spans the entire underworld!'",
+      "💀 Skull Oracle: 'git commit -m \"feat: raised from the dead\"'"
     ];
     const quote = quotes[Math.floor(Math.random() * quotes.length)];
 

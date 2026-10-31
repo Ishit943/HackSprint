@@ -22,11 +22,12 @@
 
 - ✅ **Deep Crypt Obsidian Palette** — Complete custom theme tokens (`#06050a` obsidian, `#ff5500` pumpkin flame, `#00ff66` radioactive ectoplasm, `#ff0044` vampire blood crimson, `#a855f7` spectral purple) in `css/variables.css`.
 - ✅ **Gothic & Horror Typography** — Integrated Google Fonts `Creepster`, `Nosifer`, and `Cinzel Decorative` across all display headings, brand titles, and banners.
-- ✅ **Ambient Cemetery Particle Engine** — Built-in canvas (`#halloween-ambient-canvas`) rendering floating fire embers, radioactive ectoplasm particles, and flying bat silhouettes.
+- ✅ **Ambient Cemetery Particle Engine** — Built-in canvas (`#halloween-ambient-canvas`) rendering floating fire embers, radioactive ectoplasm particles, glowing ambient eye pairs in darkness, and flying bat silhouettes.
 - ✅ **Procedural Web Audio API Sound Synthesizer** — Autonomous synth generating real-time spectral theremin glides, crypt coffin knocks, witch sparkle spells, and dungeon booms without external audio assets.
 - ✅ **Interactive Navbar Haunted Sound Switch** — Persistent audio controller button (`#haunted-audio-toggle`) with `localStorage` preference memory and toast feedback.
 - ✅ **Dripping Blood & Slime Navigation Accent** — SVG dripping pattern injected directly under the sticky navbar across all views.
-- ✅ **Haunted Grimoire Card Aesthetics** — Corner cobweb flourishes (`🕸️`), double-layer glow shadows, and spectral levitation on card hover.
+- ✅ **Haunted Grimoire Card Aesthetics** — Corner cobweb flourishes (`🕸️`), double-layer glow shadows, and spectral levitation on card hover unified across all pages and dynamic JavaScript card templates.
+- ✅ **Page Enter Flash & Cursed Scrollbars** — Atmospheric lightning entrance flash and glowing blood-amber scrollbar styling.
 - ✅ **Interactive "🎃 Summon Spook" Easter Egg** — Quick-action trigger spawning animated flying ghosts and whimsical hackathon lore quotes.
 - ✅ **Interactive Mouse Particle Trail** — Floating embers generated on cursor motion.
 - ✅ **Universal Horror Narrative Polish** — Atmospheric horror copy and styling across landing, explore, projects, connections, dashboard, login, signup, and profile views.
