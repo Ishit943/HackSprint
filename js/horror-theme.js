@@ -563,7 +563,7 @@ class HalloweenHorrorEngine {
       z-index: 999;
       background: linear-gradient(135deg, rgba(22, 18, 32, 0.95), rgba(12, 10, 18, 0.95));
       border: 1.5px solid rgba(255, 85, 0, 0.5);
-      border-radius: 999px;
+      border-radius: 8px;
       padding: 8px 16px;
       color: #fff;
       font-size: 13px;

@@ -18,6 +18,7 @@
 - **Interactive "🎃 Summon Spook" Easter Egg** — Floating quick-action badge that unleashes a flying hackathon spectre across the viewport with whimsical developer blessings and quotes.
 - **Dripping Slime/Blood Accent Line** — Injected dripping SVG accent directly below the navigation bar across all views.
 - **Haunted Grimoire Card Design (`.grimoire-card`)** — Enhanced card surfaces with corner spiderweb flourishes (`🕸️`), levitating lift animations, and dual pumpkin/ectoplasm aura glows across explore, projects, dashboard, and profile views.
+- **Refined Slightly Sharp Corner Radii System** — Standardized corner curvature across all cards (`10px`), buttons (`8px`), inputs (`8px`), and badges (`6px`) to remove rigid 90° boxiness while avoiding round bubbles. Fixed corner watermark collisions with card action links.
 - **Halloween Narrative Polish Across All Pages** — Overhauled hero copy, feature cards, grimoire forms, and headers across `index.html`, `pages/explore.html`, `pages/projects.html`, `pages/project-new.html`, `pages/connections.html`, `pages/dashboard.html`, `pages/login.html`, `pages/signup.html`, `pages/profile-view.html`, and `pages/profile-edit.html`.
 
 ---

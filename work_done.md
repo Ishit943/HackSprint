@@ -242,3 +242,16 @@ The entire UI has been styled with a custom **Halloween Obsidian Black & Jack-o'
 4. **Grimoire Card Integration across Dynamic Views:** Upgraded student cards on `explore.html`, project cards on `projects.html`, dashboard recommendation cards on `dashboard.html`, and profile section cards on `profile-view.html` to inherit `.grimoire-card` styling with spiderweb accents and aura glows.
 5. **Interactive Audio Triggers:** Bound hover and click sound synthesizers across `.grimoire-card` elements.
 6. **Token Purity Audit:** Replaced all legacy orange hex references with theme variables across all 7 pages.
+
+## 📐 Polish: Refined Edge Geometry & Corner Radii — 2026-10-31
+
+**Problem:** Project cards and container elements appeared too boxy with flat 90° right angles, while some button pills were completely round bubbles.
+
+**Solution:**
+1. **Slightly Sharp Corner Radii System:** Softened all container edges to eliminate rigid 90° boxiness while strictly avoiding bloated round bubbles:
+   - Cards (`.card`, `.grimoire-card`): `10px` (`--radius-card`)
+   - Buttons (`.btn`): `8px` (`--radius-btn`), `.btn-sm`: `6px` (`--radius-sm`)
+   - Inputs & Selects (`.input`, `.select`, `.textarea`): `8px` (`--radius-input`)
+   - Badges & Chips (`.badge`, `.chip`, `.skill-pill`, `.match-score`): `6px` (`--radius-badge`)
+2. **Fixed Spiderweb Card Watermark Collision:** Repositioned the corner flourish on `.grimoire-card` to a faint ambient radial glow, preventing visual overlap with GitHub and Delete buttons in card headers.
+3. **Card Class Harmonization:** Ensured all dynamically rendered cards on `projects.html`, `explore.html`, and `dashboard.html` carry both `.card` and `.grimoire-card` for consistent padding, background gradients, and corner curvature.

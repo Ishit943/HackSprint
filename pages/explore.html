@@ -30,7 +30,7 @@
     .filter-panel {
       background: linear-gradient(180deg, rgba(14, 12, 22, 0.97) 0%, rgba(10, 8, 16, 0.99) 100%);
       border: 1.5px solid rgba(255, 85, 0, 0.28);
-      border-radius: var(--radius-2xl);
+      border-radius: var(--radius-card, 10px);
       padding: var(--spacing-6);
       position: sticky;
       top: 90px;
@@ -262,12 +262,12 @@
         <div class="flex items-center justify-between flex-wrap gap-4" style="margin-bottom: var(--spacing-6);">
           <div class="search-wrapper" style="flex: 1; max-width: 520px; position: relative;">
             <span class="search-icon" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 16px; pointer-events: none; opacity: 0.7;">🔍</span>
-            <input type="text" id="search-input" class="input search-input" placeholder="Search by name, skill, branch, or keywords..." style="padding-left: 42px; height: 46px; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: var(--radius-xl); font-size: 14px;">
+            <input type="text" id="search-input" class="input search-input" placeholder="Search by name, skill, branch, or keywords..." style="padding-left: 42px; height: 46px; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: var(--radius-input, 8px); font-size: 14px;">
           </div>
 
           <div class="flex items-center gap-3">
             <span style="font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Sort:</span>
-            <select id="sort-select" class="select" style="width: auto; height: 46px; padding: 0 1rem; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: var(--radius-xl); font-weight: 600; font-size: 13px; color: #fff; cursor: pointer;">
+            <select id="sort-select" class="select" style="width: auto; height: 46px; padding: 0 1rem; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: var(--radius-input, 8px); font-weight: 600; font-size: 13px; color: #fff; cursor: pointer;">
               <option value="match">⚡ Smart Match %</option>
               <option value="availability">⏱️ Most Available</option>
               <option value="name">🔤 Name (A-Z)</option>
@@ -535,7 +535,7 @@
             : '#';
 
           return `
-            <div class="grimoire-card card-hover flex flex-col justify-between" style="position:relative;">
+            <div class="card grimoire-card card-hover flex flex-col justify-between" style="position:relative;">
               <div>
                 <!-- Top Header -->
                 <div class="flex items-start justify-between gap-3" style="margin-bottom: var(--spacing-4);">

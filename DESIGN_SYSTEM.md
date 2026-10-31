@@ -105,6 +105,13 @@ Each technical skill pill displays a glowing proficiency dot:
 
 ## 5. UI Components
 
+### 5.0 Edge Geometry & Corner Radii
+- **Slightly Sharp Philosophy:** Edges are softened just enough to eliminate rigid, flat 90° boxiness without becoming round bubbles or pill shapes.
+- **Cards (`.card`, `.grimoire-card`):** `10px` (`--radius-card`) — Sleek, distinct grimoire silhouette.
+- **Buttons (`.btn`):** `8px` (`--radius-btn`), `.btn-sm`: `6px` (`--radius-sm`) — Crisp, authoritative buttons.
+- **Inputs & Selects (`.input`, `.select`, `.textarea`):** `8px` (`--radius-input`).
+- **Badges, Chips & Match Score (`.badge`, `.chip`, `.skill-pill`, `.match-score`):** `6px` (`--radius-badge`) — Clean tech badges.
+
 ### 5.1 Buttons (`.btn`)
 - `.btn-primary`: Blazing Jack-o'-Lantern gradient (`#ff7b00` → `#d61800`), fiery ember shadow, hover flame burst.
 - `.btn-secondary`: Radioactive Ectoplasm Green (`#00ff66` → `#059669`), deep obsidian text.

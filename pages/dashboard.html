@@ -82,7 +82,7 @@
           </span>
 
           <!-- Profile Completeness Bar -->
-          <div style="background: var(--bg-surface-subtle); padding: var(--spacing-4); border-radius: var(--radius-xl); margin-bottom: var(--spacing-4); text-align: left; border: 1px solid rgba(255,85,0,0.2);">
+          <div style="background: var(--bg-surface-subtle); padding: var(--spacing-4); border-radius: var(--radius-card, 10px); margin-bottom: var(--spacing-4); text-align: left; border: 1px solid rgba(255,85,0,0.2);">
             <div class="flex justify-between items-center" style="margin-bottom: 6px;">
               <span style="font-size: 11px; font-weight: 700;">Profile Strength</span>
               <span id="dash-meter-text" style="font-size: 12px; font-weight: 800; color: var(--color-primary);">80%</span>
@@ -243,7 +243,7 @@
         const stackParam = encodeURIComponent(requiredSkills.slice(0, 3).join(','));
 
         return `
-          <div class="grimoire-card card-hover flex flex-col justify-between">
+          <div class="card grimoire-card card-hover flex flex-col justify-between">
             <div>
               <div class="flex justify-between items-center" style="margin-bottom: var(--spacing-2);">
                 <span class="badge" style="background:rgba(255, 85, 0, 0.15); color:var(--color-primary); border: 1px solid rgba(255, 85, 0, 0.35); font-size:10px;">
@@ -277,7 +277,7 @@
       const teammatesGrid = document.getElementById('dash-teammates-grid');
 
       teammatesGrid.innerHTML = otherStudents.map(s => `
-        <div class="grimoire-card card-hover flex flex-col justify-between">
+        <div class="card grimoire-card card-hover flex flex-col justify-between">
           <div>
             <div class="flex items-center gap-3" style="margin-bottom: var(--spacing-3);">
               <img src="${s.avatar_url}" alt="${s.full_name}" style="width: 44px; height: 44px; border-radius:50%; border:2px solid var(--color-primary); box-shadow: 0 0 10px rgba(255,85,0,0.4); flex-shrink:0;" />

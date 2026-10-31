@@ -27,6 +27,7 @@
 - ✅ **Interactive Navbar Haunted Sound Switch** — Persistent audio controller button (`#haunted-audio-toggle`) with `localStorage` preference memory and toast feedback.
 - ✅ **Dripping Blood & Slime Navigation Accent** — SVG dripping pattern injected directly under the sticky navbar across all views.
 - ✅ **Haunted Grimoire Card Aesthetics** — Corner cobweb flourishes (`🕸️`), double-layer glow shadows, and spectral levitation on card hover unified across all pages and dynamic JavaScript card templates.
+- ✅ **Slightly Sharp Edge Geometry** — Refined container radii system (`10px` cards, `8px` buttons/inputs, `6px` badges) eliminating 90° boxiness without becoming round bubbles.
 - ✅ **Page Enter Flash & Cursed Scrollbars** — Atmospheric lightning entrance flash and glowing blood-amber scrollbar styling.
 - ✅ **Interactive "🎃 Summon Spook" Easter Egg** — Quick-action trigger spawning animated flying ghosts and whimsical hackathon lore quotes.
 - ✅ **Interactive Mouse Particle Trail** — Floating embers generated on cursor motion.

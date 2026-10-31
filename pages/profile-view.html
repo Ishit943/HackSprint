@@ -17,7 +17,7 @@
     .profile-header-card {
       background: linear-gradient(180deg, rgba(20, 18, 30, 0.9) 0%, rgba(12, 11, 19, 0.95) 100%);
       border: 1.5px solid rgba(255, 85, 0, 0.35);
-      border-radius: var(--radius-2xl);
+      border-radius: var(--radius-card, 10px);
       padding: var(--spacing-8);
       position: relative;
       overflow: hidden;
@@ -197,7 +197,7 @@
 
           <!-- Team Formed Alert Banner for Outsiders -->
           ${(!isSelf && student.status === 'teamed' && !student.canViewContact) ? `
-            <div style="background: rgba(255, 115, 0, 0.08); border: 1px solid rgba(255, 115, 0, 0.3); border-radius: var(--radius-xl); padding: var(--spacing-4) var(--spacing-6); margin-bottom: var(--spacing-6); display: flex; align-items: center; gap: var(--spacing-4);">
+            <div style="background: rgba(255, 85, 0, 0.1); border: 1.5px solid rgba(255, 85, 0, 0.4); border-radius: var(--radius-card, 10px); padding: var(--spacing-4) var(--spacing-6); margin-bottom: var(--spacing-6); display: flex; align-items: center; gap: var(--spacing-4);">
               <span style="font-size: 2rem;">🔒</span>
               <div>
                 <h4 style="margin-bottom: 2px; color: #ff8c26;">Hackathon Team Formed</h4>

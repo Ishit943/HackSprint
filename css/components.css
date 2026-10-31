@@ -134,10 +134,10 @@
   align-items: center;
   justify-content: center;
   gap: var(--spacing-2);
-  padding: 0.7rem 1.35rem;
+  padding: 0.65rem 1.25rem;
   font-weight: 700;
   font-size: var(--font-size-sm);
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-btn, 8px);
   border: 1.5px solid transparent;
   cursor: pointer;
   text-align: center;
@@ -252,22 +252,22 @@
 }
 
 .btn-sm {
-  padding: 0.42rem 0.95rem;
+  padding: 0.38rem 0.85rem;
   font-size: var(--font-size-xs);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm, 6px);
 }
 
 .btn-lg {
-  padding: 0.9rem 1.9rem;
+  padding: 0.85rem 1.75rem;
   font-size: var(--font-size-base);
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-md, 8px);
 }
 
-/* --- Cards (Haunted Grimoire & Crypt Tablets) --- */
+/* --- Cards (Haunted Grimoire & Crypt Tablets) — Sleek 10px Edges --- */
 .card {
-  background: linear-gradient(180deg, rgba(20, 18, 30, 0.85) 0%, rgba(12, 11, 19, 0.95) 100%);
-  border: 1px solid rgba(255, 85, 0, 0.22);
-  border-radius: var(--radius-2xl);
+  background: linear-gradient(180deg, rgba(20, 18, 30, 0.88) 0%, rgba(12, 11, 19, 0.96) 100%);
+  border: 1px solid rgba(255, 85, 0, 0.25);
+  border-radius: var(--radius-card, 10px);
   padding: var(--spacing-6);
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.75), 0 0 15px rgba(0, 0, 0, 0.5);
   transition: all var(--transition-normal);
@@ -283,14 +283,14 @@
   position: absolute;
   top: 0;
   right: 0;
-  width: 60px;
-  height: 60px;
-  background-image: radial-gradient(circle at 100% 0%, rgba(255, 85, 0, 0.12) 0%, transparent 70%);
+  width: 55px;
+  height: 55px;
+  background-image: radial-gradient(circle at 100% 0%, rgba(255, 85, 0, 0.16) 0%, transparent 70%);
   pointer-events: none;
 }
 
 .card-hover:hover {
-  transform: translateY(-6px) scale(1.01);
+  transform: translateY(-5px) scale(1.008);
   border-color: rgba(255, 85, 0, 0.85);
   box-shadow: 
     0 18px 45px rgba(0, 0, 0, 0.95), 
@@ -298,17 +298,17 @@
     0 0 60px rgba(0, 255, 102, 0.15);
 }
 
-/* --- Chips & Badges --- */
+/* --- Chips & Badges — Slightly sharp edges (6px) --- */
 .badge {
   display: inline-flex;
   align-items: center;
   gap: var(--spacing-1);
-  padding: 0.3rem 0.75rem;
-  border-radius: var(--radius-full);
+  padding: 0.28rem 0.65rem;
+  border-radius: var(--radius-badge, 6px);
   font-size: var(--font-size-xs);
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
   backdrop-filter: blur(8px);
 }
 
@@ -337,8 +337,8 @@
   display: inline-flex;
   align-items: center;
   gap: var(--spacing-1);
-  padding: 0.35rem 0.75rem;
-  border-radius: var(--radius-lg);
+  padding: 0.3rem 0.65rem;
+  border-radius: var(--radius-sm, 6px);
   font-size: var(--font-size-xs);
   font-weight: 600;
   background-color: var(--bg-surface-subtle);
@@ -372,8 +372,8 @@
   align-items: center;
   justify-content: center;
   gap: 5px;
-  padding: 0.4rem 0.85rem;
-  border-radius: var(--radius-full);
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-badge, 6px);
   font-weight: 800;
   font-size: var(--font-size-xs);
   font-family: var(--font-family-mono);
@@ -392,8 +392,8 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 0.35rem 0.75rem;
-  border-radius: var(--radius-md);
+  padding: 0.3rem 0.65rem;
+  border-radius: var(--radius-sm, 6px);
   font-size: 12px;
   font-weight: 600;
   background: rgba(255, 255, 255, 0.04);
@@ -464,10 +464,10 @@
 
 .input, .select, .textarea {
   width: 100%;
-  padding: 0.8rem 1.1rem;
+  padding: 0.75rem 1rem;
   background-color: var(--bg-input);
   border: 1.5px solid var(--border-color);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-input, 8px);
   color: var(--text-primary);
   transition: all var(--transition-fast);
   outline: none;
@@ -546,7 +546,7 @@
 .modal-container {
   background: linear-gradient(180deg, #181525 0%, #0d0c16 100%);
   border: 1.5px solid rgba(255, 85, 0, 0.4);
-  border-radius: var(--radius-2xl);
+  border-radius: var(--radius-card, 10px);
   width: 100%;
   max-width: 540px;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.95), 0 0 35px rgba(255, 85, 0, 0.35);

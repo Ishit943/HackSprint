@@ -103,7 +103,7 @@
 
         if (projects.length === 0) {
           grid.innerHTML = `
-            <div class="grimoire-card" style="grid-column: 1 / -1; text-align: center; padding: var(--spacing-12);">
+            <div class="card grimoire-card" style="grid-column: 1 / -1; text-align: center; padding: var(--spacing-12);">
               <div style="font-size: 3rem; margin-bottom: var(--spacing-3);">🎃</div>
               <h3 class="font-creepster" style="color: #ff5500; font-size: 1.8rem;">No Project Grimoires Found</h3>
               <p>Be the first one to summon a project and recruit monster teammates!</p>
@@ -119,7 +119,7 @@
           const isOwner = currentUser && (currentUser.id === p.owner_id);
 
           return `
-            <div class="grimoire-card card-hover flex flex-col justify-between">
+            <div class="card grimoire-card card-hover flex flex-col justify-between">
               <div>
                 <!-- Header -->
                 <div class="flex items-center justify-between" style="margin-bottom: var(--spacing-3);">
