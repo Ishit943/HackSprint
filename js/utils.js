@@ -4,11 +4,30 @@
  * URL builders, match score calculations, and sanitization.
  */
 
+import { HorrorEngine } from './horror-theme.js';
+
 // --- 1. Theme Management (Halloween Spooky Dark / Light Mode) ---
 export function initTheme() {
   const savedTheme = localStorage.getItem('mm_theme') || 'dark';
   document.documentElement.setAttribute('data-theme', savedTheme);
   updateThemeIcon(savedTheme);
+  
+  // Initialize Halloween Horror Engine (canvas particles, audio, cursor trail, easter eggs)
+  try {
+    HorrorEngine.init();
+  } catch (e) {
+    console.warn('Horror theme engine init warning:', e);
+  }
+
+  // Bind theme toggle clicks
+  const toggleBtns = document.querySelectorAll('.theme-toggle-btn');
+  toggleBtns.forEach(btn => {
+    if (!btn.dataset.themeBound) {
+      btn.dataset.themeBound = 'true';
+      btn.addEventListener('click', toggleTheme);
+    }
+  });
+
   return savedTheme;
 }
 
@@ -43,24 +62,29 @@ export function showToast(message, type = 'info', duration = 3500) {
   toast.className = `toast toast-${type}`;
   
   const iconMap = {
-    success: '✅',
-    error: '❌',
-    info: '👾',
-    warning: '⚠️'
+    success: '🧪',
+    error: '🩸',
+    info: '🎃',
+    warning: '⚡'
   };
 
   toast.innerHTML = `
-    <span style="font-size: 1.1rem;">${iconMap[type] || '👾'}</span>
-    <div style="flex: 1; font-weight: 500;">${escapeHtml(message)}</div>
+    <span style="font-size: 1.2rem; filter: drop-shadow(0 0 8px rgba(255, 85, 0, 0.6));">${iconMap[type] || '🎃'}</span>
+    <div style="flex: 1; font-weight: 600;">${escapeHtml(message)}</div>
   `;
 
   container.appendChild(toast);
 
   setTimeout(() => {
     toast.style.opacity = '0';
-    toast.style.transform = 'translateY(10px)';
-    setTimeout(() => toast.remove(), 300);
+    toast.style.transform = 'translateY(15px) scale(0.95)';
+    setTimeout(() => toast.remove(), 350);
   }, duration);
+}
+
+// Make globally accessible for all scripts and modules
+if (typeof window !== 'undefined') {
+  window.showToast = showToast;
 }
 
 // --- 3. Security: HTML Sanitization ---

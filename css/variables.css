@@ -1,41 +1,60 @@
 /* ============================================================================
-   MONSTER MATCH - HALLOWEEN SPOOKY BLACK & ORANGE THEME
+   MONSTER MATCH - FULL CRAZY HALLOWEEN HORROR THEME TOKENS
+   Deep Crypt Obsidian, Toxic Ectoplasm Slime, Blood Crimson & Blazing Jack-o'-Lantern
    ============================================================================ */
 
 :root {
-  /* Halloween Jack-o'-Lantern Orange Palette */
-  --color-primary: #ff7300;           /* Vibrant Pumpkin Orange */
-  --color-primary-hover: #ff8c26;     /* Bright Fire Glow */
-  --color-primary-dark: #cc5200;      /* Dark Roasted Pumpkin */
-  --color-primary-light: rgba(255, 115, 0, 0.15);
-  --color-primary-glow: rgba(255, 115, 0, 0.4);
-
-  --color-secondary: #ff3b00;         /* Hellfire Blood Orange */
-  --color-secondary-hover: #e03400;
-  --color-secondary-light: rgba(255, 59, 0, 0.15);
-  --color-secondary-glow: rgba(255, 59, 0, 0.35);
-
-  --color-slime: #10b981;             /* Ghostly Monster Slime Green */
-  --color-slime-glow: rgba(16, 185, 129, 0.3);
-
-  --color-accent: #ffa600;            /* Warm Candle Flame */
-  --color-accent-hover: #ffb833;
-  --color-accent-light: rgba(255, 166, 0, 0.15);
-
-  --color-info: #38bdf8;
-  --color-success: #22c55e;
-  --color-warning: #f59e0b;
-  --color-danger: #ef4444;
-
-  /* WhatsApp & Call specific brand colors */
-  --color-whatsapp: #25D366;
-  --color-whatsapp-hover: #1eb956;
-  --color-phone: #ff7300;
-  --color-phone-hover: #ff8c26;
-
-  /* Typography */
+  /* Spooky Horror Font Families */
+  --font-family-horror: 'Creepster', cursive, -apple-system, sans-serif;
+  --font-family-nosifer: 'Nosifer', cursive, -apple-system, sans-serif;
+  --font-family-gothic: 'Cinzel Decorative', Georgia, serif;
+  --font-family-glitch: 'Rubik Glitch', monospace;
   --font-family-base: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-family-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  /* Blazing Jack-o'-Lantern Orange Palette */
+  --color-primary: #ff5500;           /* Radiant Pumpkin Hellfire */
+  --color-primary-hover: #ff7700;     /* Incandescent Fire Glow */
+  --color-primary-dark: #b82b00;      /* Roasted Charcoal Pumpkin */
+  --color-primary-light: rgba(255, 85, 0, 0.16);
+  --color-primary-glow: rgba(255, 85, 0, 0.55);
+
+  /* Demonic Crimson / Fresh Blood Red */
+  --color-secondary: #ff0044;         /* Vampire Blood Red */
+  --color-secondary-hover: #d60039;
+  --color-secondary-light: rgba(255, 0, 68, 0.18);
+  --color-secondary-glow: rgba(255, 0, 68, 0.5);
+
+  /* Radioactive Ectoplasm Slime Green */
+  --color-slime: #00ff66;             /* Radioactive Ectoplasm */
+  --color-slime-hover: #26ff7d;
+  --color-slime-glow: rgba(0, 255, 102, 0.5);
+  --color-slime-light: rgba(0, 255, 102, 0.15);
+
+  /* Spectral Necromancer Purple */
+  --color-purple: #a855f7;            /* Phantom Violet */
+  --color-purple-hover: #c084fc;
+  --color-purple-glow: rgba(168, 85, 247, 0.45);
+  --color-purple-light: rgba(168, 85, 247, 0.16);
+
+  /* Warm Cursed Candle Flame */
+  --color-accent: #ffaa00;
+  --color-accent-hover: #ffbb22;
+  --color-accent-light: rgba(255, 170, 0, 0.16);
+
+  /* Status Tokens */
+  --color-info: #38bdf8;
+  --color-success: #00ff66;           /* Toxic Slime Green */
+  --color-warning: #ffaa00;           /* Cursed Candle Amber */
+  --color-danger: #ff0044;            /* Vampire Blood Crimson */
+
+  /* Unholy WhatsApp & Direct Telepathy Links */
+  --color-whatsapp: #00ff66;          /* Radioactive Green */
+  --color-whatsapp-hover: #26ff7d;
+  --color-phone: #ff5500;
+  --color-phone-hover: #ff7700;
+
+  /* Typography Scale */
   --font-size-xs: 0.75rem;
   --font-size-sm: 0.875rem;
   --font-size-base: 1rem;
@@ -44,7 +63,7 @@
   --font-size-2xl: 1.5rem;
   --font-size-3xl: 1.875rem;
   --font-size-4xl: 2.25rem;
-  --font-size-5xl: 3rem;
+  --font-size-5xl: 3.25rem;
 
   /* Spacing */
   --spacing-1: 0.25rem;
@@ -63,83 +82,91 @@
   --radius-md: 0.5rem;
   --radius-lg: 0.75rem;
   --radius-xl: 1rem;
-  --radius-2xl: 1.5rem;
+  --radius-2xl: 1.25rem;
   --radius-full: 9999px;
 
   /* Transitions */
   --transition-fast: 0.15s ease;
-  --transition-normal: 0.25s ease;
-  --transition-slow: 0.4s ease;
+  --transition-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 0.45s cubic-bezier(0.4, 0, 0.2, 1);
 
-  /* Default Theme: Spooky Obsidian Black & Pumpkin Orange */
-  --bg-page: #0a0a0c;                 /* Void Black */
-  --bg-surface: #121216;              /* Charcoal Obsidian */
-  --bg-surface-elevated: #1a1a20;     /* Crypt Surface */
-  --bg-surface-subtle: #16161b;       /* Subtle Dark */
-  --bg-input: #101014;
-  --border-color: #27272e;
-  --border-color-hover: #ff7300;
-  --border-color-focus: #ff8c26;
+  /* Default Theme: Deep Crypt Obsidian & Jack-o'-Lantern Nightmare */
+  --bg-page: #06050a;                 /* Abyss Void */
+  --bg-surface: #0e0d16;              /* Haunted Crypt Obsidian */
+  --bg-surface-elevated: #161423;     /* Raised Grimoire Slab */
+  --bg-surface-subtle: #110f1c;       /* Smoked Tomb Chamber */
+  --bg-input: #090812;
+  --border-color: #27203b;            /* Dark Cursed Metal */
+  --border-color-hover: #ff5500;
+  --border-color-focus: #ff7700;
+  --border-color-slime: #00ff66;
 
-  --text-primary: #fdfdfd;
-  --text-secondary: #d4d4d8;
-  --text-muted: #71717a;
-  --text-inverse: #0a0a0c;
+  --text-primary: #f5f4fb;            /* Bone Pearl White */
+  --text-secondary: #c4bfdc;          /* Ghostly Pale Lavender */
+  --text-muted: #7d759d;              /* Crypt Cobweb Gray */
+  --text-inverse: #06050a;
 
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.6);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.7);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.8);
-  --shadow-glow: 0 0 25px rgba(255, 115, 0, 0.35);
+  /* Supernatural Shadows & Auras */
+  --shadow-sm: 0 2px 4px 0 rgba(0, 0, 0, 0.7);
+  --shadow-md: 0 4px 12px -1px rgba(0, 0, 0, 0.85);
+  --shadow-lg: 0 10px 24px -3px rgba(0, 0, 0, 0.9);
+  --shadow-xl: 0 20px 35px -5px rgba(0, 0, 0, 0.95);
+
+  --shadow-glow: 0 0 25px rgba(255, 85, 0, 0.45);
+  --shadow-glow-pumpkin: 0 0 30px rgba(255, 85, 0, 0.5);
+  --shadow-glow-slime: 0 0 30px rgba(0, 255, 102, 0.45);
+  --shadow-glow-blood: 0 0 30px rgba(255, 0, 68, 0.45);
+  --shadow-glow-purple: 0 0 30px rgba(168, 85, 247, 0.45);
 }
 
-/* Dark Theme explicit (Matching the Spooky Halloween Palette) */
+/* Explicit Dark Theme: Deep Crypt */
 [data-theme="dark"] {
-  --bg-page: #08080a;
-  --bg-surface: #111115;
-  --bg-surface-elevated: #18181f;
-  --bg-surface-subtle: #15151a;
-  --bg-input: #0e0e12;
-  --border-color: #26262e;
-  --border-color-hover: #ff7300;
-  --border-color-focus: #ff8c26;
+  --bg-page: #050409;
+  --bg-surface: #0c0b14;
+  --bg-surface-elevated: #141221;
+  --bg-surface-subtle: #0f0d1a;
+  --bg-input: #080710;
+  --border-color: #261f38;
+  --border-color-hover: #ff5500;
+  --border-color-focus: #ff7700;
 
-  --text-primary: #ffffff;
-  --text-secondary: #d4d4d8;
-  --text-muted: #71717a;
-  --text-inverse: #08080a;
+  --text-primary: #f8f7fd;
+  --text-secondary: #c9c4df;
+  --text-muted: #827a9f;
+  --text-inverse: #050409;
 
-  --color-primary-light: rgba(255, 115, 0, 0.18);
-  --color-secondary-light: rgba(255, 59, 0, 0.18);
-  --color-accent-light: rgba(255, 166, 0, 0.18);
+  --color-primary-light: rgba(255, 85, 0, 0.2);
+  --color-secondary-light: rgba(255, 0, 68, 0.2);
+  --color-slime-light: rgba(0, 255, 102, 0.18);
+  --color-purple-light: rgba(168, 85, 247, 0.18);
 
-  --shadow-glow: 0 0 30px rgba(255, 115, 0, 0.4);
+  --shadow-glow: 0 0 35px rgba(255, 85, 0, 0.5);
 }
 
-/* Light Mode (Halloween Autumn Sunset variant) */
+/* Halloween Autumn Twilight / Blood Sunset Variant */
 [data-theme="light"] {
-  --bg-page: #fbf9f5;
-  --bg-surface: #ffffff;
-  --bg-surface-elevated: #ffffff;
-  --bg-surface-subtle: #f4ede4;
-  --bg-input: #ffffff;
-  --border-color: #e5ded3;
-  --border-color-hover: #ff7300;
-  --border-color-focus: #ff7300;
+  --bg-page: #15101a;                 /* Haunted twilight rather than harsh white */
+  --bg-surface: #1e1826;
+  --bg-surface-elevated: #272033;
+  --bg-surface-subtle: #191321;
+  --bg-input: #120e18;
+  --border-color: #3b2f4c;
+  --border-color-hover: #ff6600;
+  --border-color-focus: #ff7700;
 
-  --text-primary: #121214;
-  --text-secondary: #4a4a52;
-  --text-muted: #888892;
-  --text-inverse: #ffffff;
+  --text-primary: #fff8f0;
+  --text-secondary: #dcd0ea;
+  --text-muted: #9587aa;
+  --text-inverse: #0a0710;
 
-  --color-primary: #ea580c;
-  --color-primary-hover: #c2410c;
-  --color-primary-light: #ffedd5;
-  --color-primary-glow: rgba(234, 88, 12, 0.25);
+  --color-primary: #ff6600;
+  --color-primary-hover: #ff851a;
+  --color-primary-light: rgba(255, 102, 0, 0.22);
+  --color-primary-glow: rgba(255, 102, 0, 0.45);
 
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.12);
-  --shadow-glow: 0 0 25px rgba(234, 88, 12, 0.25);
+  --shadow-sm: 0 2px 4px 0 rgba(0, 0, 0, 0.6);
+  --shadow-md: 0 4px 10px -1px rgba(0, 0, 0, 0.75);
+  --shadow-lg: 0 10px 20px -3px rgba(0, 0, 0, 0.85);
+  --shadow-xl: 0 20px 30px -5px rgba(0, 0, 0, 0.9);
+  --shadow-glow: 0 0 30px rgba(255, 102, 0, 0.4);
 }

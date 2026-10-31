@@ -40,6 +40,7 @@ HackSprint/
 │   ├── api.js                   # Unified data service + 6 seed personas
 │   ├── auth.js                  # Session state, login, and email validator
 │   ├── config.js                # Supabase configuration & mock switcher
+│   ├── horror-theme.js          # Ambient cemetery canvas, Web Audio synth & cursor trails
 │   └── utils.js                 # 100-pt match formula, XSS escape, URLs
 │
 ├── pages/

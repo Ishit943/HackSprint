@@ -6,10 +6,10 @@
   <title>Monster Match - Find Your Project Teammate</title>
   <meta name="description" content="Connect with passionate student developers, designers, and AI creators for hackathons and college projects with instant WhatsApp and call links.">
   
-  <!-- Google Fonts: Plus Jakarta Sans -->
+  <!-- Google Fonts: Plus Jakarta Sans, Creepster, Nosifer, Cinzel Decorative -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Nosifer&family=Cinzel+Decorative:wght@700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
   
   <!-- CSS Stylesheets -->
   <link rel="stylesheet" href="css/variables.css">
@@ -22,34 +22,35 @@
       position: relative;
       padding: var(--spacing-16) 0 var(--spacing-12);
       overflow: hidden;
-      background: radial-gradient(circle at 50% 10%, rgba(255, 115, 0, 0.15) 0%, transparent 65%);
+      background: radial-gradient(circle at 50% 15%, rgba(255, 85, 0, 0.22) 0%, rgba(255, 0, 68, 0.08) 35%, transparent 70%);
     }
 
     [data-theme="dark"] .hero {
-      background: radial-gradient(circle at 50% 10%, rgba(255, 115, 0, 0.25) 0%, rgba(255, 59, 0, 0.08) 40%, transparent 75%);
+      background: radial-gradient(circle at 50% 15%, rgba(255, 85, 0, 0.28) 0%, rgba(168, 85, 247, 0.1) 40%, rgba(0, 255, 102, 0.04) 65%, transparent 80%);
     }
 
     .hero-badge {
       display: inline-flex;
       align-items: center;
       gap: var(--spacing-2);
-      padding: 0.4rem 1rem;
-      background: var(--bg-surface);
-      border: 1px solid var(--border-color);
+      padding: 0.45rem 1.15rem;
+      background: rgba(22, 18, 32, 0.85);
+      border: 1.5px solid rgba(255, 85, 0, 0.45);
       border-radius: var(--radius-full);
       font-size: var(--font-size-xs);
       font-weight: 700;
-      color: var(--color-primary);
+      color: #ffaa00;
       margin-bottom: var(--spacing-6);
-      box-shadow: var(--shadow-sm);
+      box-shadow: 0 0 20px rgba(255, 85, 0, 0.3);
+      backdrop-filter: blur(10px);
     }
 
     .hero-title {
-      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-size: clamp(2.4rem, 5.2vw, 4.2rem);
       font-weight: 800;
       line-height: 1.15;
       margin-bottom: var(--spacing-6);
-      max-width: 900px;
+      max-width: 960px;
       margin-left: auto;
       margin-right: auto;
     }
@@ -57,91 +58,99 @@
     .hero-desc {
       font-size: var(--font-size-lg);
       color: var(--text-secondary);
-      max-width: 680px;
+      max-width: 720px;
       margin-left: auto;
       margin-right: auto;
       margin-bottom: var(--spacing-8);
-      line-height: 1.6;
+      line-height: 1.65;
     }
 
     .hero-stats {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: var(--spacing-6);
-      max-width: 650px;
+      max-width: 680px;
       margin: var(--spacing-12) auto 0;
       padding: var(--spacing-6);
-      background: var(--bg-surface);
-      border: 1px solid var(--border-color);
+      background: linear-gradient(180deg, rgba(22, 19, 34, 0.9) 0%, rgba(12, 10, 18, 0.95) 100%);
+      border: 1.5px solid rgba(255, 85, 0, 0.35);
       border-radius: var(--radius-2xl);
-      box-shadow: var(--shadow-md);
+      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.85), 0 0 25px rgba(255, 85, 0, 0.2);
+      backdrop-filter: blur(12px);
     }
 
     .stat-number {
       font-size: var(--font-size-3xl);
       font-weight: 800;
+      font-family: var(--font-family-mono);
       color: var(--color-primary);
+      text-shadow: 0 0 15px rgba(255, 85, 0, 0.6);
     }
 
     .stat-label {
       font-size: var(--font-size-xs);
-      font-weight: 600;
+      font-weight: 700;
       color: var(--text-secondary);
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.08em;
     }
 
     /* Feature Grid Section */
     .section-header {
       text-align: center;
-      max-width: 650px;
+      max-width: 700px;
       margin: 0 auto var(--spacing-10);
     }
 
     .feature-icon-box {
-      width: 52px;
-      height: 52px;
+      width: 56px;
+      height: 56px;
       border-radius: var(--radius-xl);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 26px;
+      font-size: 28px;
       margin-bottom: var(--spacing-4);
-      background: var(--color-primary-light);
+      background: rgba(255, 85, 0, 0.15);
+      border: 1px solid rgba(255, 85, 0, 0.3);
       color: var(--color-primary);
+      box-shadow: 0 0 15px rgba(255, 85, 0, 0.2);
     }
 
     /* Live Preview Cards */
     .preview-card {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-color);
+      background: linear-gradient(180deg, rgba(20, 17, 30, 0.9) 0%, rgba(12, 11, 19, 0.95) 100%);
+      border: 1.5px solid rgba(255, 85, 0, 0.22);
       border-radius: var(--radius-2xl);
       padding: var(--spacing-6);
       transition: all var(--transition-normal);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8);
+      position: relative;
     }
 
     .preview-card:hover {
-      transform: translateY(-6px);
-      box-shadow: var(--shadow-xl);
-      border-color: var(--color-primary);
+      transform: translateY(-6px) scale(1.01);
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.95), 0 0 30px rgba(255, 85, 0, 0.4), 0 0 50px rgba(0, 255, 102, 0.15);
+      border-color: rgba(255, 85, 0, 0.85);
     }
 
     /* Step Card */
     .step-badge {
-      width: 36px;
-      height: 36px;
+      width: 40px;
+      height: 40px;
       border-radius: var(--radius-full);
-      background: var(--color-primary);
+      background: linear-gradient(135deg, #ff7700, #ff0044);
       color: #fff;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 800;
-      font-size: var(--font-size-sm);
+      font-size: var(--font-size-base);
       margin-bottom: var(--spacing-3);
+      box-shadow: 0 0 15px rgba(255, 85, 0, 0.5);
     }
   </style>
 </head>
@@ -177,95 +186,95 @@
     <section class="hero">
       <div class="container" style="text-align: center;">
         <div class="hero-badge float-anim">
-          <span>🏆 Built for Hackathons & College Projects</span>
-          <span style="background: var(--color-secondary); color:#064e3b; padding: 2px 6px; border-radius: 99px; font-size:10px;">PS10</span>
+          <span>🎃 Built for Hackathons & College Builders</span>
+          <span style="background: linear-gradient(135deg, #ff5500, #ff0044); color:#ffffff; padding: 2px 8px; border-radius: 99px; font-size:10px; font-weight:800; letter-spacing:0.05em;">PS10 • RUNTIME TERROR</span>
         </div>
 
         <h1 class="hero-title">
-          Stop solo-hacking. <br>
-          Find your <span class="gradient-text">Monster Teammate</span> in minutes.
+          <span class="font-creepster" style="color: #ff5500; text-shadow: 0 0 20px rgba(255, 85, 0, 0.7), 0 0 35px rgba(255, 0, 68, 0.4); display: block; margin-bottom: 6px;">Stop Solo-Hacking In The Dark.</span>
+          Summon Your <span class="gradient-text font-creepster" style="font-size: 1.05em;">Monster Squad</span> Before Midnight!
         </h1>
 
         <p class="hero-desc">
-          Create your student skill profile, post requirements, filter candidates by proficiency, 
-          and connect instantly via in-app requests, verified phone calls, and WhatsApp.
+          Forge unstoppable hackathon teams. Craft your verified monster skill profile, cast multi-skill filters with AND/OR precision, 
+          calculate mathematical compatibility, and unlock direct encrypted WhatsApp & verified call connections.
         </p>
 
         <div class="flex items-center justify-center gap-4 flex-wrap">
           <a href="pages/explore.html" class="btn btn-primary btn-lg">
-            <span>🔍 Explore Teammates</span>
+            <span>🔍 Summon Teammates</span>
           </a>
           <a href="pages/project-new.html" class="btn btn-outline btn-lg">
-            <span>✨ Post a Project</span>
+            <span>✨ Post Project Grimoire</span>
           </a>
         </div>
 
         <div class="hero-stats">
           <div>
             <div class="stat-number">500+</div>
-            <div class="stat-label">Student Monsters</div>
+            <div class="stat-label">Summoned Monsters</div>
           </div>
           <div>
             <div class="stat-number">120+</div>
-            <div class="stat-label">Hackathon Teams</div>
+            <div class="stat-label">Squad Covenants</div>
           </div>
           <div>
             <div class="stat-number">98%</div>
-            <div class="stat-label">Match Rate</div>
+            <div class="stat-label">Match Resonance</div>
           </div>
         </div>
       </div>
     </section>
 
     <!-- Key Features Section -->
-    <section style="padding: var(--spacing-16) 0; background-color: var(--bg-surface-subtle);">
+    <section style="padding: var(--spacing-16) 0; background: linear-gradient(180deg, rgba(14, 12, 22, 0.7) 0%, rgba(9, 8, 15, 0.95) 100%);">
       <div class="container">
         <div class="section-header">
-          <span class="badge" style="background: var(--color-primary-light); color: var(--color-primary); margin-bottom: var(--spacing-2);">Why Monster Match</span>
-          <h2>Everything you need to form winning teams</h2>
-          <p>Designed specifically for collegiate hackers, open-source builders, and sprint competitors.</p>
+          <span class="badge" style="background: rgba(255, 85, 0, 0.15); color: #ff7700; border: 1px solid rgba(255, 85, 0, 0.4); margin-bottom: var(--spacing-2);">Dark Arts of Teaming</span>
+          <h2 class="font-creepster" style="font-size: 2.2rem; color: #ff6600; text-shadow: 0 0 15px rgba(255, 85, 0, 0.4);">Everything You Need To Slay Hackathons</h2>
+          <p>Forged specifically for collegiate hackers, open-source necromancers, and late-night sprint competitors.</p>
         </div>
 
         <div class="grid grid-cols-3 gap-6">
           <!-- Feature 1 -->
-          <div class="card card-hover">
+          <div class="card card-hover grimoire-card">
             <div class="feature-icon-box">🎯</div>
-            <h3>Skill & Proficiency Profiles</h3>
+            <h3 style="color: #ffaa00;">Skill Necromancy & Tiers</h3>
             <p>Showcase skills with verified proficiency tags (Beginner, Intermediate, Advanced), availability hours, GitHub, and past hackathon credentials.</p>
           </div>
 
           <!-- Feature 2 -->
-          <div class="card card-hover">
+          <div class="card card-hover grimoire-card">
             <div class="feature-icon-box">🧠</div>
-            <h3>Smart Match Score</h3>
+            <h3 style="color: #00ff66;">Soul Matchmaker Algorithm</h3>
             <p>Our algorithm matches candidate skills, availability overlaps, and interests against your project requirements to calculate a real-time compatibility %.</p>
           </div>
 
           <!-- Feature 3 -->
-          <div class="card card-hover">
+          <div class="card card-hover grimoire-card">
             <div class="feature-icon-box">⚡</div>
-            <h3>1-Click WhatsApp & Call</h3>
-            <p>No more waiting on emails. Once a connection request is accepted, phone and WhatsApp contact are unlocked for instant chat via <code>wa.me</code> links.</p>
+            <h3 style="color: #00ff66;">1-Click WhatsApp Spell</h3>
+            <p>No waiting on ghosted emails. Once a connection request is accepted, phone and WhatsApp contact are unlocked for instant chat via <code>wa.me</code> links.</p>
           </div>
 
           <!-- Feature 4 -->
-          <div class="card card-hover">
+          <div class="card card-hover grimoire-card">
             <div class="feature-icon-box">🔎</div>
-            <h3>Advanced Search & AND/OR Filters</h3>
+            <h3 style="color: #ffaa00;">Crypt Search & AND/OR Filters</h3>
             <p>Filter candidates by multiple skills, branch, year, college, and availability with instant debounced live search.</p>
           </div>
 
           <!-- Feature 5 -->
-          <div class="card card-hover">
+          <div class="card card-hover grimoire-card">
             <div class="feature-icon-box">📌</div>
-            <h3>Project Requirement Posts</h3>
+            <h3 style="color: #c084fc;">Project Summoning Posts</h3>
             <p>Post hackathon requirements specifying exact roles needed (e.g. 1 Frontend Dev, 1 ML Engineer) with custom slots and deadlines.</p>
           </div>
 
           <!-- Feature 6 -->
-          <div class="card card-hover">
+          <div class="card card-hover grimoire-card">
             <div class="feature-icon-box">🛡️</div>
-            <h3>Privacy & Trust By Default</h3>
+            <h3 style="color: #ff0044;">Privacy Ward & Trust Shield</h3>
             <p>Phone numbers and social links remain strictly private until you accept a connection request, keeping student data spam-free.</p>
           </div>
         </div>
@@ -277,8 +286,8 @@
       <div class="container">
         <div class="flex items-center justify-between flex-wrap gap-4" style="margin-bottom: var(--spacing-8);">
           <div>
-            <span class="badge badge-open" style="margin-bottom: var(--spacing-2);">Live Directory</span>
-            <h2>Top Recommended Teammates</h2>
+            <span class="badge badge-open" style="margin-bottom: var(--spacing-2);">Live Crypt Directory</span>
+            <h2 class="font-creepster" style="font-size: 2rem; color: #ff6600;">Top Recommended Monsters</h2>
             <p>Ready to join hackathon teams right now.</p>
           </div>
           <a href="pages/explore.html" class="btn btn-outline">View All Students →</a>
@@ -287,38 +296,38 @@
         <div id="featured-students-grid" class="grid grid-cols-3 gap-6">
           <!-- Populated dynamically via JS -->
           <div class="card" style="text-align: center; padding: var(--spacing-8);">
-            <div class="float-anim" style="font-size: 3rem;">👾</div>
-            <p style="margin-top: var(--spacing-2);">Loading monster profiles...</p>
+            <div class="float-anim" style="font-size: 3rem;">🎃</div>
+            <p style="margin-top: var(--spacing-2); color: var(--text-secondary);">Summoning monster profiles from the crypt...</p>
           </div>
         </div>
       </div>
     </section>
 
     <!-- How It Works Section -->
-    <section style="padding: var(--spacing-16) 0; background-color: var(--bg-surface-subtle);">
+    <section style="padding: var(--spacing-16) 0; background: linear-gradient(180deg, rgba(14, 12, 22, 0.7) 0%, rgba(9, 8, 15, 0.95) 100%);">
       <div class="container">
         <div class="section-header">
-          <span class="badge" style="background: var(--color-secondary-light); color: #065f46; margin-bottom: var(--spacing-2);">Simple 3-Step Flow</span>
-          <h2>How Monster Match Works</h2>
+          <span class="badge" style="background: rgba(0, 255, 102, 0.12); color: #00ff66; border: 1px solid rgba(0, 255, 102, 0.35); margin-bottom: var(--spacing-2);">Simple 3-Step Ritual</span>
+          <h2 class="font-creepster" style="font-size: 2.2rem; color: #ff6600;">How Monster Match Works</h2>
           <p>From solo builder to fully staffed hackathon squad in under five minutes.</p>
         </div>
 
         <div class="grid grid-cols-3 gap-8">
-          <div class="card" style="border-top: 4px solid var(--color-primary);">
+          <div class="card grimoire-card" style="border-top: 4px solid var(--color-primary);">
             <div class="step-badge">1</div>
-            <h3>Create Skill Profile</h3>
+            <h3 style="color: #ffaa00;">Awaken Your Skill Profile</h3>
             <p>List your technical skills, proficiency levels, availability per week, and college details. Our profile completeness meter helps you stand out.</p>
           </div>
 
-          <div class="card" style="border-top: 4px solid var(--color-secondary);">
-            <div class="step-badge" style="background: var(--color-secondary); color:#064e3b;">2</div>
-            <h3>Search or Post Projects</h3>
+          <div class="card grimoire-card" style="border-top: 4px solid var(--color-slime);">
+            <div class="step-badge" style="background: linear-gradient(135deg, #00ff66, #059669); color:#06050a;">2</div>
+            <h3 style="color: #00ff66;">Search or Post Projects</h3>
             <p>Use multi-skill filters (AND/OR mode) to pinpoint exact teammates, or post your hackathon project with open role slots.</p>
           </div>
 
-          <div class="card" style="border-top: 4px solid var(--color-whatsapp);">
-            <div class="step-badge" style="background: var(--color-whatsapp);">3</div>
-            <h3>Connect & WhatsApp</h3>
+          <div class="card grimoire-card" style="border-top: 4px solid var(--color-secondary);">
+            <div class="step-badge" style="background: linear-gradient(135deg, #ff0044, #b8002e);">3</div>
+            <h3 style="color: #ff0044;">Connect & WhatsApp</h3>
             <p>Send a connection request. As soon as it's accepted, tap the WhatsApp or Call button to kick off project planning immediately.</p>
           </div>
         </div>
@@ -327,12 +336,12 @@
   </main>
 
   <!-- Footer -->
-  <footer style="padding: var(--spacing-12) 0 var(--spacing-8); border-top: 1px solid var(--border-color); background: var(--bg-surface);">
+  <footer style="padding: var(--spacing-12) 0 var(--spacing-8); border-top: 1px solid var(--border-color); background: rgba(10, 8, 16, 0.95);">
     <div class="container">
       <div class="flex items-center justify-between flex-wrap gap-4" style="margin-bottom: var(--spacing-6);">
         <div class="flex items-center gap-3">
-          <div class="brand-icon" style="width:32px; height:32px; font-size:18px;">🎃</div>
-          <span style="font-weight: 800; font-size: var(--font-size-lg);">Monster Match</span>
+          <div class="brand-icon" style="width:36px; height:36px; font-size:20px;">🎃</div>
+          <span class="font-creepster" style="font-size: 1.4rem; color:#ff6600; text-shadow:0 0 10px rgba(255,85,0,0.5);">Monster Match</span>
         </div>
         <p style="margin-bottom: 0; font-size: var(--font-size-sm);">
           Find Your Project Teammate • Runtime Terror HackSprint 2026
